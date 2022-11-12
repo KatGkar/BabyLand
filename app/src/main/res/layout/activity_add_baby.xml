@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddBaby">
+
+    <RelativeLayout
+        android:id="@+id/infoRelativeLayout"
+        android:layout_width="393dp"
+        android:layout_height="434dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="40dp"
+            android:text="Όνομα:"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView8"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="45dp"
+            android:text="Ημ. γέννησης:"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView9"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="57dp"
+            android:text="AMKA:"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView10"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="59dp"
+            android:text="Τόπος γέννησης:"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView11"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="37dp"
+            android:text="Ομάδα Αίματος:"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/babyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="31dp"
+            android:layout_toEndOf="@+id/textView9"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/babyAmka"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/babyBirthDate"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="23dp"
+            android:layout_toEndOf="@+id/textView9"
+            android:ems="10"
+            android:hint="Amka"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/babyBirthPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/babyAmka"
+            android:layout_marginStart="49dp"
+            android:layout_marginTop="30dp"
+            android:layout_toEndOf="@+id/textView9"
+            android:ems="10"
+            android:hint="BirthPlace"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/babyBirthDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/babyName"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="29dp"
+            android:layout_toEndOf="@+id/textView9"
+            android:ems="10"
+            android:inputType="date"
+            android:textColor="#000000" />
+
+        <AutoCompleteTextView
+            android:id="@+id/babyBloodType"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/babyBirthPlace"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="41dp"
+            android:layout_toEndOf="@+id/textView11" />
+
+        <Button
+            android:id="@+id/calendarButton"
+            android:layout_width="48dp"
+            android:layout_height="39dp"
+            android:layout_alignStart="@+id/babyBirthDate"
+            android:layout_alignTop="@+id/babyBirthDate"
+            android:layout_marginStart="161dp"
+            android:layout_marginTop="-2dp"
+            android:text="Button" />
+    </RelativeLayout>
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="303dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/babyBoy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="BOY" />
+
+        <RadioButton
+            android:id="@+id/babyGirl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="GIRL" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/addBaby"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="64dp"
+        android:onClick="addNewBaby"
+        android:text="NEXT"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoRelativeLayout" />
+
+    <CalendarView
+        android:id="@+id/calendarView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/infoRelativeLayout"
+        app:layout_constraintStart_toStartOf="@+id/infoRelativeLayout"
+        app:layout_constraintTop_toTopOf="@+id/infoRelativeLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

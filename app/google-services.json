@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "272342262611",
+    "firebase_url": "https://babyland-adba1-default-rtdb.firebaseio.com",
+    "project_id": "babyland-adba1",
+    "storage_bucket": "babyland-adba1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272342262611:android:8c90a6b9fcbc56345537a6",
+        "android_client_info": {
+          "package_name": "com.example.babyland"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272342262611-oev9qddjv3jn0n2h0cj70vc5k5l6fbi3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.babyland",
+            "certificate_hash": "dc281c4ddea82b1318f51542cf52a508d5da1cd9"
+          }
+        },
+        {
+          "client_id": "272342262611-vc4j36b5m7e6gcseiaeo7l9r5l5i6m93.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwrKnR0uqpCzU0pWki3EhtrKtPJHbWL40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272342262611-vc4j36b5m7e6gcseiaeo7l9r5l5i6m93.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

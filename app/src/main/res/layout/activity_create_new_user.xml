@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".createNewUser">
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="236dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.557"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutParentOne"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/calendarButtonOnParentOne"
+            android:layout_width="48dp"
+            android:layout_height="39dp"
+            android:layout_alignStart="@+id/birthDateParentOne"
+            android:layout_alignTop="@+id/birthDateParentOne"
+            android:layout_alignEnd="@+id/birthDateParentOne"
+            android:layout_marginStart="160dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="1dp"
+            android:text="Button" />
+
+        <EditText
+            android:id="@+id/birthDateParentOne"
+            android:layout_width="279dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/phoneNumberParentOne"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="100dp"
+            android:ems="10"
+            android:inputType="date"
+            android:textColor="#000000" />
+
+        <EditText
+            android:id="@+id/surnameParentOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameParentOne"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="102dp"
+            android:ems="10"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:hint="Surname"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/phoneNumberParentOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/emailParetntOne"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="104dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="98dp"
+            android:ems="10"
+            android:hint="Phone Number "
+            android:inputType="phone" />
+
+        <ImageButton
+            android:id="@+id/nextParentButton"
+            android:layout_width="126dp"
+            android:layout_height="56dp"
+            android:layout_below="@+id/bloodTypeParentOne"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="143dp"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="142dp"
+            android:onClick="nextParent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <EditText
+            android:id="@+id/nameParentOne"
+            android:layout_width="wrap_content"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView2"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="102dp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/amkaParentOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/surnameParentOne"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="101dp"
+            android:ems="10"
+            android:hint="Amka"
+            android:inputType="phone" />
+
+        <TextView
+            android:id="@+id/profileUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView2"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="148dp"
+            android:layout_marginTop="5dp"
+            android:text="Profile User"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/emailParetntOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/amkaParentOne"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="102dp"
+            android:ems="10"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress" />
+
+        <Spinner
+            android:id="@+id/bloodTypeParentOne"
+            android:layout_width="357dp"
+            android:layout_height="29dp"
+            android:layout_below="@+id/birthDateParentOne"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="22dp"
+            android:popupBackground="@color/white"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="136dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="147dp"
+            tools:srcCompat="@drawable/baby_girl" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
