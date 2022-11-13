@@ -6,11 +6,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +42,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -48,22 +57,96 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class LoginRegister extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginRegister extends AppCompatActivity { //implements GoogleApiClient.OnConnectionFailedListener {
 
-    private ImageView facebookButton, photo, googleButton;
+    private ImageView facebookButton, photo, googleButton, image, loading;
     CallbackManager callbackManager;
     Button logout;
-    TextView name ;
-    FirebaseAuth mFirebaseAuth;
+    TextView name;
+    public FirebaseAuth mfirebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleApiClient mGoogleApiClient;
     private final static int RC_SIGN_IN = 123;
+    private EditText email, password;
+    long delay = 1000;
+    long lastEditText = 0;
+    FrameLayout loadingFrame;
+    Handler handler = new Handler();
+    TextView createUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
-        name = findViewById(R.id.textView2);
+
+        //finding views
+        email = findViewById(R.id.email);
+        password = findViewById(R.id.password);
+        loading = findViewById(R.id.loading);
+        loadingFrame = findViewById(R.id.loadingFrame);
+        mfirebaseAuth = FirebaseAuth.getInstance();
+        createUser = findViewById(R.id.createNewUser);
+        image = findViewById(R.id.image);
+        photo = findViewById(R.id.imageView);
+        name = findViewById(R.id.textView);
+
+        Picasso.get().load(R.drawable.baby_girl).into(image);
+
+        //setting visibilities
+        loadingFrame.setVisibility(View.INVISIBLE);
+        loadingFrame.setBackgroundColor(getResources().getColor(R.color.purple_700));
+        //setting design
+        createUser.setPaintFlags(createUser.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        //check if user is writing in email textView
+        email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                handler.removeCallbacks(inputFinish);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() > 0) {
+                    lastEditText = System.currentTimeMillis();
+                    handler.postDelayed(inputFinish, delay);
+                } else {
+
+                }
+            }
+        });
+
+        //check if user is writing in password textView
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                handler.removeCallbacks(inputFinish);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() > 0) {
+                    lastEditText = System.currentTimeMillis();
+                    handler.postDelayed(inputFinish, delay);
+                } else {
+
+                }
+            }
+        });
+
+
+
+        /*name = findViewById(R.id.textView2);
         photo = findViewById(R.id.imageView5);
         logout = findViewById(R.id.logout);
         googleButton = findViewById(R.id.googleButton);
@@ -72,24 +155,13 @@ public class LoginRegister extends AppCompatActivity implements GoogleApiClient.
         FacebookSdk.sdkInitialize(getApplicationContext());
 
 
-        //if user is still logged in for facebook
-        /*AccessToken ac = AccessToken.getCurrentAccessToken();
-        if(ac!=null && !ac.isExpired()){
-
-            String url = mFirebaseAuth.getCurrentUser().getPhotoUrl().toString();
-            String name2 = mFirebaseAuth.getCurrentUser().getDisplayName();
-            name.setText(name2);
-            Picasso.get().load(url).into(photo);
-            showMessage("from ac", "form account");
-            // showResults("facebook");
-        }*/
-
         //facebook logout button
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                mGoogleSignInClient.signOut();
                 LoginManager.getInstance().logOut();
-                showMessage("out", "loggin out");
                 finish();
             }
         });
@@ -146,11 +218,72 @@ public class LoginRegister extends AppCompatActivity implements GoogleApiClient.
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+         */
     }
 
 
+    //runnable to check if user has stopped writing
+    private Runnable inputFinish = new Runnable() {
+        @Override
+        public void run() {
+            if (System.currentTimeMillis() > (lastEditText + delay - 500)) {
+                if ((!TextUtils.isEmpty(email.getText().toString()) && !TextUtils.isEmpty(password.getText().toString()))) {
+                    loadingFrame.setVisibility(View.VISIBLE);
+                    checkLogin();
+                }
+            }
+        }
+    };
 
-    
+    //checking users' credentials (email and password)
+    public void checkLogin() {
+        mfirebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        loadingFrame.setVisibility(View.INVISIBLE);
+                        //continue to next page
+                    }
+                })
+
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        loadingFrame.setVisibility(View.INVISIBLE);
+                        showMessage("Error! Wrong credentials!", e.getMessage());
+                    }
+                });
+    }
+
+
+    //showing messages to users
+    public void showMessage(String title, String message) {
+        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
+    }
+
+    public void createUser(View view) {
+        //go to page createNewUser
+    }
+
+    /*@Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            try {
+                //String url = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+                String name2 = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                name.setText(name2);
+                showMessage("in", name2);
+               // Picasso.get().load(url).into(photo);
+            }catch (Exception e){
+                showMessage("Error", e.getMessage());
+            }
+        }
+    }*/
+}
+
+    /*
 
     //facebook
     private void handleFacebookToken(AccessToken token) {
@@ -162,7 +295,7 @@ public class LoginRegister extends AppCompatActivity implements GoogleApiClient.
                     FirebaseUser user = mFirebaseAuth.getCurrentUser();
                     showResults("facebook");
                 } else {
-                    showMessage("Warning!", "Facebook error. Please try again later");
+                    showMessage("Warning!", task.getException().getMessage());
                 }
             }
         });
@@ -176,14 +309,13 @@ public class LoginRegister extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         callbackManager.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RC_SIGN_IN){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try{
-                GoogleSignInAccount account = task.getResult(ApiException.class);
+                GoogleSignInAccount account = task.getResult();
                 firebaseAuthWithGoogle(account);
-            }catch (ApiException e){
+            }catch (Exception e){
                 showMessage("Error", "Google Error. Please try again later!");
 
             }
@@ -193,36 +325,22 @@ public class LoginRegister extends AppCompatActivity implements GoogleApiClient.
     //google sign in
     private void firebaseAuthWithGoogle(GoogleSignInAccount account){
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mFirebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user = mFirebaseAuth.getCurrentUser();
                             showResults("google");
                         }else{
-                            showMessage("Warning!", "Google is not responding. Please try again later!!");
+                            showMessage("Warning!", task.getException().getMessage());
                         }
                     }
                 });
+*/
+//    }
 
-    }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser user = mFirebaseAuth.getCurrentUser();
-        if(user!= null){
-            String url = mFirebaseAuth.getCurrentUser().getPhotoUrl().toString();
-            String name2 = mFirebaseAuth.getCurrentUser().getDisplayName();
-            name.setText(name2);
-            Picasso.get().load(url).into(photo);
-            showMessage("from ac", "form account");
-
-        }
-    }
-
+/*
     //take user info
     public void showResults(String type){
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -260,5 +378,4 @@ public class LoginRegister extends AppCompatActivity implements GoogleApiClient.
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
-}
+    }*/
