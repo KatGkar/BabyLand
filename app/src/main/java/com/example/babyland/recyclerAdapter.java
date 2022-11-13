@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
-    private ArrayList<FamilyHistoryIlnesses> list;
+    ArrayList list;
     String id;
     private recyclerVewOnClickListener listener;
 
@@ -25,7 +25,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         if (id.equals("ilnessInput")) {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.family_history_recycler, parent, false);
             recyclerAdapter.MyViewHolder view = new recyclerAdapter.MyViewHolder(itemView);
-
+        }else if(id.equals("examination")){
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_examination_list_items, parent, false);
         }
         return new MyViewHolder(itemView);
     }
@@ -48,6 +49,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 holder.switches.setChecked(false);
                 holder.ilnessDetails.setVisibility(View.GONE);
             }
+        }else if(id.equals("examination")){
+
         }
     }
 
@@ -70,6 +73,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             super(itemView);
             itemView.setOnClickListener(this);
             if (id.equals("ilnessInput")) {
+               // list = (ArrayList<FamilyHistoryIlnesses>)(ArrayList<?>) list;
+                List<FamilyHistoryIlnesses> lists = (List<FamilyHistoryIlnesses>) (List<?>) list;
                 ilnessName = itemView.findViewById(R.id.ilnessName);
                 switches = itemView.findViewById(R.id.switches);
                 ilnessDetails = itemView.findViewById(R.id.ilnessDetails);
@@ -82,10 +87,12 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                         }else{
                             ilnessDetails.setVisibility(View.GONE);
                         }
-                        FamilyHistoryIlnesses f1 = new FamilyHistoryIlnesses(list.get(i).getIlness(), switches.isChecked(), list.get(i).getDetails());
-                         list.set(i, f1);
+                        FamilyHistoryIlnesses f1 = new FamilyHistoryIlnesses(lists.get(i).getIlness(), switches.isChecked(), lists.get(i).getDetails());
+                        lists.set(i, f1);
                     }
                 });
+            }else if(id.equals("examination")){
+                List<String> lists = (List<String>) (List<?>) list;
             }
         }
 
