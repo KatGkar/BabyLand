@@ -7,53 +7,123 @@
     tools:context=".LoginRegister">
 
     <ImageView
-        android:id="@+id/facebookButton"
-        android:layout_width="91dp"
-        android:layout_height="84dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="144dp"
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="171dp"
+        android:layout_height="122dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="108dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/baby_girl" />
+
+    <ImageButton
+        android:id="@+id/googleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintStart_toEndOf="@+id/facebookButton"
+        app:layout_constraintTop_toBottomOf="@+id/createNewUser"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+
+    <ImageButton
+        android:id="@+id/facebookButton"
+        android:layout_width="83dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createNewUser"
         app:srcCompat="@drawable/_01_facebook" />
+
+    <TextView
+        android:id="@+id/createNewUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="100dp"
+        android:clickable="true"
+        android:onClick="createUser"
+        android:text="Create new user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="288dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="208dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="36dp"
+        android:text="Sign out"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/facebookButton" />
+        app:layout_constraintTop_toBottomOf="@+id/googleButton" />
+
+    <FrameLayout
+        android:id="@+id/loadingFrame"
+        android:layout_width="296dp"
+        android:layout_height="598dp"
+        android:layout_marginTop="68dp"
+        android:background="#5D1CCF"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/loading"
+            android:layout_width="181dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:foregroundGravity="center"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/loading" />
+
+    </FrameLayout>
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="139dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="96dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/facebookButton" />
-
-    <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="40dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.161"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logout"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/googleButton"
-        android:layout_width="95dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="256dp"
-        android:layout_marginTop="144dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/fui_ic_googleg_color_24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
