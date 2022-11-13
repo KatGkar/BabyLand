@@ -7,6 +7,7 @@ public class User {
     public Boolean partener;
     public ArrayList<Baby> kids;
 
+    //this is a comment
     public User(String name, String surname, String amka, String phoneNumber, String email, String dateOfBirth, String bloodType, String partenersAmka, Boolean partener, ArrayList<Baby> kids, String UID) {
         this.name = name;
         this.surname = surname;
