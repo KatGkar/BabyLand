@@ -7,6 +7,7 @@
     tools:context=".monitoringDevelopment">
 
     <RelativeLayout
+        android:id="@+id/examinationLayout"
         android:layout_width="425dp"
         android:layout_height="813dp"
         android:visibility="visible"
@@ -19,10 +20,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <Button
+                android:id="@+id/backButtonExamination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewExamination" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewExamination"
-                android:layout_width="422dp"
-                android:layout_height="669dp"
+                android:layout_width="392dp"
+                android:layout_height="640dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

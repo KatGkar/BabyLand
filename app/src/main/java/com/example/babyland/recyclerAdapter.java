@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -50,7 +52,9 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 holder.ilnessDetails.setVisibility(View.GONE);
             }
         }else if(id.equals("examination")){
-
+            List<String> lists = (List<String>) (List<?>) list;
+            String name = lists.get(position);
+            holder.examinationListItemText.setText(name);
         }
     }
 
@@ -65,9 +69,10 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         this.listener = listener;
     }
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView ilnessName, ilnessDetails;
+        private TextView ilnessName, ilnessDetails, examinationListItemText;
         private Switch switches;
-
+        private RadioButton radioButton1, radioButton2, radioButton3;
+        private RadioGroup radioGroup;
 
         public MyViewHolder(final View itemView) {
             super(itemView);
@@ -93,6 +98,20 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 });
             }else if(id.equals("examination")){
                 List<String> lists = (List<String>) (List<?>) list;
+                examinationListItemText = itemView.findViewById(R.id.examinationListItemText);
+                radioButton1 = itemView.findViewById(R.id.radioButton1);
+                radioButton2 = itemView.findViewById(R.id.radioButton2);
+                radioButton3 = itemView.findViewById(R.id.radioButton3);
+                radioGroup = itemView.findViewById(R.id.radioGroupExaminationList);
+                examinationListItemText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //int i=getAdapterPosition();
+                        if(radioGroup.getVisibility() == itemView.INVISIBLE){
+                            radioGroup.setVisibility(itemView.VISIBLE);
+                        }
+                    }
+                });
             }
         }
 

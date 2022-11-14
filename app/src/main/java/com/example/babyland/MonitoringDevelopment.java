@@ -1,11 +1,11 @@
 package com.example.babyland;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,17 +22,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class monitoringDevelopment extends AppCompatActivity {
-
+public class MonitoringDevelopment extends AppCompatActivity {
     private TextView dateText;
     private EditText ageText, weightText, lengthText, headCircumferenceText, doctorText, sustenanceEditText;
     private Date date;
     private ArrayList<String> sustenance, examination, developmentalMonitoring;
     private Boolean hearing;
     private String observations, doctor, sustenanceText;
-    private Button sustenanceButton, examinationButton, developmentalMonitoringButton, observationsButton;
+    private Button sustenanceButton, examinationButton, developmentalMonitoringButton, observationsButton, backButtonExamination;
     private Switch hearingSwitch;
-    private RelativeLayout generalLayout, sustenanceLayout;
+    private RelativeLayout generalLayout, sustenanceLayout, examinationLayout;
     private CalendarView calendarView;
     private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6, checkBox7;
     private RecyclerView recyclerView;
@@ -68,6 +67,8 @@ public class monitoringDevelopment extends AppCompatActivity {
         checkBox7 = findViewById(R.id.checkBox7);
         sustenanceEditText = findViewById(R.id.sustenanceText);
         recyclerView = findViewById(R.id.recyclerViewExamination);
+        examinationLayout = findViewById(R.id.examinationLayout);
+        backButtonExamination = findViewById(R.id.backButtonExamination);
 
         //setting lists
         examination = new ArrayList<>();
@@ -78,6 +79,7 @@ public class monitoringDevelopment extends AppCompatActivity {
         generalLayout.setVisibility(View.VISIBLE);
         calendarView.setVisibility(View.INVISIBLE);
         sustenanceLayout.setVisibility(View.INVISIBLE);
+        examinationLayout.setVisibility(View.INVISIBLE);
 
         dateText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,10 +165,23 @@ public class monitoringDevelopment extends AppCompatActivity {
         examinationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                generalLayout.setVisibility(View.INVISIBLE);
+                examinationLayout.setVisibility(View.VISIBLE);
+                examination.clear();
                 examination.add("derma");
                 examination.add("miti");
                 examination.add("autia");
                 setAdapter();
+            }
+        });
+
+
+        //save button on examination
+        backButtonExamination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                examinationLayout.setVisibility(View.INVISIBLE);
+                generalLayout.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -255,10 +270,8 @@ public class monitoringDevelopment extends AppCompatActivity {
                 //calls adapter to load data into recyclerView
                 setAdapter();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }*/
