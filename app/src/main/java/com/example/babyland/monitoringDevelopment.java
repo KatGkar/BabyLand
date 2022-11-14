@@ -1,6 +1,9 @@
 package com.example.babyland;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -32,6 +35,9 @@ public class monitoringDevelopment extends AppCompatActivity {
     private RelativeLayout generalLayout, sustenanceLayout;
     private CalendarView calendarView;
     private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6, checkBox7;
+    private RecyclerView recyclerView;
+    private recyclerAdapter.recyclerVewOnClickListener listener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,11 @@ public class monitoringDevelopment extends AppCompatActivity {
         checkBox6 = findViewById(R.id.checkBox6);
         checkBox7 = findViewById(R.id.checkBox7);
         sustenanceEditText = findViewById(R.id.sustenanceText);
+        recyclerView = findViewById(R.id.recyclerViewExamination);
+
+        //setting lists
+        examination = new ArrayList<>();
+
 
 
         //setting visibilities
@@ -147,6 +158,17 @@ public class monitoringDevelopment extends AppCompatActivity {
             }
         });
 
+
+        //examination button
+        examinationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                examination.add("derma");
+                examination.add("miti");
+                examination.add("autia");
+                setAdapter();
+            }
+        });
     }
 
     //sustenance function
@@ -202,4 +224,42 @@ public class monitoringDevelopment extends AppCompatActivity {
     public void showMessage(String title, String message){
         new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
+
+
+    //loads data from list into recyclerView
+    private void setAdapter() {
+        recyclerAdapter adapter = new recyclerAdapter(listener, examination, "examination");
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+        // recyclerView.addItemDecoration(new DividerItemDecoration(this,
+        //       DividerItemDecoration.HORIZONTAL));
+    }
+     /*//loading data in adapter from database
+    private void setQuestions() {
+        // empty the examination types in list
+        examination.clear();
+        //create variable
+        DatabaseReference rootRef= null;
+        rootRef = FirebaseDatabase.getInstance().getReference().child("questions");
+        rootRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for(DataSnapshot sn : snapshot.getChildren()){
+                        String s =sn.getValue(String.class);
+                        examination.add(s);
+                    }
+                }
+                //calls adapter to load data into recyclerView
+                setAdapter();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }*/
 }
