@@ -115,8 +115,6 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                 if (editable.length() > 0) {
                     lastEditText = System.currentTimeMillis();
                     handler.postDelayed(inputFinish, delay);
-                } else {
-
                 }
             }
         });

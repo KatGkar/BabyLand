@@ -80,7 +80,7 @@ public class createNewUser extends AppCompatActivity {
         //getting user UID from database
         //UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        //setting desing
+        //setting design
         userProfile.setPaintFlags(userProfile.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
 
 

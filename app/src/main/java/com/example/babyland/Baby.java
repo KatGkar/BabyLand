@@ -1,16 +1,14 @@
 package com.example.babyland;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class Baby {
     public String name, amka, parentOneName, parentTwoName, placeOfBirth, phoneNumber,
             bloodType,  sex,dateOfBirth;
-    public ArrayList<FamilyHistoryIlnesses> iln;
+    public ArrayList<FamilyHistoryIllnesses> iln;
 
     public Baby(String name, String dateOfBirth, String amka,String placeOfBirth,String bloodType, String sex,
-                String parentOneName, String parentTwoName,  String phoneNumber, ArrayList<FamilyHistoryIlnesses> iln) {
+                String parentOneName, String parentTwoName,  String phoneNumber, ArrayList<FamilyHistoryIllnesses> iln) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.amka = amka;
@@ -95,11 +93,11 @@ public class Baby {
         this.name = name;
     }
 
-    public ArrayList<FamilyHistoryIlnesses> getIln() {
+    public ArrayList<FamilyHistoryIllnesses> getIln() {
         return iln;
     }
 
-    public void setIln(ArrayList<FamilyHistoryIlnesses> iln) {
+    public void setIln(ArrayList<FamilyHistoryIllnesses> iln) {
         this.iln = iln;
     }
 }

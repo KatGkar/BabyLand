@@ -1,22 +1,22 @@
 package com.example.babyland;
 
-public class FamilyHistoryIlnesses {
-    String ilness;
+public class FamilyHistoryIllnesses {
+    String illness;
     Boolean switches;
     String details;
 
-    public FamilyHistoryIlnesses(String ilness, Boolean switches, String details) {
-        this.ilness = ilness;
+    public FamilyHistoryIllnesses(String illness, Boolean switches, String details) {
+        this.illness = illness;
         this.switches = switches;
         this.details = details;
     }
 
-    public String getIlness() {
-        return ilness;
+    public String getIllness() {
+        return illness;
     }
 
-    public void setIlness(String ilness) {
-        this.ilness = ilness;
+    public void setIllness(String ilness) {
+        this.illness = illness;
     }
 
     public Boolean getSwitches() {

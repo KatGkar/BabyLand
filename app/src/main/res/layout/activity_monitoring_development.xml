@@ -4,13 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".monitoringDevelopment">
+    tools:context=".MonitoringDevelopment">
+
+    <CalendarView
+        android:id="@+id/calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:dateTextAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
-        android:id="@+id/examinationLayout"
-        android:layout_width="425dp"
-        android:layout_height="813dp"
-        android:visibility="visible"
+        android:id="@+id/observationsLayout"
+        android:layout_width="342dp"
+        android:layout_height="645dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Observations"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.437"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.11" />
+
+            <EditText
+                android:id="@+id/editTextTextMultiLine2"
+                android:layout_width="263dp"
+                android:layout_height="291dp"
+                android:layout_marginTop="52dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Write your observations here please"
+                android:inputType="textMultiLine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.506"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+            <Button
+                android:id="@+id/backButtonObservations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:onClick="backButton"
+                android:text="Back"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/developmentalLayout"
+        android:layout_width="358dp"
+        android:layout_height="647dp"
+        android:clickable="false"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,12 +91,73 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:clickable="false">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Developmental Monitoring"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewDevelopmental"
+                android:layout_width="283dp"
+                android:layout_height="503dp"
+                android:layout_marginTop="1dp"
+                android:clickable="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.506"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:layout_constraintVertical_bias="0.13" />
+
+            <Button
+                android:id="@+id/backButtonDevelopmental"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="backButton"
+                android:text="Back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewDevelopmental" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/examinationLayout"
+        android:layout_width="353dp"
+        android:layout_height="735dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="406dp"
+            android:layout_height="759dp">
 
             <Button
                 android:id="@+id/backButtonExamination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="backButton"
                 android:text="Back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -32,8 +166,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewExamination"
-                android:layout_width="392dp"
-                android:layout_height="640dp"
+                android:layout_width="323dp"
+                android:layout_height="559dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -169,29 +303,33 @@
             android:gravity="start|top"
             android:inputType="textMultiLine" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/backButtonSustenance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sustenanceText"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="53dp"
+            android:layout_marginEnd="150dp"
+            android:layout_marginBottom="50dp"
+            android:onClick="backButton"
+            android:text="Back" />
 
-    <CalendarView
-        android:id="@+id/calendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/generalLayout"
-        android:layout_width="384dp"
-        android:layout_height="673dp"
-        android:visibility="gone"
+        android:layout_width="358dp"
+        android:layout_height="725dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.152">
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/headCircumferenceText"
@@ -203,8 +341,9 @@
             android:layout_marginStart="62dp"
             android:layout_marginTop="20dp"
             android:ems="3"
-            android:hint="Head Circumference"
-            android:inputType="number" />
+            android:hint="Head Circumference in cm"
+            android:inputType="number"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/dateText"
@@ -238,7 +377,7 @@
             android:layout_marginStart="62dp"
             android:layout_marginTop="20dp"
             android:ems="3"
-            android:hint="Weight"
+            android:hint="Weight in cm"
             android:inputType="number" />
 
         <EditText
@@ -251,7 +390,7 @@
             android:layout_marginStart="62dp"
             android:layout_marginTop="20dp"
             android:ems="3"
-            android:hint="Length"
+            android:hint="Length in cm"
             android:inputType="number" />
 
         <Button
@@ -307,9 +446,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/headCircumferenceText"
             android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="132dp"
-            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="29dp"
             android:text="Sustenance" />
 
         <EditText
@@ -318,8 +457,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/observationsButton"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="31dp"
+            android:layout_marginEnd="94dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="Doctor" />

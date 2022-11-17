@@ -1,5 +1,6 @@
 package com.example.babyland;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -7,6 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -15,6 +20,12 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,16 +37,21 @@ public class MonitoringDevelopment extends AppCompatActivity {
     private TextView dateText;
     private EditText ageText, weightText, lengthText, headCircumferenceText, doctorText, sustenanceEditText;
     private Date date;
-    private ArrayList<String> sustenance, examination, developmentalMonitoring;
+    private ArrayList<developmentalItems> developmentalMonitoring;
+    private ArrayList<examinationItems> examination;
+    private ArrayList<sustenanceItems> sustenance;
     private Boolean hearing;
     private String observations, doctor, sustenanceText;
-    private Button sustenanceButton, examinationButton, developmentalMonitoringButton, observationsButton, backButtonExamination;
+    private Button sustenanceButton, examinationButton, developmentalMonitoringButton, observationsButton, backButtonExamination,
+            backButtonDevelopmental, backButtonObservations, backButtonSustenance;
     private Switch hearingSwitch;
-    private RelativeLayout generalLayout, sustenanceLayout, examinationLayout;
+    private RelativeLayout generalLayout, sustenanceLayout, examinationLayout, developmentalLayout, observationsLayout;
     private CalendarView calendarView;
     private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6, checkBox7;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewExamination, recyclerViewDevelopmental;
     private recyclerAdapter.recyclerVewOnClickListener listener;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
 
     @Override
@@ -66,13 +82,24 @@ public class MonitoringDevelopment extends AppCompatActivity {
         checkBox6 = findViewById(R.id.checkBox6);
         checkBox7 = findViewById(R.id.checkBox7);
         sustenanceEditText = findViewById(R.id.sustenanceText);
-        recyclerView = findViewById(R.id.recyclerViewExamination);
+        recyclerViewExamination = findViewById(R.id.recyclerViewExamination);
         examinationLayout = findViewById(R.id.examinationLayout);
         backButtonExamination = findViewById(R.id.backButtonExamination);
+        recyclerViewDevelopmental = findViewById(R.id.recyclerViewDevelopmental);
+        developmentalLayout = findViewById(R.id.developmentalLayout);
+        backButtonDevelopmental = findViewById(R.id.backButtonDevelopmental);
+        backButtonObservations = findViewById(R.id.backButtonObservations);
+        observationsLayout = findViewById(R.id.observationsLayout);
+        backButtonSustenance = findViewById(R.id.backButtonSustenance);
+
+        //setting database
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
 
         //setting lists
         examination = new ArrayList<>();
-
+        sustenance = new ArrayList<>();
+        developmentalMonitoring = new ArrayList<>();
 
 
         //setting visibilities
@@ -80,6 +107,32 @@ public class MonitoringDevelopment extends AppCompatActivity {
         calendarView.setVisibility(View.INVISIBLE);
         sustenanceLayout.setVisibility(View.INVISIBLE);
         examinationLayout.setVisibility(View.INVISIBLE);
+        developmentalLayout.setVisibility(View.INVISIBLE);
+
+
+        //setting hint in date
+        //getting current date
+        Calendar cal = Calendar.getInstance();
+        int yy = cal.get(Calendar.YEAR);
+        int mm = cal.get(Calendar.MONTH);
+        int dd = cal.get(Calendar.DAY_OF_MONTH);
+
+        // set current date into textview
+        String d = String.valueOf(dd);
+        if(dd<=9){
+            d = "0" + d;
+        }
+        if(mm<12){
+            mm++;
+        }
+        String m = String.valueOf(mm);
+        if(mm<=9){
+            m = "0" + m;
+        }
+        dateText.setText(new StringBuilder()
+                .append(d).append(" ").append("/").append(m).append("/")
+                .append(yy));
+
 
         dateText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +209,10 @@ public class MonitoringDevelopment extends AppCompatActivity {
         sustenanceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sustenance();
+                generalLayout.setVisibility(View.INVISIBLE);
+                sustenanceLayout.setVisibility(View.VISIBLE);
+                sustenance.clear();
+                getData("sustenance");
             }
         });
 
@@ -168,71 +224,49 @@ public class MonitoringDevelopment extends AppCompatActivity {
                 generalLayout.setVisibility(View.INVISIBLE);
                 examinationLayout.setVisibility(View.VISIBLE);
                 examination.clear();
-                examination.add("derma");
-                examination.add("miti");
-                examination.add("autia");
-                setAdapter();
+                getData("examination");
             }
         });
 
 
-        //save button on examination
-        backButtonExamination.setOnClickListener(new View.OnClickListener() {
+        //Developmental monitoring button
+        developmentalMonitoringButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                examinationLayout.setVisibility(View.INVISIBLE);
-                generalLayout.setVisibility(View.VISIBLE);
+                generalLayout.setVisibility(View.INVISIBLE);
+                developmentalLayout.setVisibility(View.VISIBLE);
+                developmentalMonitoring.clear();
+                getData("developmental");
+            }
+        });
+
+        //observations button
+        observationsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                generalLayout.setVisibility(View.INVISIBLE);
+                observationsLayout.setVisibility(View.VISIBLE);
             }
         });
     }
 
-    //sustenance function
-    public void sustenance(){
-        generalLayout.setVisibility(View.INVISIBLE);
-        sustenanceLayout.setVisibility(View.VISIBLE);
-        checkBox1.setVisibility(View.VISIBLE);
-        checkBox2.setVisibility(View.VISIBLE);
-        checkBox3.setVisibility(View.VISIBLE);
-        checkBox4.setVisibility(View.VISIBLE);
-        checkBox5.setVisibility(View.VISIBLE);
-        checkBox6.setVisibility(View.VISIBLE);
-        checkBox7.setVisibility(View.VISIBLE);
-        String age = " ";
-        if(age.equals("1-2 weeks") || age.equals("2 months") || age.equals("4 months")) {
-            checkBox1.setText("Exclusive breastfeeding");
-            checkBox2.setText("Mixed sustenance");
-            checkBox3.setText("Modified cow's milk");
-            checkBox4.setText("Special sustenance");
-            checkBox5.setText("Vitamin D");
-            checkBox6.setVisibility(View.GONE);
-            checkBox7.setVisibility(View.GONE);
-        }else if(age.equals("6 months")){
-            checkBox1.setText("Breastfeeding");
-            checkBox2.setText("Ablactation");
-            checkBox3.setText("Introduction of solid foods");
-            checkBox4.setText("Modified cow's milk");
-            checkBox5.setVisibility(View.GONE);
-            checkBox6.setVisibility(View.GONE);
-            checkBox7.setVisibility(View.GONE);
-        }else if(age.equals("9 months")){
-            checkBox1.setText("Breastfeeding");
-            checkBox2.setText("Ablactation");
-            checkBox3.setText("Modified cow's milk");
-            checkBox4.setText("Special sustenance");
-            checkBox5.setText("Food allergies");
-            checkBox6.setText("Solid foods");
-            checkBox7.setVisibility(View.GONE);
-        }else {
-            //12-15 months
-            checkBox1.setText("Breastfeeding");
-            checkBox2.setText("Ablactation");
-            checkBox3.setText("Cow's milk");
-            checkBox4.setText("Chewing");
-            checkBox5.setText("Food allergies");
-            checkBox6.setText("Introduction of unmashed foods");
-            checkBox7.setText("Another milk");
+    //back buttons
+    public void backButton(View view){
+        if(view == findViewById(R.id.backButtonObservations)){
+            observationsLayout.setVisibility(View.INVISIBLE);
+            generalLayout.setVisibility(View.VISIBLE);
+        }else if(view == findViewById(R.id.backButtonExamination)){
+            examinationLayout.setVisibility(View.INVISIBLE);
+            generalLayout.setVisibility(View.VISIBLE);
+        }else if(view == findViewById(R.id.backButtonSustenance)){
+            sustenanceLayout.setVisibility(View.INVISIBLE);
+            generalLayout.setVisibility(View.VISIBLE);
+        }else if(view == findViewById(R.id.backButtonDevelopmental)){
+            developmentalLayout.setVisibility(View.INVISIBLE);
+            generalLayout.setVisibility(View.VISIBLE);
         }
     }
+
 
 
     //showing messages to users
@@ -242,37 +276,83 @@ public class MonitoringDevelopment extends AppCompatActivity {
 
 
     //loads data from list into recyclerView
-    private void setAdapter() {
-        recyclerAdapter adapter = new recyclerAdapter(listener, examination, "examination");
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        // recyclerView.addItemDecoration(new DividerItemDecoration(this,
-        //       DividerItemDecoration.HORIZONTAL));
+    private void setAdapter(String id) {
+        if(id.equals("examination")) {
+            recyclerAdapter adapter = new recyclerAdapter(listener, examination, "examination");
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerViewExamination.setLayoutManager(layoutManager);
+            recyclerViewExamination.setItemAnimator(new DefaultItemAnimator());
+            recyclerViewExamination.setAdapter(adapter);
+            // recyclerView.addItemDecoration(new DividerItemDecoration(this,
+            //       DividerItemDecoration.HORIZONTAL));
+        }else if(id.equals("developmental")){
+            recyclerAdapter adapter = new recyclerAdapter(listener, developmentalMonitoring, "developmental");
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerViewDevelopmental.setLayoutManager(layoutManager);
+            recyclerViewDevelopmental.setItemAnimator((new DefaultItemAnimator()));
+            recyclerViewExamination.setAdapter(adapter);
+        }
     }
-     /*//loading data in adapter from database
-    private void setQuestions() {
-        // empty the examination types in list
-        examination.clear();
-        //create variable
+
+
+    //loading data in adapter from database
+    private void getData(String id) {
         DatabaseReference rootRef= null;
-        rootRef = FirebaseDatabase.getInstance().getReference().child("questions");
-        rootRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for(DataSnapshot sn : snapshot.getChildren()){
-                        String s =sn.getValue(String.class);
-                        examination.add(s);
+        if(id.equals("examination")){
+            rootRef = FirebaseDatabase.getInstance().getReference().child("examinationItems");
+            rootRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        for(DataSnapshot sn : snapshot.getChildren()){
+                            examinationItems ex = sn.getValue(examinationItems.class);
+                            examination.add(ex);
+                        }
                     }
+                    //calls adapter to load data into recyclerView
+                    setAdapter("examination");
                 }
-                //calls adapter to load data into recyclerView
-                setAdapter();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }*/
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }else if(id.equals("developmental")){
+            rootRef = FirebaseDatabase.getInstance().getReference().child("developmentalItems");
+            rootRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        for(DataSnapshot sn : snapshot.getChildren()){
+                            developmentalItems dev = sn.getValue(developmentalItems.class);
+                            developmentalMonitoring.add(dev);
+                        }
+                    }
+                    //calls adapter to load data into recyclerView
+                    setAdapter("developmental");
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }else if(id.equals("sustenance")){
+            rootRef = FirebaseDatabase.getInstance().getReference().child("sustenanceItems");
+            rootRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        for(DataSnapshot sn : snapshot.getChildren()){
+                            sustenanceItems sus = sn.getValue(sustenanceItems.class);
+                            sustenance.add(sus);
+                        }
+                    }
+                    //calls adapter to load data into recyclerView
+                    setAdapter("sustenance");
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
+
+    }
 }
