@@ -58,6 +58,10 @@ public class createNewUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_user);
 
+        //getting extras
+       // Intent intent = getIntent();
+       // UID =intent.getStringExtra("UID");
+
         //finding views
         userProfile = findViewById(R.id.profileUser);
         nameParentOne = findViewById(R.id.nameParentOne);
@@ -78,7 +82,9 @@ public class createNewUser extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         //getting user UID from database
-        //UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        showMessage("in", UID);
 
         //setting design
         userProfile.setPaintFlags(userProfile.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);

@@ -59,10 +59,8 @@ import java.util.Arrays;
 
 public class LoginRegister extends AppCompatActivity { //implements GoogleApiClient.OnConnectionFailedListener {
 
-    private ImageView facebookButton, photo, googleButton, image, loading;
+    private ImageView facebookButton, googleButton, image, loading;
     CallbackManager callbackManager;
-    Button logout;
-    TextView name;
     public FirebaseAuth mfirebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleApiClient mGoogleApiClient;
@@ -87,9 +85,8 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         mfirebaseAuth = FirebaseAuth.getInstance();
         createUser = findViewById(R.id.createNewUser);
         image = findViewById(R.id.image);
-        photo = findViewById(R.id.imageView);
-        name = findViewById(R.id.textView);
 
+        //setting image
         Picasso.get().load(R.drawable.baby_girl).into(image);
 
         //setting visibilities
@@ -241,6 +238,9 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                     public void onSuccess(AuthResult authResult) {
                         loadingFrame.setVisibility(View.INVISIBLE);
                         //continue to next page
+                        Intent intent = new Intent(getApplicationContext(), MainScreen.class);
+                        startActivity(intent);
+
                     }
                 })
 

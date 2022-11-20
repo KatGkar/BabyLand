@@ -16,24 +16,23 @@
         android:windowSoftInputMode="stateVisible|adjustResize">
         <activity
             android:name=".MonitoringDevelopment"
-            android:exported="true">
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         </activity>
         <activity
             android:name=".LoginRegister"
-            android:exported="false" />
+            android:exported="true" >
 
-        <meta-data
-            android:name="android.app.lib_name"
-            android:value="" />
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+
+
 
         <activity
             android:name=".MainScreen"
@@ -51,9 +50,6 @@
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".OpenScreen"
-            android:exported="false" />
-        <activity
             android:name=".FamilyHistoryInput"
             android:exported="false" />
 
@@ -62,9 +58,6 @@
             android:exported="false" />
         <activity
             android:name=".AddBaby"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
             android:exported="false" />
 
         <meta-data

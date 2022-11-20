@@ -245,7 +245,6 @@ public class nextParent extends AppCompatActivity {
                             reference = database.getReference("parent");
                             reference.child("parent" + parentNumber).setValue(u);
                             //go to app main screen
-                            goToMainScreen();
 
                         case DialogInterface.BUTTON_NEGATIVE:
                             //No button clicked
@@ -269,15 +268,11 @@ public class nextParent extends AppCompatActivity {
             parentNumber = getParentNumber();
             reference.child("parent" + parentNumber).setValue(u2);
             //go to app main screen
-            goToMainScreen();
         }
 
     }
 
-    public void goToMainScreen() {
-        Intent myIntent = new Intent(this, MainActivity.class);
-        this.startActivity(myIntent);
-    }
+
     //getting number of parents in database
     private int getParentNumber() {
         reference = database.getReference("parent");
