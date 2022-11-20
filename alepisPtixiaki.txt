@@ -1,0 +1,20 @@
+//  0 comes when two date are same,
+//  1 comes when date1 is higher then date2
+// -1 comes when date1 is lower then date2
+
+
+
+createNewUser
+screen app when keyboard shows ???
+name and surname only english letters???
+
+nextParent and createNewUser 
+check if parent exists already
+
+nextParent 
+messages watch out for second time click on buttons skip and save
+
+
+Registerrrr	there is no register page for email and password login
+
+

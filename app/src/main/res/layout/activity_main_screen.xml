@@ -7,10 +7,11 @@
     tools:context=".MainScreen">
 
     <RelativeLayout
+        android:id="@+id/mainScreenLayout"
         android:layout_width="410dp"
         android:layout_height="650dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/noBaby"
+        app:layout_constraintEnd_toEndOf="@+id/noBabyLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -36,7 +37,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/noBaby"
+        android:id="@+id/noBabyLayout"
         android:layout_width="410dp"
         android:layout_height="650dp"
         android:visibility="invisible"

@@ -26,10 +26,10 @@ public class MainScreen extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference reference;
     String userAmka;
-    Boolean found=false, userFound;
+    Boolean userFound = false;
     private ArrayList<Baby> kids;
     String currentuser;
-    private RelativeLayout noBaby;
+    private RelativeLayout noBabyLayout, mainScreenLayout;
     private ImageButton addBabyButton;
 
     @Override
@@ -39,8 +39,9 @@ public class MainScreen extends AppCompatActivity {
 
 
         //getting views
-        noBaby = findViewById(R.id.noBaby);
+        noBabyLayout = findViewById(R.id.noBabyLayout);
         addBabyButton = findViewById(R.id.addBabyButton);
+        mainScreenLayout = findViewById(R.id.mainScreenLayout);
 
         // assigning ID of the toolbar to a variable
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -52,13 +53,12 @@ public class MainScreen extends AppCompatActivity {
         userFound = false;
 
         //getting ids from xml file
-        noBaby.setVisibility(View.INVISIBLE);
-
+        noBabyLayout.setVisibility(View.INVISIBLE);
+        mainScreenLayout.setVisibility(View.VISIBLE);
 
         //setting database
         database = FirebaseDatabase.getInstance();
         currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
 
         //getting user info from database parent
         reference = database.getReference("parent");
@@ -67,15 +67,14 @@ public class MainScreen extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot!=null){
                     for (DataSnapshot snapshots : snapshot.getChildren()) {
-                        String UID = String.valueOf(snapshots.child("UID").getValue());
+                        String UID = String.valueOf(snapshots.child("uid").getValue());
                         if (UID.equals(currentuser)) {
                             userFound = true;
                             kids = (ArrayList<Baby>) snapshots.child("kids").getValue();
-                        }else{
-                          userFound = false;
                         }
                     }
                 }
+                load();
             }
 
             @Override
@@ -85,29 +84,37 @@ public class MainScreen extends AppCompatActivity {
         });
 
 
+        addBabyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AddBaby.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+
+    public void load(){
         if(kids != null && !kids.isEmpty()){
             //show panel with babies
-            noBaby.setVisibility(View.INVISIBLE);
+            noBabyLayout.setVisibility(View.INVISIBLE);
+            mainScreenLayout.setVisibility(View.VISIBLE);
         }else{
             if(userFound){
                 //user found with none baby
                 //show panel no babies
-                noBaby.setVisibility(View.VISIBLE);
-                //  Intent intent = new Intent(this, AddBaby.class);
-                // startActivity(intent);
+                mainScreenLayout.setVisibility(View.INVISIBLE);
+                noBabyLayout.setVisibility(View.VISIBLE);
             }else{
                 //user not found
                 //create new user
                 Intent intent = new Intent(getApplicationContext(), createNewUser.class);
-                intent.putExtra("UID", currentuser);
                 startActivity(intent);
             }
 
         }
-
-
-
     }
+
 
     //showing messages to users
     public void showMessage(String title, String message) {

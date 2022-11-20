@@ -9,14 +9,14 @@ public class Development {
     Date measurementDate;
     int age;
     String ageType;
-    ArrayList<String> sustenance;
-    ArrayList<String> examination;
-    ArrayList<String> developmentalMonitoring;
+    ArrayList<sustenanceItems> sustenance;
+    ArrayList<examinationItems> examination;
+    ArrayList<developmentalItems> developmentalMonitoring;
     Boolean hearing;
     String observations;
     String doctor;
 
-    public Development(float weight, float length, float headCircumference, Date measurementDate, int age, String ageType, ArrayList<String> sustenance, ArrayList<String> examination, ArrayList<String> developmentalMonitoring, Boolean hearing, String observations, String doctor) {
+    public Development(float weight, float length, float headCircumference, Date measurementDate, int age, String ageType, ArrayList<sustenanceItems> sustenance, ArrayList<examinationItems> examination, ArrayList<developmentalItems> developmentalMonitoring, Boolean hearing, String observations, String doctor) {
         this.weight = weight;
         this.length = length;
         this.headCircumference = headCircumference;
@@ -79,27 +79,27 @@ public class Development {
         this.ageType = ageType;
     }
 
-    public ArrayList<String> getSustenance() {
+    public ArrayList<sustenanceItems> getSustenance() {
         return sustenance;
     }
 
-    public void setSustenance(ArrayList<String> sustenance) {
+    public void setSustenance(ArrayList<sustenanceItems> sustenance) {
         this.sustenance = sustenance;
     }
 
-    public ArrayList<String> getExamination() {
+    public ArrayList<examinationItems> getExamination() {
         return examination;
     }
 
-    public void setExamination(ArrayList<String> examination) {
+    public void setExamination(ArrayList<examinationItems> examination) {
         this.examination = examination;
     }
 
-    public ArrayList<String> getDevelopmentalMonitoring() {
+    public ArrayList<developmentalItems> getDevelopmentalMonitoring() {
         return developmentalMonitoring;
     }
 
-    public void setDevelopmentalMonitoring(ArrayList<String> developmentalMonitoring) {
+    public void setDevelopmentalMonitoring(ArrayList<developmentalItems> developmentalMonitoring) {
         this.developmentalMonitoring = developmentalMonitoring;
     }
 

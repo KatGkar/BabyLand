@@ -38,7 +38,6 @@ import java.util.Locale;
 public class createNewUser extends AppCompatActivity {
 
     private TextView userProfile;
-    private String UID;
     private EditText nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne;
     public String[] bloodType = {"Blood Type", "A RhD positive (A+)","A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
@@ -57,10 +56,6 @@ public class createNewUser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_user);
-
-        //getting extras
-       // Intent intent = getIntent();
-       // UID =intent.getStringExtra("UID");
 
         //finding views
         userProfile = findViewById(R.id.profileUser);
@@ -81,10 +76,7 @@ public class createNewUser extends AppCompatActivity {
         //setting database
         database = FirebaseDatabase.getInstance();
 
-        //getting user UID from database
-        UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        showMessage("in", UID);
 
         //setting design
         userProfile.setPaintFlags(userProfile.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
@@ -323,41 +315,33 @@ public class createNewUser extends AppCompatActivity {
 
     public void nextParent(View view){
         next = true;
+        String warnings ="Field";
         if(TextUtils.isEmpty(nameParentOne.getText())){
-            showMessage("Warning!", "Field Name is empty!!");
+            warnings = warnings + " Name";
             next=false;
         }
         if(TextUtils.isEmpty(surnameParentOne.getText())){
-            showMessage("Warning!", "Field Surname is empty!!");
+            warnings = warnings + " ,Surname";
             next=false;
         }
-        if(TextUtils.isEmpty(amkaParentOne.getText())){
-            showMessage("Warning!", "Field Amka is empty!!");
-            next=false;
-        }else if (amkaParentOne.getText().length() != 11){
-            showMessage("Warning!", "Field Amka is not correct!!");
+        if(TextUtils.isEmpty(amkaParentOne.getText()) || (amkaParentOne.getText().length() != 11)){
+            warnings = warnings + " ,Amka";
             next=false;
         }
-        if(TextUtils.isEmpty(phoneNumberParentOne.getText())){
-            showMessage("Warning!", "Field Phone Number is empty!!");
-            next=false;
-        }else if(phoneNumberParentOne.getText().length() != 10){
-            showMessage("Warning!", "Field Phone Number is not correct!!");
-            next=false;
+        if(TextUtils.isEmpty(phoneNumberParentOne.getText()) || (phoneNumberParentOne.getText().length() != 10)) {
+            warnings = warnings + ", Phone Number";
+            next = false;
         }
-        if(TextUtils.isEmpty(emailAddressParentOne.getText())){
-            showMessage("Warning!", "Field Email is empty!!");
-            next=false;
-        }else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailAddressParentOne.getText()).matches()){
-            showMessage("Warning!", "Field Email does not have correct format!!");
+        if(TextUtils.isEmpty(emailAddressParentOne.getText()) || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailAddressParentOne.getText()).matches()){
+            warnings = warnings + " ,Email";
             next=false;
         }
         if(blood.getSelectedItem().equals("Blood Type")){
-            showMessage("Warning!", "Field Blood Type does not have an answer!!");
+            warnings = warnings+ ", Blood Type";
             next=false;
         }
 
-
+        warnings = warnings + ", have errors";
 
         flagUnique = findIfUnique();
 
@@ -371,8 +355,9 @@ public class createNewUser extends AppCompatActivity {
             myIntent.putExtra("email", emailAddressParentOne.getText().toString());
             myIntent.putExtra("birthDate", dateOfBirthParentOne.getText().toString());
             myIntent.putExtra("bloodType", blood.getSelectedItem().toString());
-            myIntent.putExtra("UID", UID);
             this.startActivity(myIntent);
+        }else{
+            showMessage("Warning", warnings);
         }
 
     }
@@ -380,7 +365,7 @@ public class createNewUser extends AppCompatActivity {
     Boolean flag;
     private Boolean findIfUnique() {
         flag = true;
-        reference = database.getReference("user");
+        reference = database.getReference("parent");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

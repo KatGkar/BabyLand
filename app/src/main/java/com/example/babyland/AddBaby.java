@@ -53,7 +53,7 @@ public class AddBaby extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_baby);
         //adding new baby
-        //finding view on xml file
+        //finding views on xml file
         babyName = findViewById(R.id.babyName);
         babyAmka = findViewById(R.id.babyAmka);
         babyBirthPlace = findViewById(R.id.babyBirthPlace);

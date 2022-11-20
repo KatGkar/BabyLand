@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,9 +29,9 @@ public class FamilyHistoryInput extends AppCompatActivity {
     Button nextButton;
     FirebaseDatabase database;
     DatabaseReference reference;
-    String name, sex, birthDate, amka, birthPlace, bloodType;
+    String name, sex, birthDate, amka, birthPlace, bloodType, parentOneAmka, parentTwoAmka;
     int babyNumber;
-    FirebaseUser currentUser;
+    String currentUser;
 
 
     @Override
@@ -116,9 +117,7 @@ public class FamilyHistoryInput extends AppCompatActivity {
 
     public void Click(View view){
         babyNumber = getBabyNumber();
-
-      //  currentUser = FirebaseAuth.getInstance().getCurrentUser();
-       // String user = currentUser.get
+        getParentAmka();
         Baby b = new Baby(name, birthDate, amka, birthPlace, bloodType,sex, "-", "-", "-", illnesses);
         reference = database.getReference("baby");
         reference.child("baby" + babyNumber).setValue(b);
@@ -141,6 +140,34 @@ public class FamilyHistoryInput extends AppCompatActivity {
         return babyNumber+1;
     }
 
+    private void getParentAmka(){
+        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        //getting user amka from database
+        reference = database.getReference("parent");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot!=null){
+                    for (DataSnapshot snapshots : snapshot.getChildren()) {
+                        String UID = String.valueOf(snapshots.child("uid").getValue());
+                        if (UID.equals(currentUser)) {
+                            parentOneAmka = String.valueOf(snapshot.child("amka").getValue());
+                            if(Boolean.valueOf(String.valueOf(snapshot.child("partner")))){
+                                parentTwoAmka = String.valueOf(snapshot.child("partnerAmka"));
+                            }else{
+                                parentTwoAmka = "00000000000";
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 
 

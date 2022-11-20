@@ -3,12 +3,11 @@ package com.example.babyland;
 import java.util.ArrayList;
 
 public class User {
-    public String name, surname, amka, phoneNumber, email, dateOfBirth, bloodType, partenersAmka, UID;
-    public Boolean partener;
-    public ArrayList<Baby> kids;
+    private String name, surname, amka, phoneNumber, email, dateOfBirth, bloodType, partnersAmka, UID;
+    private Boolean partner;
+    private ArrayList<Baby> kids;
 
-    //this is a comment
-    public User(String name, String surname, String amka, String phoneNumber, String email, String dateOfBirth, String bloodType, String partenersAmka, Boolean partener, ArrayList<Baby> kids, String UID) {
+    public User(String name, String surname, String amka, String phoneNumber, String email, String dateOfBirth, String bloodType, String partnersAmka, Boolean partner, ArrayList<Baby> kids, String UID) {
         this.name = name;
         this.surname = surname;
         this.amka = amka;
@@ -16,8 +15,8 @@ public class User {
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.bloodType = bloodType;
-        this.partenersAmka = partenersAmka;
-        this.partener = partener;
+        this.partnersAmka = partnersAmka;
+        this.partner = partner;
         this.kids = kids;
         this.UID = UID;
     }
@@ -94,19 +93,19 @@ public class User {
         this.bloodType = bloodType;
     }
 
-    public String getPartenersAmka() {
-        return partenersAmka;
+    public String getPartnersAmka() {
+        return partnersAmka;
     }
 
-    public void setPartenersAmka(String partenersAmka) {
-        this.partenersAmka = partenersAmka;
+    public void setPartnersAmka(String partnersAmka) {
+        this.partnersAmka = partnersAmka;
     }
 
-    public Boolean getPartener() {
-        return partener;
+    public Boolean getPartner() {
+        return partner;
     }
 
-    public void setPartener(Boolean partener) {
-        this.partener = partener;
+    public void setPartner(Boolean partner) {
+        this.partner = partner;
     }
 }

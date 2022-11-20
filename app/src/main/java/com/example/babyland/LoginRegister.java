@@ -259,9 +259,6 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 
-    public void createUser(View view) {
-        //go to page createNewUser
-    }
 
     /*@Override
     protected void onStart() {
