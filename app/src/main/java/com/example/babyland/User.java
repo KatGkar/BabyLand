@@ -3,11 +3,11 @@ package com.example.babyland;
 import java.util.ArrayList;
 
 public class User {
-    private String name, surname, amka, phoneNumber, email, dateOfBirth, bloodType, partnersAmka, UID;
+    private String name, surname, amka, phoneNumber, email, dateOfBirth, bloodType, partnersAmka;
     private Boolean partner;
     private ArrayList<Baby> kids;
 
-    public User(String name, String surname, String amka, String phoneNumber, String email, String dateOfBirth, String bloodType, String partnersAmka, Boolean partner, ArrayList<Baby> kids, String UID) {
+    public User(String name, String surname, String amka, String phoneNumber, String email, String dateOfBirth, String bloodType, String partnersAmka, Boolean partner, ArrayList<Baby> kids){
         this.name = name;
         this.surname = surname;
         this.amka = amka;
@@ -18,15 +18,9 @@ public class User {
         this.partnersAmka = partnersAmka;
         this.partner = partner;
         this.kids = kids;
-        this.UID = UID;
     }
 
-    public String getUID() {
-        return UID;
-    }
-
-    public void setUID(String UID) {
-        this.UID = UID;
+    public User() {
     }
 
     public ArrayList<Baby> getKids() {

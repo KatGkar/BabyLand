@@ -71,7 +71,6 @@ public class createNewUser extends AppCompatActivity {
         blood = findViewById(R.id.bloodTypeParentOne);
         bab = findViewById(R.id.imageView2);
 
-
         bab.setImageResource(R.drawable.baby_girl);
         //setting database
         database = FirebaseDatabase.getInstance();
@@ -84,9 +83,8 @@ public class createNewUser extends AppCompatActivity {
 
 
         //setting blood types in list
-        Spinner dropdown = findViewById(R.id.bloodTypeParentOne);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, bloodType);
-        dropdown.setAdapter(adapter);
+        blood.setAdapter(adapter);
 
         //setting hint in babyBirthDate
         //getting current date

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,11 +21,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FamilyHistoryInput extends AppCompatActivity {
     protected RecyclerView recyclerView;
-    protected ArrayList<FamilyHistoryIllnesses> illnesses ;
+    protected ArrayList<FamilyHistoryIllnesses> illnesses;
     private recyclerAdapter.recyclerVewOnClickListener listener;
     Button nextButton;
     FirebaseDatabase database;
@@ -32,70 +34,47 @@ public class FamilyHistoryInput extends AppCompatActivity {
     String name, sex, birthDate, amka, birthPlace, bloodType, parentOneAmka, parentTwoAmka;
     int babyNumber;
     String currentUser;
-
+    private User user;
+    private Baby b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history_input);
-        recyclerView = findViewById(R.id.recyclerViewFamilyHistory);
-        illnesses = new ArrayList<>();
-        Bundle extras = getIntent().getExtras();
-        database = FirebaseDatabase.getInstance();
 
-         sex = extras.getString("sex");
-         name = extras.getString("name");
-         birthDate = extras.getString("birthDate");
-         amka = extras.getString("amka");
-         birthPlace = extras.getString("birthPlace");
-         bloodType = extras.getString("bloodType");
+        //getting views
+        recyclerView = findViewById(R.id.recyclerViewFamilyHistory);
+        nextButton = findViewById(R.id.nextButton);
+
+        //setting list
+        illnesses = new ArrayList<>();
+
+        //getting extras
+        Bundle extras = getIntent().getExtras();
+        sex = extras.getString("sex");
+        name = extras.getString("name");
+        birthDate = extras.getString("birthDate");
+        amka = extras.getString("amka");
+        birthPlace = extras.getString("birthPlace");
+        bloodType = extras.getString("bloodType");
+
+        //setting database
+        database = FirebaseDatabase.getInstance();
 
         //getting babies on database
         babyNumber = getBabyNumber();
 
-        nextButton = findViewById(R.id.nextButton);
+        //getting parents amka
+        getParentAmka();
 
-        FamilyHistoryIllnesses f1 = new FamilyHistoryIllnesses("Διαταραχές ακοής", false, "");
-        FamilyHistoryIllnesses f2 = new FamilyHistoryIllnesses("Διαταραχές όρασης", false, "");
-        FamilyHistoryIllnesses f3 = new FamilyHistoryIllnesses("Αναπτυξιακή δυσπλασία των ισχύων", false, "");
-        FamilyHistoryIllnesses f4 = new FamilyHistoryIllnesses("Αλλεργίες/ Βρογχικό άσθμα/ Έκζεμα", false, "");
-        FamilyHistoryIllnesses f5 = new FamilyHistoryIllnesses("Συγγενής καρδιοπάθεια", false, "");
-        FamilyHistoryIllnesses f6 = new FamilyHistoryIllnesses("Πρώιμη καρδιαγγειακή νόσος (<55 ετών σε άντρες και <65 ετών σε γυναίκες)", false, "");
-        FamilyHistoryIllnesses f7 = new FamilyHistoryIllnesses("Ιστορικό αιφνιδίου θανάτου σε ηλικία <50 ετών", false, "");
-        FamilyHistoryIllnesses f8 = new FamilyHistoryIllnesses("Δυσλιπιδαιμία", false, "");
-        FamilyHistoryIllnesses f9 = new FamilyHistoryIllnesses("Αρτηριακή υπέρταση", false, "");
-        FamilyHistoryIllnesses f10 = new FamilyHistoryIllnesses("Σακχαρώδης διαβήτης", false, "");
-        FamilyHistoryIllnesses f11 = new FamilyHistoryIllnesses("Νεφρική νόσος", false, "");
-        FamilyHistoryIllnesses f12 = new FamilyHistoryIllnesses("Αναιμία/ Διαταραχές πήξης", false, "");
-        FamilyHistoryIllnesses f13 = new FamilyHistoryIllnesses("Σπασμοί", false, "");
-        FamilyHistoryIllnesses f14 = new FamilyHistoryIllnesses("Ψυχικά νοσήματα", false, "");
-        FamilyHistoryIllnesses f15 = new FamilyHistoryIllnesses("Αναπτυξιακές διαταραχές (μαθησιακές δυσκολίες/\n" +
-                "νοητική υστέρηση/ αυτισμός/ ΔΕΠ-Υ κ.ά.)", false, "");
-        FamilyHistoryIllnesses f16 = new FamilyHistoryIllnesses("Συγγενείς ανωμαλίες/ Γενετικά σύνδρομα", false, "");
-        FamilyHistoryIllnesses f17 = new FamilyHistoryIllnesses("Νοσήματα που αφορούν ≥2 μέλη της οικογένειας", false, "");
-        illnesses.add(f1);
-        illnesses.add(f2);
-        illnesses.add(f3);
-        illnesses.add(f4);
-        illnesses.add(f5);
-        illnesses.add(f6);
-        illnesses.add(f7);
-        illnesses.add(f8);
-        illnesses.add(f9);
-        illnesses.add(f10);
-        illnesses.add(f11);
-        illnesses.add(f12);
-        illnesses.add(f13);
-        illnesses.add(f14);
-        illnesses.add(f15);
-        illnesses.add(f16);
-        illnesses.add(f17);
+        //setting list
+        illnesses = new ArrayList<>();
+        illnesses.clear();
+        getIllnesses();
 
-
-        setAdapter();
     }
 
-    public void showMessage(String title, String message){
+    public void showMessage(String title, String message) {
         new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 
@@ -115,21 +94,35 @@ public class FamilyHistoryInput extends AppCompatActivity {
     }
 
 
-    public void Click(View view){
+    //next button
+    public void Click(View view) {
         babyNumber = getBabyNumber();
-        getParentAmka();
-        Baby b = new Baby(name, birthDate, amka, birthPlace, bloodType,sex, "-", "-", "-", illnesses);
+        b = new Baby(name, birthDate, amka, birthPlace, bloodType, sex, parentOneAmka, parentTwoAmka, illnesses);
         reference = database.getReference("baby");
-        reference.child("baby" + babyNumber).setValue(b);
+        reference.child(amka).setValue(b);
+        updateParent();
     }
 
-    //getting number of babies on database
-    private int getBabyNumber() {
-        reference = database.getReference("baby");
-        reference.addValueEventListener(new ValueEventListener() {
+
+    private void updateParent(){
+        reference = database.getReference("parent").child(currentUser);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                babyNumber= (int) snapshot.getChildrenCount();
+                if (snapshot != null) {
+                    if (snapshot.getKey().equals(currentUser)) {
+                        ArrayList<Baby> list;
+                        try {
+                            list = (ArrayList<Baby>) snapshot.child("kids").getValue();
+                            list.add(b);
+                        } catch (Exception e) {
+                            list = new ArrayList<>();
+                            list.add(b);
+                        }
+                        database.getReference("parent").child(currentUser).child("kids").setValue(list);
+                        showMessage("Success", "Child added successfully!!");
+                    }
+                }
             }
 
             @Override
@@ -137,24 +130,45 @@ public class FamilyHistoryInput extends AppCompatActivity {
 
             }
         });
-        return babyNumber+1;
+        Intent intent = new Intent(getApplicationContext(), MainScreen.class);
+        startActivity(intent);
     }
 
-    private void getParentAmka(){
+
+    //getting number of babies on database
+    private int getBabyNumber() {
+        reference = database.getReference("baby");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                babyNumber = (int) snapshot.getChildrenCount();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return babyNumber + 1;
+    }
+
+    //getting parents amka
+    private void getParentAmka() {
         currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         //getting user amka from database
         reference = database.getReference("parent");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot!=null){
+                if (snapshot != null) {
                     for (DataSnapshot snapshots : snapshot.getChildren()) {
-                        String UID = String.valueOf(snapshots.child("uid").getValue());
+                        String UID = snapshots.getKey();
+                        user = snapshots.getValue(User.class);
                         if (UID.equals(currentUser)) {
-                            parentOneAmka = String.valueOf(snapshot.child("amka").getValue());
-                            if(Boolean.valueOf(String.valueOf(snapshot.child("partner")))){
-                                parentTwoAmka = String.valueOf(snapshot.child("partnerAmka"));
-                            }else{
+                            parentOneAmka = String.valueOf(snapshots.child("amka").getValue());
+                            if (Boolean.valueOf(String.valueOf(snapshots.child("partner")))) {
+                                parentTwoAmka = String.valueOf(snapshots.child("partnerAmka"));
+                            } else {
                                 parentTwoAmka = "00000000000";
                             }
                         }
@@ -169,7 +183,25 @@ public class FamilyHistoryInput extends AppCompatActivity {
         });
     }
 
+    //loading data in adapter from database
+    private void getIllnesses() {
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("illnesses");
+        rootRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot sn : snapshot.getChildren()) {
+                        FamilyHistoryIllnesses ill = sn.getValue(FamilyHistoryIllnesses.class);
+                        illnesses.add(ill);
+                    }
+                }
+                //calls adapter to load data into recyclerView
+                setAdapter();
+            }
 
-
-
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
 }

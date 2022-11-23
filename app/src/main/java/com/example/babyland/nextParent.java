@@ -92,9 +92,8 @@ public class nextParent extends AppCompatActivity {
         userProfile.setPaintFlags(userProfile.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         //setting blood types in list
-        Spinner dropdown = findViewById(R.id.bloodTypeParentTwo);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, bloodType);
-        dropdown.setAdapter(adapter);
+        bloodTypeParentTwo.setAdapter(adapter);
 
         //setting hint in babyBirthDate
         //getting current date
@@ -234,6 +233,10 @@ public class nextParent extends AppCompatActivity {
             warnings = warnings + " ,Email";
             next = false;
         }
+        if(bloodTypeParentTwo.getSelectedItem().equals("Blood Type")){
+            warnings = warnings+ ", Blood Type";
+            next=false;
+        }
         warnings = warnings + ", have errors";
 
         flagUnique = findIfUnique();
@@ -246,13 +249,12 @@ public class nextParent extends AppCompatActivity {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
                             //Yes button clicked
-                            flagUnique = true;
                             //take parent two amka from database
                             u2 = user;
-                            u1 = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, u2.getAmka(), true, kids, UID);
+                            u1 = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, u2.getAmka(), true, kids);//, UID);
                             reference = database.getReference("parent");
                             parentNumber = getParentNumber();
-                            reference.child("parent" + parentNumber).setValue(u1);
+                            reference.child(UID).setValue(u1);
                             showMessage("Success", "User created successfully!!");
                             //go to app main screen
                             Intent intent = new Intent(getApplicationContext(), MainScreen.class);
@@ -260,24 +262,25 @@ public class nextParent extends AppCompatActivity {
                         case DialogInterface.BUTTON_NEGATIVE:
                             //No button clicked
                             //Do nothing
-                            flagUnique = false;
                     }
                 }
             };
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Partner already exists. Do you want to continue with this partner??").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
 
         }
 
-        if (next && !flagUnique) {
+        if (next && flagUnique) {
             //if there are empty textBoxes show message
             //add parents to database
-            u1 = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne,emailAddressParentOne,dateOfBirthParentOne, bloodTypeParentOne, amkaParentTwo.getText().toString(),true, kids, UID);
-            u2 = new User(nameParentTwo.getText().toString(), surnameParentTwo.getText().toString(), amkaParentTwo.getText().toString(), phoneNumberParentTwo.getText().toString(), emailAddressParentTwo.getText().toString(), dateOfBirthParentTwo.getText().toString(), bloodTypeParentTwo.getSelectedItem().toString(), amkaParentOne, true, kids, null);
+            u1 = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne,emailAddressParentOne,dateOfBirthParentOne, bloodTypeParentOne, amkaParentTwo.getText().toString(),true, kids);//, UID);
+            u2 = new User(nameParentTwo.getText().toString(), surnameParentTwo.getText().toString(), amkaParentTwo.getText().toString(), phoneNumberParentTwo.getText().toString(), emailAddressParentTwo.getText().toString(), dateOfBirthParentTwo.getText().toString(), bloodTypeParentTwo.getSelectedItem().toString(), amkaParentOne, true, kids);//, null);
             //getting number of parents on database
             reference = database.getReference("parent");
             parentNumber = getParentNumber();
-            reference.child("parent" + parentNumber).setValue(u1);
+            reference.child(UID).setValue(u1);
             parentNumber = getParentNumber();
             reference.child("parent" + parentNumber).setValue(u2);
             //go to app main screen
@@ -285,7 +288,9 @@ public class nextParent extends AppCompatActivity {
             //go to app main screen
             Intent intent = new Intent(getApplicationContext(), MainScreen.class);
             startActivity(intent);
-        }else if(!next && !flagUnique){
+        }else if(next && !flagUnique){
+            showMessage("Warming", "Partner already exists! Continue with this partner or change amka code!");
+        }else{
             showMessage("Warning", warnings);
         }
 
@@ -301,11 +306,11 @@ public class nextParent extends AppCompatActivity {
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
                         //add parent to database
-                        User u = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne,emailAddressParentOne,dateOfBirthParentOne, bloodTypeParentOne, "00000000000",false, kids, UID);
+                        User u = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne,emailAddressParentOne,dateOfBirthParentOne, bloodTypeParentOne, "00000000000",false, kids);//, UID);
                         //getting number of parents on database
                         parentNumber = getParentNumber();
                         reference = database.getReference("parent");
-                        reference.child("parent" + parentNumber).setValue(u);
+                        reference.child(UID).setValue(u);
                         showMessage("Success", "User created successfully!!");
                         //go to app main screen
                         Intent intent = new Intent(getApplicationContext(), MainScreen.class);
@@ -334,7 +339,7 @@ public class nextParent extends AppCompatActivity {
                 if(snapshot != null){
                     for(DataSnapshot snapshots : snapshot.getChildren()) {
                         String amka = String.valueOf(snapshots.child("amka").getValue());
-                        if(amkaParentOne.toString().equals(amka)){
+                        if(amkaParentOne.equals(amka)){
                             flag = false;
                             user = snapshot.getValue(User.class);
                         }

@@ -17,9 +17,7 @@ public class developmentalItems {
         this.name = name;
     }
 
-    public String getAgeGap() {
-        return ageGap;
-    }
+    public String getAgeGap() {return ageGap;}
 
     public void setAgeGap(String ageGap) {
         this.ageGap = ageGap;

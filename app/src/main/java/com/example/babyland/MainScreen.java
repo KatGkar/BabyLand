@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -25,10 +26,9 @@ public class MainScreen extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference reference;
-    String userAmka;
     Boolean userFound = false;
     private ArrayList<Baby> kids;
-    String currentuser;
+    String currentUser;
     private RelativeLayout noBabyLayout, mainScreenLayout;
     private ImageButton addBabyButton;
 
@@ -58,7 +58,7 @@ public class MainScreen extends AppCompatActivity {
 
         //setting database
         database = FirebaseDatabase.getInstance();
-        currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //getting user info from database parent
         reference = database.getReference("parent");
@@ -66,9 +66,9 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot!=null){
-                    for (DataSnapshot snapshots : snapshot.getChildren()) {
-                        String UID = String.valueOf(snapshots.child("uid").getValue());
-                        if (UID.equals(currentuser)) {
+                    for(DataSnapshot snapshots : snapshot.getChildren()){
+                        String UID = snapshots.getKey();
+                        if (UID.equals(currentUser)) {
                             userFound = true;
                             kids = (ArrayList<Baby>) snapshots.child("kids").getValue();
                         }
@@ -97,7 +97,8 @@ public class MainScreen extends AppCompatActivity {
     public void load(){
         if(kids != null && !kids.isEmpty()){
             //show panel with babies
-            noBabyLayout.setVisibility(View.INVISIBLE);
+            //noBabyLayout.setVisibility(View.INVISIBLE);
+            noBabyLayout.setVisibility(View.VISIBLE);
             mainScreenLayout.setVisibility(View.VISIBLE);
         }else{
             if(userFound){

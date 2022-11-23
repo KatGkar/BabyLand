@@ -3,38 +3,40 @@ package com.example.babyland;
 import java.util.ArrayList;
 
 public class Baby {
-    public String name, amka, parentOneName, parentTwoName, placeOfBirth, phoneNumber,
-            bloodType,  sex,dateOfBirth;
+    public String name, amka, parentOneAmka, parentTwoAmka, placeOfBirth, bloodType,  sex,dateOfBirth;
     public ArrayList<FamilyHistoryIllnesses> iln;
 
-    public Baby(String name, String dateOfBirth, String amka,String placeOfBirth,String bloodType, String sex,
-                String parentOneName, String parentTwoName,  String phoneNumber, ArrayList<FamilyHistoryIllnesses> iln) {
+
+    public Baby() {
+    }
+
+    public Baby(String name, String dateOfBirth, String amka, String placeOfBirth, String bloodType, String sex,
+                String parentOneAmka, String parentTwoAmka, ArrayList<FamilyHistoryIllnesses> iln) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.amka = amka;
         this.placeOfBirth = placeOfBirth;
         this.bloodType = bloodType;
         this.sex = sex;
-        this.parentOneName = parentOneName;
-        this.parentTwoName = parentTwoName;
-        this.phoneNumber = phoneNumber;
+        this.parentOneAmka = parentOneAmka;
+        this.parentTwoAmka = parentTwoAmka;
         this.iln = iln;
     }
 
-    public String getParentOneName() {
-        return parentOneName;
+    public String getParentOneAmka() {
+        return parentOneAmka;
     }
 
-    public void setParentOneName(String parentOneName) {
-        this.parentOneName = parentOneName;
+    public void setParentOneAmka(String parentOneAmka) {
+        this.parentOneAmka = parentOneAmka;
     }
 
-    public String getParentTwoName() {
-        return parentTwoName;
+    public String getParentTwoAmka() {
+        return parentTwoAmka;
     }
 
-    public void setParentTwoName(String parentTwoName) {
-        this.parentTwoName = parentTwoName;
+    public void setParentTwoAmka(String parentTwoAmka) {
+        this.parentTwoAmka = parentTwoAmka;
     }
 
     public String getPlaceOfBirth() {
@@ -43,14 +45,6 @@ public class Baby {
 
     public void setPlaceOfBirth(String placeOfBirth) {
         this.placeOfBirth = placeOfBirth;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getBloodType() {

@@ -7,19 +7,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Selection;
-import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -28,17 +26,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class AddBaby extends AppCompatActivity {
-    TextView babyName, babyAmka, babyBirthPlace;
+    TextView babyNameText, babyAmkaText, babyBirthPlaceText;
     EditText babyBirthDate;
     RadioButton babyBoy, babyGirl;
-    public String[] bloodType = {"A RhD positive (A+)","A RhD negative (A-)", "B RhD positive (B+)",
+    public String[] bloodType = {"Blood Type", "A RhD positive (A+)","A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
-    private AutoCompleteTextView babyBloodType;
+    private Spinner babyBloodTypeSpinner;
     RadioGroup radioGroup;
     CalendarView calendar;
     Button calendarButton;
@@ -54,20 +50,23 @@ public class AddBaby extends AppCompatActivity {
         setContentView(R.layout.activity_add_baby);
         //adding new baby
         //finding views on xml file
-        babyName = findViewById(R.id.babyName);
-        babyAmka = findViewById(R.id.babyAmka);
-        babyBirthPlace = findViewById(R.id.babyBirthPlace);
+        babyNameText = findViewById(R.id.babyNameText);
+        babyAmkaText = findViewById(R.id.babyAmkaText);
+        babyBirthPlaceText = findViewById(R.id.babyBirthPlaceText);
         babyBoy = findViewById(R.id.babyBoy);
         babyGirl = findViewById(R.id.babyGirl);
         babyBirthDate = findViewById(R.id.babyBirthDate);
-        babyBloodType = findViewById(R.id.babyBloodType);
+        babyBloodTypeSpinner = findViewById(R.id.babyBloodTypeSpinner);
         calendar = findViewById(R.id.calendarView2);
         calendarButton = findViewById(R.id.calendarButton);
         infoRelativeLayout = findViewById(R.id.infoRelativeLayout);
         radioGroup = findViewById(R.id.radioGroup);
+
         //setting database
         database = FirebaseDatabase.getInstance();
 
+        //setting default sex
+        babyGirl.setChecked(true);
 
 
         //setting hint in babyBirthDate
@@ -88,9 +87,8 @@ public class AddBaby extends AppCompatActivity {
         radioGroup.setVisibility(View.VISIBLE);
 
         //setting blood types in list
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, bloodType);
-        babyBloodType.setThreshold(1);//will start working from first character
-        babyBloodType.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, bloodType);
+        babyBloodTypeSpinner.setAdapter(adapter);
 
         //onclick listener for calendar opening
         calendarButton.setOnClickListener(new View.OnClickListener() {
@@ -186,34 +184,50 @@ public class AddBaby extends AppCompatActivity {
     //check restrictions and add new baby or show error messages
     public void addNewBaby(View view){
         String sex;
-        Boolean flagAmka= false;
+        Boolean next= true;
+        String warnings = "Field";
         if(babyGirl.isChecked()) {
             sex= "GIRL";
         }else{
             sex ="BOY";
         }
-        if(babyAmka.getText().length() == 11){
-            flagAmka = true;
+        if(TextUtils.isEmpty(babyNameText.getText())){
+            warnings = warnings + " ,Name";
+            next = false;
+        }
+        if(!(babyAmkaText.getText().length() == 11) || (TextUtils.isEmpty(babyAmkaText.getText()))){
+            warnings = warnings + " ,Amka";
+            next = false;
+        }
+        if(TextUtils.isEmpty(babyBirthPlaceText.getText())){
+            warnings = warnings + " ,Birth place";
+            next = false;
+        }
+        if(babyBloodTypeSpinner.getSelectedItem().equals("Blood Type")){
+            warnings = warnings+ ", Blood Type";
+            next=false;
         }
         flagUnique = findIfUnique();
-        if(flagAmka){ //&& flagUnique) {
+       // if(next && flagUnique) {
             Intent myIntent = new Intent(this, FamilyHistoryInput.class);
             myIntent.putExtra("sex",sex) ;
-            myIntent.putExtra("name", babyName.getText().toString());
+            myIntent.putExtra("name", babyNameText.getText().toString());
             myIntent.putExtra("birthDate",babyBirthDate.getText().toString());
-            myIntent.putExtra("amka",babyAmka.getText().toString());
-            myIntent.putExtra("birthPlace",babyBirthPlace.getText().toString());
-            myIntent.putExtra("bloodType",babyBloodType.getText().toString());
+            myIntent.putExtra("amka",babyAmkaText.getText().toString());
+            myIntent.putExtra("birthPlace",babyBirthPlaceText.getText().toString());
+            myIntent.putExtra("bloodType",babyBloodTypeSpinner.getSelectedItem().toString());
             this.startActivity(myIntent);
-        }else{
-            showMessage("Error", "Watch out!");
-        }
+        /*}else if(!next){
+            showMessage("Error", warnings + " are wrong!!");
+        }else if(!flagUnique){
+            showMessage("Warning", "Baby amka exists already!!");
+        }*/
 
     }
 
     Boolean flag;
     private Boolean findIfUnique() {
-        flag = false;
+        flag = true;
         reference = database.getReference("baby");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -221,8 +235,8 @@ public class AddBaby extends AppCompatActivity {
                 if(snapshot != null){
                   for(DataSnapshot snapshots : snapshot.getChildren()) {
                       String amka = String.valueOf(snapshots.child("amka").getValue());
-                      if(babyAmka.toString().equals(amka)){
-                        flag = true;
+                      if(babyAmkaText.toString().equals(amka)){
+                        flag = false;
                       }
                   }
                 }

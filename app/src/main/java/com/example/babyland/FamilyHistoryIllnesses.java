@@ -11,11 +11,14 @@ public class FamilyHistoryIllnesses {
         this.details = details;
     }
 
+    public FamilyHistoryIllnesses() {
+    }
+
     public String getIllness() {
         return illness;
     }
 
-    public void setIllness(String ilness) {
+    public void setIllness(String illness) {
         this.illness = illness;
     }
 

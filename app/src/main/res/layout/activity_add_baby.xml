@@ -76,7 +76,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/babyName"
+            android:id="@+id/babyNameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -88,7 +88,7 @@
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/babyAmka"
+            android:id="@+id/babyAmkaText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/babyBirthDate"
@@ -100,10 +100,10 @@
             android:inputType="number" />
 
         <EditText
-            android:id="@+id/babyBirthPlace"
+            android:id="@+id/babyBirthPlaceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/babyAmka"
+            android:layout_below="@+id/babyAmkaText"
             android:layout_marginStart="49dp"
             android:layout_marginTop="30dp"
             android:layout_toEndOf="@+id/textView9"
@@ -115,7 +115,7 @@
             android:id="@+id/babyBirthDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/babyName"
+            android:layout_below="@+id/babyNameText"
             android:layout_marginStart="35dp"
             android:layout_marginTop="29dp"
             android:layout_toEndOf="@+id/textView9"
@@ -127,7 +127,7 @@
             android:id="@+id/babyBloodType"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/babyBirthPlace"
+            android:layout_below="@+id/babyBirthPlaceText"
             android:layout_marginStart="35dp"
             android:layout_marginTop="41dp"
             android:layout_toEndOf="@+id/textView11" />
@@ -141,6 +141,13 @@
             android:layout_marginStart="161dp"
             android:layout_marginTop="-2dp"
             android:text="Button" />
+
+        <Spinner
+            android:id="@+id/babyBloodTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView12"
+            android:layout_marginTop="18dp" />
     </RelativeLayout>
 
     <RadioGroup
