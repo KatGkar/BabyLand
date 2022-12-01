@@ -10,6 +10,11 @@ public class Baby {
     public Baby() {
     }
 
+    @Override
+    public String toString() {
+        return getName(); // You can add anything else like maybe getDrinkType()
+    }
+
     public Baby(String name, String dateOfBirth, String amka, String placeOfBirth, String bloodType, String sex,
                 String parentOneAmka, String parentTwoAmka, ArrayList<FamilyHistoryIllnesses> iln) {
         this.name = name;

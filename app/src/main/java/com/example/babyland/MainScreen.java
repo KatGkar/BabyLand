@@ -6,12 +6,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.os.BaseBundle;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListPopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -20,17 +29,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class MainScreen extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference reference;
     Boolean userFound = false;
-    private ArrayList<Baby> kids;
+    private ArrayList<Baby> listKids;
     String currentUser;
     private RelativeLayout noBabyLayout, mainScreenLayout;
     private ImageButton addBabyButton;
+    private String[]  kids;
+    private Spinner spinner;
+    private TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +58,8 @@ public class MainScreen extends AppCompatActivity {
         noBabyLayout = findViewById(R.id.noBabyLayout);
         addBabyButton = findViewById(R.id.addBabyButton);
         mainScreenLayout = findViewById(R.id.mainScreenLayout);
+        spinner = findViewById(R.id.spinner);
+        name = findViewById(R.id.textView);
 
         // assigning ID of the toolbar to a variable
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -49,7 +67,7 @@ public class MainScreen extends AppCompatActivity {
         // using toolbar as ActionBar
         setSupportActionBar(toolbar);
 
-        kids=null;
+        listKids=null;
         userFound = false;
 
         //getting ids from xml file
@@ -70,7 +88,7 @@ public class MainScreen extends AppCompatActivity {
                         String UID = snapshots.getKey();
                         if (UID.equals(currentUser)) {
                             userFound = true;
-                            kids = (ArrayList<Baby>) snapshots.child("kids").getValue();
+                            listKids = (ArrayList<Baby>) snapshots.child("kids").getValue();
                         }
                     }
                 }
@@ -91,15 +109,18 @@ public class MainScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 
 
     public void load(){
-        if(kids != null && !kids.isEmpty()){
+        if(listKids != null && !listKids.isEmpty()){
             //show panel with babies
-            //noBabyLayout.setVisibility(View.INVISIBLE);
-            noBabyLayout.setVisibility(View.VISIBLE);
+            noBabyLayout.setVisibility(View.INVISIBLE);
+            //noBabyLayout.setVisibility(View.VISIBLE);
             mainScreenLayout.setVisibility(View.VISIBLE);
+            showKids();
         }else{
             if(userFound){
                 //user found with none baby
@@ -114,7 +135,28 @@ public class MainScreen extends AppCompatActivity {
             }
 
         }
+
     }
+
+    public void showKids(){
+       // ArrayAdapter<Baby> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listKids);
+       // spinner.setAdapter(adapter);
+    }
+
+
+    public void button(View view){
+        /* Baby b;
+        if(!(spinner.getSelectedItem() == null))
+        {
+            b = (Baby) spinner.getSelectedItem();
+            name.setText(String.format("Name: " + b.getName() + "\t Amka: " + b.getAmka()));
+        }*/
+    }
+
+
+
+
+
 
 
     //showing messages to users
