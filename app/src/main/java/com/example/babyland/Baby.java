@@ -1,19 +1,23 @@
 package com.example.babyland;
 
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Baby {
-    public String name, amka, parentOneAmka, parentTwoAmka, placeOfBirth, bloodType,  sex,dateOfBirth;
-    public ArrayList<FamilyHistoryIllnesses> iln;
+public class Baby implements Serializable {
+    private String name, amka, parentOneAmka, parentTwoAmka, placeOfBirth, bloodType,  sex,dateOfBirth;
+    private ArrayList<FamilyHistoryIllnesses> iln;
 
+    @NonNull
+    @Override
+    public String toString() {
+        return getName();
+    }
 
     public Baby() {
     }
 
-    @Override
-    public String toString() {
-        return getName(); // You can add anything else like maybe getDrinkType()
-    }
 
     public Baby(String name, String dateOfBirth, String amka, String placeOfBirth, String bloodType, String sex,
                 String parentOneAmka, String parentTwoAmka, ArrayList<FamilyHistoryIllnesses> iln) {
@@ -26,6 +30,17 @@ public class Baby {
         this.parentOneAmka = parentOneAmka;
         this.parentTwoAmka = parentTwoAmka;
         this.iln = iln;
+    }
+
+    public Baby(Baby baby) {
+        this.name = baby.getName();
+        this.dateOfBirth = baby.getDateOfBirth();
+        this.amka = baby.getAmka();
+        this.placeOfBirth = baby.getPlaceOfBirth();
+        this.sex = baby.getSex();
+        this.parentOneAmka = baby.getParentOneAmka();
+        this.parentTwoAmka = baby.getParentTwoAmka();
+        this.iln = baby.getIln();
     }
 
     public String getParentOneAmka() {

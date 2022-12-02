@@ -218,6 +218,13 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
     }
 
 
+    public void createUser(View view){
+        Intent intent = new Intent(this, RegisterUsernamePasswordActivity.class);
+        startActivity(intent);
+    }
+
+
+
     //runnable to check if user has stopped writing
     private Runnable inputFinish = new Runnable() {
         @Override
