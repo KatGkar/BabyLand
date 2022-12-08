@@ -22,7 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class FamilyHistoryInput extends AppCompatActivity {
     protected RecyclerView recyclerView;
@@ -31,7 +33,8 @@ public class FamilyHistoryInput extends AppCompatActivity {
     Button nextButton;
     FirebaseDatabase database;
     DatabaseReference reference;
-    String name, sex, birthDate, amka, birthPlace, bloodType, parentOneAmka, parentTwoAmka;
+    String name, sex, amka, birthPlace, bloodType, parentOneAmka, parentTwoAmka;
+    String birthDate;
     int babyNumber;
     String currentUser;
     private User user;

@@ -10,6 +10,8 @@ public class sustenanceItems {
         this.checked = checked;
     }
 
+    public sustenanceItems(){}
+
     public String getName() {
         return name;
     }

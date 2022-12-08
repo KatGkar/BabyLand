@@ -1,22 +1,23 @@
 package com.example.babyland;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Development {
-    float weight , length, headCircumference;
-    Date measurementDate;
-    int age;
-    String ageType;
+    String weight , length, headCircumference, age;
+    String ageType, observations, doctor, amka;
+    String measurementDate;
     ArrayList<sustenanceItems> sustenance;
     ArrayList<examinationItems> examination;
     ArrayList<developmentalItems> developmentalMonitoring;
     Boolean hearing;
-    String observations;
-    String doctor;
 
-    public Development(float weight, float length, float headCircumference, Date measurementDate, int age, String ageType, ArrayList<sustenanceItems> sustenance, ArrayList<examinationItems> examination, ArrayList<developmentalItems> developmentalMonitoring, Boolean hearing, String observations, String doctor) {
+    public Development(){}
+
+    public Development(String amka, String weight, String length, String headCircumference, String measurementDate, String age, String ageType, ArrayList<sustenanceItems> sustenance, ArrayList<examinationItems> examination, ArrayList<developmentalItems> developmentalMonitoring, Boolean hearing, String observations, String doctor) {
+        this.amka = amka;
         this.weight = weight;
         this.length = length;
         this.headCircumference = headCircumference;
@@ -31,43 +32,51 @@ public class Development {
         this.doctor = doctor;
     }
 
-    public float getWeight() {
+    public String getAmka() {
+        return amka;
+    }
+
+    public void setAmka(String amka) {
+        this.amka = amka;
+    }
+
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
-    public float getLength() {
+    public String getLength() {
         return length;
     }
 
-    public void setLength(float length) {
+    public void setLength(String length) {
         this.length = length;
     }
 
-    public float getHeadCircumference() {
+    public String getHeadCircumference() {
         return headCircumference;
     }
 
-    public void setHeadCircumference(float headCircumference) {
+    public void setHeadCircumference(String headCircumference) {
         this.headCircumference = headCircumference;
     }
 
-    public Date getMeasurementDate() {
+    public String getMeasurementDate() {
         return measurementDate;
     }
 
-    public void setMeasurementDate(Date measurementDate) {
+    public void setMeasurementDate(String measurementDate) {
         this.measurementDate = measurementDate;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 

@@ -2,21 +2,27 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import com.google.firebase.database.Exclude;
 
-public class Baby implements Serializable {
-    private String name, amka, parentOneAmka, parentTwoAmka, placeOfBirth, bloodType,  sex,dateOfBirth;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+
+public class Baby {//implements Serializable {
+    private String name, amka, parentOneAmka, parentTwoAmka, placeOfBirth, bloodType,  sex;
+    private String dateOfBirth;
     private ArrayList<FamilyHistoryIllnesses> iln;
 
     @NonNull
     @Override
     public String toString() {
-        return getName();
+        return getAmka();
     }
 
     public Baby() {
     }
+
 
 
     public Baby(String name, String dateOfBirth, String amka, String placeOfBirth, String bloodType, String sex,

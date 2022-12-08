@@ -17,7 +17,12 @@ messages watch out for second time click on buttons skip and save
 
 Registerrrr	there is no register page for email and password login
 
+check date on addBaby
 
+
+editTextViewsss ----> instead of showMessage(error) show error on type time
+
+baby already exists error
 
 
 

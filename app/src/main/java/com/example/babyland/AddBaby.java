@@ -26,7 +26,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddBaby extends AppCompatActivity {
     TextView babyNameText, babyAmkaText, babyBirthPlaceText;
@@ -208,20 +214,21 @@ public class AddBaby extends AppCompatActivity {
             next=false;
         }
         flagUnique = findIfUnique();
-       // if(next && flagUnique) {
+        Date date=null;
+        if(next && flagUnique) {
             Intent myIntent = new Intent(this, FamilyHistoryInput.class);
-            myIntent.putExtra("sex",sex) ;
+            myIntent.putExtra("sex", sex);
             myIntent.putExtra("name", babyNameText.getText().toString());
-            myIntent.putExtra("birthDate",babyBirthDate.getText().toString());
-            myIntent.putExtra("amka",babyAmkaText.getText().toString());
-            myIntent.putExtra("birthPlace",babyBirthPlaceText.getText().toString());
-            myIntent.putExtra("bloodType",babyBloodTypeSpinner.getSelectedItem().toString());
+            myIntent.putExtra("birthDate", babyBirthDate.getText().toString());
+            myIntent.putExtra("amka", babyAmkaText.getText().toString());
+            myIntent.putExtra("birthPlace", babyBirthPlaceText.getText().toString());
+            myIntent.putExtra("bloodType", babyBloodTypeSpinner.getSelectedItem().toString());
             this.startActivity(myIntent);
-        /*}else if(!next){
+        }else if(!next){
             showMessage("Error", warnings + " are wrong!!");
-        }else if(!flagUnique){
+        }else if(!flagUnique) {
             showMessage("Warning", "Baby amka exists already!!");
-        }*/
+        }
 
     }
 

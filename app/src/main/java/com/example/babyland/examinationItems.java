@@ -4,6 +4,9 @@ public class examinationItems {
     String name, ageGap;
     int details;
 
+    public examinationItems() {
+    }
+
     public examinationItems(String name, String ageGap, Integer details) {
         this.name = name;
         this.ageGap = ageGap;

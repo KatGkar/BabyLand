@@ -15,6 +15,20 @@
         android:theme="@style/Theme.BabyLand"
         android:windowSoftInputMode="stateVisible|adjustResize">
         <activity
+            android:name=".showDevelopment"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".showDevelopmentsList"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".RegisterUsernamePasswordActivity"
             android:exported="false">
             <meta-data
@@ -23,14 +37,14 @@
         </activity>
         <activity
             android:name=".MonitoringDevelopment"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".LoginRegister"
             android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,11 +53,7 @@
         </activity>
         <activity
             android:name=".MainScreen"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".nextParent"
             android:exported="false" />
