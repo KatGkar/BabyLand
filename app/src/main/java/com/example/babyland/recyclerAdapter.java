@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +35,12 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     private recyclerVewOnClickListener listener;
     private radioButtonChange radioButtonChange;
     private textChange textChange;
+    private sustenanceCheck sustenanceCheck;
+
+    public interface sustenanceCheck{
+        void sustenanceChecked(int position, Boolean value);
+    }
+
 
     public interface textChange {
         void textChanged(int position, String text);
@@ -51,6 +58,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         this.radioButtonChange = radioButtonChange;
     }
 
+    public void sustenanceCheck(sustenanceCheck sustenanceCheck){this.sustenanceCheck = sustenanceCheck;}
+
 
     @NonNull
     @Override
@@ -58,19 +67,24 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.family_history_recycler, parent, false);
         if (id.equals("illnessInput")) {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.family_history_recycler, parent, false);
-            recyclerAdapter.MyViewHolder view = new recyclerAdapter.MyViewHolder(itemView, radioButtonChange, textChange);
+            recyclerAdapter.MyViewHolder view = new recyclerAdapter.MyViewHolder(itemView, radioButtonChange, textChange, sustenanceCheck);
         }else if(id.equals("examination")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.examination_list_item, parent, false);
         }else if(id.equals("developmental")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.developmental_list_item, parent, false);
-        }else if(id.equals("developments")){
+        }else if(id.equals("sustenance")){
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.sustenance_list_item, parent, false);
+        }
+        else if(id.equals("developments")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments, parent, false);
         }else if(id.equals("developmentalMonitoring")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments_developmental_monitoring, parent, false);
         }else if(id.equals("exam")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments_examination, parent, false);
+        }else if(id.equals("sust")){
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments_sustenance, parent, false);
         }
-        return new MyViewHolder(itemView, radioButtonChange, textChange);
+        return new MyViewHolder(itemView, radioButtonChange, textChange, sustenanceCheck);
     }
 
     @Override
@@ -117,12 +131,24 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             String name = lists.get(position).getName();
             int details = lists.get(position).getDetails();
             if(details==1){
-                holder.nameExamintionTextView.setText(name + " : Normal");
+                holder.nameExaminationTextView.setText(name + " : Normal");
             }else if(details==2){
-                holder.nameExamintionTextView.setText(name + " : Monitoring");
-            }else{
-                holder.nameExamintionTextView.setText(name + " : Reference");
+                holder.nameExaminationTextView.setText(name + " : Monitoring");
+            }else if(details ==3){
+                holder.nameExaminationTextView.setText(name + " : Reference");
+            }else {
+                holder.nameExaminationTextView.setText(name + " : No information");
             }
+        }else if(id.equals("sustenance")) {
+            List<sustenanceItems> lists = (List<sustenanceItems>) list;
+            String name  = lists.get(position).getName();
+            holder.checkedSustenanceMonitoring.setText(name);
+        }else if(id.equals("sust")){
+            List<sustenanceItems> lists = (List<sustenanceItems>) list;
+            String name = lists.get(position).getName();
+            Boolean value = lists.get(position).getChecked();
+            holder.checkShowDevelopments.setText(name);
+            holder.checkShowDevelopments.setChecked(value);
         }
     }
 
@@ -138,7 +164,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     }
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView illnessName, illnessDetails, examinationListItemText, developmentalListItemText, ageTextView, dateTextView,
-                    nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExamintionTextView;
+                    nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExaminationTextView;
         private Switch switches;
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
@@ -146,8 +172,9 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         private CardView card;
         private RelativeLayout developmentsRelativeLayout;
         boolean i=true;
+        private CheckBox checkedSustenanceMonitoring, checkShowDevelopments;
 
-        public MyViewHolder(final View itemView, radioButtonChange radioButtonChange, textChange textChange) {
+        public MyViewHolder(final View itemView, radioButtonChange radioButtonChange, textChange textChange, sustenanceCheck sustenanceCheck) {
             super(itemView);
             if (id.equals("illnessInput")) {
                 List<FamilyHistoryIllnesses> lists = (List<FamilyHistoryIllnesses>) (List<?>) list;
@@ -196,6 +223,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                            radioButtonChange.rChange(2, getAdapterPosition());
                        }else if(radioButton3.getId() == checkedId){
                            radioButtonChange.rChange(3, getAdapterPosition());
+                       }else {
+                           radioButtonChange.rChange(0, getAdapterPosition());
                        }
                     }
                 });
@@ -241,7 +270,17 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 nameDevelopmentalMonitoringTextView = itemView.findViewById(R.id.nameShowDevelopmentsDevelopmentalMonitoringTextView);
                 detailsDevelopmentalMonitoringTextView = itemView.findViewById(R.id.detailsShowDevelopmentsDevelopmentalMonitoringTextView);
             }else if(id.equals("exam")){
-                nameExamintionTextView = itemView.findViewById(R.id.nameAndDetailsShowDevelopmentsExaminationTextView);
+                nameExaminationTextView = itemView.findViewById(R.id.nameAndDetailsShowDevelopmentsExaminationTextView);
+            }else if(id.equals("sustenance")){
+                checkedSustenanceMonitoring = itemView.findViewById(R.id.checkedSustenanceCheckBox);
+                checkedSustenanceMonitoring.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        sustenanceCheck.sustenanceChecked(getAdapterPosition(), checkedSustenanceMonitoring.isChecked());
+                    }
+                });
+            }else if(id.equals("sust")){
+                checkShowDevelopments = itemView.findViewById(R.id.checkShowDevelopments);
             }
         }
 

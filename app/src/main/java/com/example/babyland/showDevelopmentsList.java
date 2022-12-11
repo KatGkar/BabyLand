@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -30,10 +31,11 @@ public class showDevelopmentsList extends AppCompatActivity {
     private ArrayList<Development> developments;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private RecyclerView developmentsRecyclerView, developmentalMonitoringRecyclerView, examinationRecyclerView;
+    private RecyclerView developmentsRecyclerView, developmentalMonitoringRecyclerView, examinationRecyclerView, sustenanceRecyclerView;
     private recyclerAdapter.recyclerVewOnClickListener listener;
-    private TextView ageText,weightText, lengthText, dateText, headCircumferenceText;
+    private TextView ageText,weightText, lengthText, dateText, headCircumferenceText, doctorTextView, observationsTextView;
     private RelativeLayout developmentLayout;
+    private Switch hearingSwitch;
 
 
     @Override
@@ -55,6 +57,10 @@ public class showDevelopmentsList extends AppCompatActivity {
         headCircumferenceText = findViewById(R.id.headCircumferenceTextViewShow);
         developmentalMonitoringRecyclerView = findViewById(R.id.developmentalMonitoringRecyclerView);
         examinationRecyclerView = findViewById(R.id.examinationRecyclerView);
+        hearingSwitch = findViewById(R.id.hearingShowDevelopmentsSwitch);
+        doctorTextView = findViewById(R.id.doctorShowDevelopmentsTextView);
+        sustenanceRecyclerView = findViewById(R.id.sustenanceRecyclerView);
+        observationsTextView = findViewById(R.id.observationsShowDevelopmentsTextView);
 
         //setting lists
         developments = new ArrayList<>();
@@ -122,6 +128,9 @@ public class showDevelopmentsList extends AppCompatActivity {
                 dateText.setText("Measurement Date: " +dev.getMeasurementDate());
                 weightText.setText("Weight: " + dev.getWeight());
                 headCircumferenceText.setText("Head Circumference: " + dev.getHeadCircumference());
+                hearingSwitch.setChecked(dev.getHearing());
+                doctorTextView.setText(dev.getDoctor());
+                observationsTextView.setText(dev.getObservations());
                 //developmental monitoring info
                 recyclerAdapter adapter = new recyclerAdapter(listener, dev.getDevelopmentalMonitoring(), "developmentalMonitoring");
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -134,6 +143,12 @@ public class showDevelopmentsList extends AppCompatActivity {
                 examinationRecyclerView.setLayoutManager(layoutManager);
                 examinationRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 examinationRecyclerView.setAdapter(adapter);
+                //sustenance info
+                adapter = new recyclerAdapter(listener, dev.getSustenance(), "sust");
+                layoutManager = new LinearLayoutManager(getApplicationContext());
+                sustenanceRecyclerView.setLayoutManager(layoutManager);
+                sustenanceRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                sustenanceRecyclerView.setAdapter(adapter);
             }
         };
     }

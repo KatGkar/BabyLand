@@ -99,15 +99,15 @@ public void addToDatabase(){
         databaseReference.child("ex12").setValue(ex12);
 ////////////////////////////////////////////
 		        databaseReference = firebaseDatabase.getReference("sustenanceItems");
-        sustenanceItems sus1 = new sustenanceItems("Exclusive breastfeeding", "1-2-4", false);
+        sustenanceItems sus1 = new sustenanceItems("Exclusive breastfeeding", "0-2-4", false);
         databaseReference.child("sus1").setValue(sus1);
-        sustenanceItems sus2 = new sustenanceItems("Mixed diet", "1-2-4", false);
+        sustenanceItems sus2 = new sustenanceItems("Mixed diet", "0-2-4", false);
         databaseReference.child("sus2").setValue(sus2);
-        sustenanceItems sus3 = new sustenanceItems("Modified cow's milk", "1-2-4-6-9", false);
+        sustenanceItems sus3 = new sustenanceItems("Modified cow's milk", "0-2-4-6-9", false);
         databaseReference.child("sus3").setValue(sus3);
-        sustenanceItems sus4 = new sustenanceItems("Special diet", "1-2-4", false);
+        sustenanceItems sus4 = new sustenanceItems("Special diet", "0-2-4", false);
         databaseReference.child("sus4").setValue(sus4);
-        sustenanceItems sus5 = new sustenanceItems("Vit. D", "1-2-4", false);
+        sustenanceItems sus5 = new sustenanceItems("Vit. D", "0-2-4", false);
         databaseReference.child("sus5").setValue(sus5);
         sustenanceItems sus6 = new sustenanceItems("Breastfeeding", "6-9-12", false);
         databaseReference.child("sus6").setValue(sus6);

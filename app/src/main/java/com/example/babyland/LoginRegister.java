@@ -96,6 +96,8 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         //setting design
         createUser.setPaintFlags(createUser.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
+
+
         //check if user is writing in email textView
         email.addTextChangedListener(new TextWatcher() {
             @Override
@@ -247,8 +249,6 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                         loadingFrame.setVisibility(View.INVISIBLE);
                         //continue to next page
                         Intent intent = new Intent(LoginRegister.this, MainScreen.class);
-                        User u = null;
-                        intent.putExtra("user", (Serializable) u);
                         startActivity(intent);
 
                     }

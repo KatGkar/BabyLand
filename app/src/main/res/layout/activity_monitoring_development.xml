@@ -192,131 +192,67 @@
         android:id="@+id/sustenanceLayout"
         android:layout_width="363dp"
         android:layout_height="674dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="122dp"
-            android:layout_marginTop="41dp"
-            android:text="Sustenance"
-            android:textSize="18sp" />
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp">
 
-        <CheckBox
-            android:id="@+id/checkBox1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView5"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="168dp"
-            android:text="CheckBox" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewSustenance"
+                android:layout_width="282dp"
+                android:layout_height="386dp"
+                android:layout_marginTop="52dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-        <CheckBox
-            android:id="@+id/checkBox2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/checkBox1"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="20dp"
-            android:text="CheckBox" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Sustenance"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.442"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <CheckBox
-            android:id="@+id/checkBox3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/checkBox2"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="20dp"
-            android:text="CheckBox" />
+            <EditText
+                android:id="@+id/sustenanceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Observations..."
+                android:inputType="textMultiLine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewSustenance" />
 
-        <CheckBox
-            android:id="@+id/checkBox4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/checkBox3"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="20dp"
-            android:text="CheckBox" />
-
-        <CheckBox
-            android:id="@+id/checkBox5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/checkBox4"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="101dp"
-            android:layout_marginTop="20dp"
-            android:text="CheckBox" />
-
-        <CheckBox
-            android:id="@+id/checkBox6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/checkBox5"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="20dp"
-            android:text="CheckBox" />
-
-        <CheckBox
-            android:id="@+id/checkBox7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/checkBox6"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="20dp"
-            android:text="CheckBox"
-            android:visibility="visible" />
-
-        <EditText
-            android:id="@+id/sustenanceText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/checkBox7"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="103dp"
-            android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine" />
-
-        <Button
-            android:id="@+id/backButtonSustenance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/sustenanceText"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="125dp"
-            android:layout_marginTop="53dp"
-            android:layout_marginEnd="150dp"
-            android:layout_marginBottom="50dp"
-            android:onClick="backButton"
-            android:text="Back" />
+            <Button
+                android:id="@+id/backButtonSustenance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:onClick="backButton"
+                android:text="Back"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.454"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sustenanceText" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
 
@@ -324,7 +260,7 @@
         android:id="@+id/generalLayout"
         android:layout_width="355dp"
         android:layout_height="675dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.444"

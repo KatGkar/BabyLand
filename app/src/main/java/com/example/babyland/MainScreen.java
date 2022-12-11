@@ -43,9 +43,6 @@ public class MainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
-        Bundle extras = getIntent().getExtras();
-        user1 = (User) extras.get("user");
-
         //getting views
         noBabyLayout = findViewById(R.id.noBabyLayout);
         addBabyButton = findViewById(R.id.addBabyButton);
@@ -65,7 +62,6 @@ public class MainScreen extends AppCompatActivity {
         //setting database
         database = FirebaseDatabase.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
 
         if(user1!=null){
             reference = database.getReference("parent");

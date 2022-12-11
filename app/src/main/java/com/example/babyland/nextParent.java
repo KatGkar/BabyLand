@@ -374,7 +374,6 @@ public class nextParent extends AppCompatActivity{
 
         u1 = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, user.getAmka(), true, kids);//, UID);
         Intent in = new Intent(this, MainScreen.class);
-        in.putExtra("user",  u1);
         startActivity(in);
     }
 

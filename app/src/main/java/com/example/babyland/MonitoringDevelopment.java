@@ -54,8 +54,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
     private Switch hearingSwitch;
     private RelativeLayout generalLayout, sustenanceLayout, examinationLayout, developmentalLayout, observationsLayout;
     private CalendarView calendarView;
-    private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5, checkBox6, checkBox7;
-    private RecyclerView recyclerViewExamination, recyclerViewDevelopmental;
+    private RecyclerView recyclerViewExamination, recyclerViewDevelopmental, recyclerViewSustenance;
     private recyclerAdapter.recyclerVewOnClickListener listener;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -89,13 +88,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
         generalLayout = findViewById(R.id.generalLayout);
         calendarView = findViewById(R.id.calendar);
         sustenanceLayout = findViewById(R.id.sustenanceLayout);
-        checkBox1 = findViewById(R.id.checkBox1);
-        checkBox2 = findViewById(R.id.checkBox2);
-        checkBox3 = findViewById(R.id.checkBox3);
-        checkBox4 = findViewById(R.id.checkBox4);
-        checkBox5 = findViewById(R.id.checkBox5);
-        checkBox6 = findViewById(R.id.checkBox6);
-        checkBox7 = findViewById(R.id.checkBox7);
         sustenanceEditText = findViewById(R.id.sustenanceText);
         recyclerViewExamination = findViewById(R.id.recyclerViewExamination);
         examinationLayout = findViewById(R.id.examinationLayout);
@@ -103,6 +95,8 @@ public class MonitoringDevelopment extends AppCompatActivity {
         developmentalLayout = findViewById(R.id.developmentalLayout);
         observationsLayout = findViewById(R.id.observationsLayout);
         observationText = findViewById(R.id.observationsText);
+        recyclerViewSustenance = findViewById(R.id.recyclerViewSustenance);
+
 
         //setting database
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -314,6 +308,18 @@ public class MonitoringDevelopment extends AppCompatActivity {
                     developmentalMonitoring.get(position).setDetails(text);
                 }
             });
+        }else if(id.equals("sustenance")){
+            recyclerAdapter adapter = new recyclerAdapter(listener, sustenance, "sustenance");
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerViewSustenance.setLayoutManager(layoutManager);
+            recyclerViewSustenance.setItemAnimator(new DefaultItemAnimator());
+            recyclerViewSustenance.setAdapter(adapter);
+            adapter.sustenanceCheck(new recyclerAdapter.sustenanceCheck() {
+                @Override
+                public void sustenanceChecked(int position, Boolean value) {
+                    sustenance.get(position).setChecked(value);
+                }
+            });
         }
     }
 
@@ -378,7 +384,24 @@ public class MonitoringDevelopment extends AppCompatActivity {
                         for (DataSnapshot sn : snapshot.getChildren()) {
                             GenericTypeIndicator<sustenanceItems> t = new GenericTypeIndicator<sustenanceItems>() {
                             };
-                            sustenance.add(sn.getValue(t));
+                            sustenanceItems s = sn.getValue(t);
+                            String prev ="";
+                            if(age.equals("1")){
+                                age="0";
+                            }
+                            for (char c: s.getAgeGap().toCharArray()) {
+                                if(c=='-'){
+                                    prev="";
+                                }else{
+                                    prev = prev+c;
+                                }
+                                if(prev.equals(age)){
+                                    sustenance.add(sn.getValue(t));
+                                }
+                            }
+                            if(age.equals("0")){
+                                age="1";
+                            }
                         }
                     }
                     //calls adapter to load data into recyclerView
@@ -397,7 +420,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
     //save function
     public void saveDevelopment(View view) throws ParseException {
         Boolean error = false;
-        int examinationError = 0, developmentalError = 0;
+        int examinationError = 0, developmentalError = 0, sustenanceError=0;
         if (TextUtils.isEmpty(ageText.getText())) {
             error = true;
         }
@@ -411,10 +434,15 @@ public class MonitoringDevelopment extends AppCompatActivity {
             error = true;
         }
 
-        if (!checkBox1.isChecked() && !checkBox2.isChecked() && !checkBox3.isChecked() && !checkBox4.isChecked() && !checkBox5.isChecked()
-                && !checkBox6.isChecked() && !checkBox7.isChecked()) {
+        for (int i = 0; i < sustenance.size(); i++) {
+            if (sustenance.get(i).getChecked().equals(false)) {
+                sustenanceError++;
+            }
+        }
+        if (sustenanceError == sustenance.size()) {
             error = true;
         }
+
         for (int i = 0; i < examination.size(); i++) {
             if (examination.get(i).getDetails() != 1 && examination.get(i).getDetails() != 2 && examination.get(i).getDetails() != 3) {
                 examinationError++;
@@ -438,8 +466,9 @@ public class MonitoringDevelopment extends AppCompatActivity {
                     headCircumferenceText.getText().toString(), dateText.getText().toString(), age,
                     ageType, sustenance, examination, developmentalMonitoring, hearingSwitch.isChecked(), observationText.getText().toString(),
                     doctorText.getText().toString());
+            System.out.println(monitoringDevNumber + "_______________________________");
             databaseReference = firebaseDatabase.getReference("monitoringDevelopment");
-            databaseReference.child(String.valueOf(monitoringDevNumber)).setValue(dev);
+            databaseReference.child(String.valueOf(monitoringDevNumber + 1)).setValue(dev);
             Intent intent = new Intent(MonitoringDevelopment.this, MainScreen.class);
             startActivity(intent);
         }
@@ -461,7 +490,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
 
             }
         });
-        return monitoringDevNumber + 1;
+        return (monitoringDevNumber + 1);
     }
 }
 

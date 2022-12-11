@@ -71,25 +71,71 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/developmentalMonitoringRecyclerView"
-                android:layout_width="307dp"
-                android:layout_height="164dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="36dp"
+                android:layout_width="303dp"
+                android:layout_height="111dp"
+                android:layout_marginTop="3dp"
                 android:background="#C2EABF"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.147"
+                app:layout_constraintHorizontal_bias="0.44"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lengthTextViewShow" />
+                app:layout_constraintTop_toBottomOf="@+id/hearingShowDevelopmentsSwitch" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/examinationRecyclerView"
-                android:layout_width="299dp"
-                android:layout_height="176dp"
+                android:layout_width="301dp"
+                android:layout_height="131dp"
                 android:layout_marginTop="20dp"
+                android:background="#E6CECE"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.507"
+                app:layout_constraintHorizontal_bias="0.459"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/developmentalMonitoringRecyclerView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/sustenanceRecyclerView"
+                android:layout_width="302dp"
+                android:layout_height="143dp"
+                android:layout_marginTop="20dp"
+                android:background="#BFECF4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.45"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/examinationRecyclerView" />
+
+            <Switch
+                android:id="@+id/hearingShowDevelopmentsSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:clickable="false"
+                android:text="Switch"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.467"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lengthTextViewShow" />
+
+            <TextView
+                android:id="@+id/doctorShowDevelopmentsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Doctor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/observationsShowDevelopmentsTextView" />
+
+            <TextView
+                android:id="@+id/observationsShowDevelopmentsTextView"
+                android:layout_width="293dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="28dp"
+                android:scrollbars="vertical"
+                android:text="TextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.48"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sustenanceRecyclerView" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
