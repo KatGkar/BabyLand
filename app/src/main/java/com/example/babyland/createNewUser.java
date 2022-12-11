@@ -309,60 +309,36 @@ public class createNewUser extends AppCompatActivity {
         new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 
-    Boolean next = true;
+    Boolean next;
 
     public void nextParent(View view){
         next = true;
-        String warnings ="Field";
-        if(TextUtils.isEmpty(nameParentOne.getText())){
-            warnings = warnings + " Name";
+        /*if(TextUtils.isEmpty(nameParentOne.getText())){
+            nameParentOne.setError("Please enter a name!");
             next=false;
         }
         if(TextUtils.isEmpty(surnameParentOne.getText())){
-            warnings = warnings + " ,Surname";
+            surnameParentOne.setError("Please enter a surname!");
             next=false;
         }
         if(TextUtils.isEmpty(amkaParentOne.getText()) || (amkaParentOne.getText().length() != 11)){
-            warnings = warnings + " ,Amka";
+            amkaParentOne.setError("Amka should have length 11 numbers!");
             next=false;
         }
         if(TextUtils.isEmpty(phoneNumberParentOne.getText()) || (phoneNumberParentOne.getText().length() != 10)) {
-            warnings = warnings + ", Phone Number";
+            phoneNumberParentOne.setError("Phone number should have length 11 numbers!");
             next = false;
         }
-        if(TextUtils.isEmpty(emailAddressParentOne.getText()) || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailAddressParentOne.getText()).matches()){
-            warnings = warnings + " ,Email";
-            next=false;
-        }
         if(blood.getSelectedItem().equals("Blood Type")){
-            warnings = warnings+ ", Blood Type";
+            ((TextView)blood.getSelectedView()).setError("Please choose a blood type!");
             next=false;
-        }
-
-        warnings = warnings + ", have errors";
-
-        flagUnique = findIfUnique();
-
-        if(next && flagUnique){
-            //next screen
-            Intent myIntent = new Intent(this, nextParent.class);
-            myIntent.putExtra("name",nameParentOne.getText().toString()) ;
-            myIntent.putExtra("surname", surnameParentOne.getText().toString());
-            myIntent.putExtra("amka", amkaParentOne.getText().toString());
-            myIntent.putExtra("phoneNumber", phoneNumberParentOne.getText().toString());
-            myIntent.putExtra("email", emailAddressParentOne.getText().toString());
-            myIntent.putExtra("birthDate", dateOfBirthParentOne.getText().toString());
-            myIntent.putExtra("bloodType", blood.getSelectedItem().toString());
-            this.startActivity(myIntent);
-        }else{
-            showMessage("Warning", warnings);
-        }
+        }*/
+        findIfUnique();
 
     }
 
-    Boolean flag;
-    private Boolean findIfUnique() {
-        flag = true;
+    private void findIfUnique() {
+        flagUnique = true;
         reference = database.getReference("parent");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -371,9 +347,10 @@ public class createNewUser extends AppCompatActivity {
                     for(DataSnapshot snapshots : snapshot.getChildren()) {
                         String amka = String.valueOf(snapshots.child("amka").getValue());
                         if(amkaParentOne.toString().equals(amka)){
-                            flag = false;
+                            flagUnique = false;
                         }
                     }
+                    goToNext();
                 }
             }
 
@@ -382,7 +359,23 @@ public class createNewUser extends AppCompatActivity {
 
             }
         });
-        return flag;
+    }
+
+    private void goToNext() {
+        if (next && flagUnique) {
+            //next screen
+            Intent myIntent = new Intent(this, nextParent.class);
+            myIntent.putExtra("name", nameParentOne.getText().toString());
+            myIntent.putExtra("surname", surnameParentOne.getText().toString());
+            myIntent.putExtra("amka", amkaParentOne.getText().toString());
+            myIntent.putExtra("phoneNumber", phoneNumberParentOne.getText().toString());
+            myIntent.putExtra("email", emailAddressParentOne.getText().toString());
+            myIntent.putExtra("birthDate", dateOfBirthParentOne.getText().toString());
+            myIntent.putExtra("bloodType", blood.getSelectedItem().toString());
+            this.startActivity(myIntent);
+        }else if(!flagUnique){
+            amkaParentOne.setError("Amka should be unique");
+        }
     }
 
 }

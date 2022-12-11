@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
@@ -31,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -185,36 +187,67 @@ public class AddBaby extends AppCompatActivity {
 
             }
         });
+
+
     }
 
+    String sex;
+    Boolean next;
+    String warnings;
     //check restrictions and add new baby or show error messages
     public void addNewBaby(View view){
-        String sex;
-        Boolean next= true;
-        String warnings = "Field";
+        next=true;
+        warnings = "Field";
         if(babyGirl.isChecked()) {
             sex= "GIRL";
         }else{
             sex ="BOY";
         }
-        if(TextUtils.isEmpty(babyNameText.getText())){
-            warnings = warnings + " ,Name";
-            next = false;
-        }
-        if(!(babyAmkaText.getText().length() == 11) || (TextUtils.isEmpty(babyAmkaText.getText()))){
-            warnings = warnings + " ,Amka";
-            next = false;
-        }
-        if(TextUtils.isEmpty(babyBirthPlaceText.getText())){
-            warnings = warnings + " ,Birth place";
-            next = false;
-        }
-        if(babyBloodTypeSpinner.getSelectedItem().equals("Blood Type")){
-            warnings = warnings+ ", Blood Type";
+        if(TextUtils.isEmpty(babyNameText.getText())) {
+            babyNameText.setError("Enter a name please!");
             next=false;
         }
-        flagUnique = findIfUnique();
-        Date date=null;
+        if(!(babyAmkaText.getText().length() == 11) || (TextUtils.isEmpty(babyAmkaText.getText()))) {
+            babyAmkaText.setError("Amka length must be 11 numbers!");
+            next=false;
+        }
+        if(TextUtils.isEmpty(babyBirthPlaceText.getText())){
+            babyBirthPlaceText.setError("Please enter a birth place!");
+            next=false;
+        }
+        if(babyBloodTypeSpinner.getSelectedItem().equals("Blood Type")){
+            ((TextView)babyBloodTypeSpinner.getSelectedView()).setError("Please choose a blood type!");
+            next=false;
+        }
+        findIfUnique();
+    }
+
+    private void findIfUnique() {
+        flagUnique = true;
+        reference = database.getReference("baby");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot!=null){
+                    for(DataSnapshot snapshots : snapshot.getChildren()){
+                        String UID = snapshots.getKey();
+                        System.out.println(UID);
+                        if (UID.equals(babyAmkaText.getText().toString())) {
+                            flagUnique = false;
+                        }
+                    }
+                    goToNext();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void goToNext(){
         if(next && flagUnique) {
             Intent myIntent = new Intent(this, FamilyHistoryInput.class);
             myIntent.putExtra("sex", sex);
@@ -224,38 +257,12 @@ public class AddBaby extends AppCompatActivity {
             myIntent.putExtra("birthPlace", babyBirthPlaceText.getText().toString());
             myIntent.putExtra("bloodType", babyBloodTypeSpinner.getSelectedItem().toString());
             this.startActivity(myIntent);
-        }else if(!next){
-            showMessage("Error", warnings + " are wrong!!");
         }else if(!flagUnique) {
             showMessage("Warning", "Baby amka exists already!!");
+            babyAmkaText.setError("Amka should be unique");
         }
-
     }
 
-    Boolean flag;
-    private Boolean findIfUnique() {
-        flag = true;
-        reference = database.getReference("baby");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot != null){
-                  for(DataSnapshot snapshots : snapshot.getChildren()) {
-                      String amka = String.valueOf(snapshots.child("amka").getValue());
-                      if(babyAmkaText.toString().equals(amka)){
-                        flag = false;
-                      }
-                  }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        return flag;
-    }
 
 
 

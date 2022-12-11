@@ -20,10 +20,19 @@ Registerrrr	there is no register page for email and password login
 check date on addBaby
 
 
-editTextViewsss ----> instead of showMessage(error) show error on type time
+check on next parent create 
 
-baby already exists error
+on textViews only numbers no .,';[
 
+
+check user signed in
+
+on create user no need for email input
+
+on create next parent change name in database
+
+
+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
 
 
 

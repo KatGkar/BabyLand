@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -103,6 +105,7 @@ public class showDevelopmentsList extends AppCompatActivity {
         developmentsRecyclerView.setAdapter(adapter);
     }
 
+
     //click listener to show developments details
     private void setOnClickListener() {
         listener = new recyclerAdapter.recyclerVewOnClickListener() {
@@ -115,7 +118,7 @@ public class showDevelopmentsList extends AppCompatActivity {
                 lengthText.setText(dev.getLength());
                 dateText.setText(dev.getMeasurementDate());
                 weightText.setText(dev.getWeight());
-                
+
             }
         };
     }

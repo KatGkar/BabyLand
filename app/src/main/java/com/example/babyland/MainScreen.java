@@ -177,7 +177,8 @@ public class MainScreen extends AppCompatActivity {
     public void load(){
         if(listKids != null && !listKids.isEmpty()){
             //show panel with babies
-            noBabyLayout.setVisibility(View.INVISIBLE);
+            //noBabyLayout.setVisibility(View.INVISIBLE);
+            noBabyLayout.setVisibility(View.VISIBLE);
             mainScreenLayout.setVisibility(View.VISIBLE);
             showKids();
         }else{

@@ -20,6 +20,19 @@ public class User {
         this.kids = kids;
     }
 
+    public User(User u){
+        this.name = u.getName();
+        this.surname = u.getSurname();
+        this.amka = u.getAmka();
+        this.phoneNumber = u.getPhoneNumber();
+        this.email = u.getEmail();
+        this.dateOfBirth = u.getDateOfBirth();
+        this.bloodType = u.getBloodType();
+        this.partnersAmka = u.getPartnersAmka();
+        this.partner = u.getPartner();
+        this.kids = u.getKids();
+    }
+
     public User() {
     }
 

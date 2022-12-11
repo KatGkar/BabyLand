@@ -8,8 +8,8 @@
 
     <RelativeLayout
         android:id="@+id/infoRelativeLayout"
-        android:layout_width="393dp"
-        android:layout_height="434dp"
+        android:layout_width="353dp"
+        android:layout_height="432dp"
         android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
