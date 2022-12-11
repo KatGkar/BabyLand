@@ -1,8 +1,9 @@
 package com.example.babyland;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
     private String name, surname, amka, phoneNumber, email, dateOfBirth, bloodType, partnersAmka;
     private Boolean partner;
     private ArrayList<Baby> kids;

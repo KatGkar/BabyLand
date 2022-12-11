@@ -55,6 +55,7 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 public class LoginRegister extends AppCompatActivity { //implements GoogleApiClient.OnConnectionFailedListener {
@@ -245,7 +246,9 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                     public void onSuccess(AuthResult authResult) {
                         loadingFrame.setVisibility(View.INVISIBLE);
                         //continue to next page
-                        Intent intent = new Intent(getApplicationContext(), MainScreen.class);
+                        Intent intent = new Intent(LoginRegister.this, MainScreen.class);
+                        User u = null;
+                        intent.putExtra("user", (Serializable) u);
                         startActivity(intent);
 
                     }

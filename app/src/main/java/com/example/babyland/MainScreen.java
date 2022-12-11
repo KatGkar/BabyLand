@@ -36,12 +36,15 @@ public class MainScreen extends AppCompatActivity {
     private ImageButton addBabyButton;
     private Spinner chooseChildSpinner;
     private Button addDevelopmentButton, showDevelopmentButton;
+    User user1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
+        Bundle extras = getIntent().getExtras();
+        user1 = (User) extras.get("user");
 
         //getting views
         noBabyLayout = findViewById(R.id.noBabyLayout);
@@ -62,6 +65,13 @@ public class MainScreen extends AppCompatActivity {
         //setting database
         database = FirebaseDatabase.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+        if(user1!=null){
+            reference = database.getReference("parent");
+            System.out.println(user1.getAmka() +"--------------------------------------------------");
+            reference.child(user1.getAmka()).setValue(user1);
+        }
 
         //getting user info from database parent
         reference = database.getReference("parent");
@@ -151,22 +161,23 @@ public class MainScreen extends AppCompatActivity {
                     age = "2";
                 } else if (monthsD == 3 || monthsD == 4) {
                     ageType = "months";
-                    age = String.valueOf(monthsD);
+                    age = "4";
                 } else if (monthsD == 5 || monthsD == 6) {
                     ageType = "months";
-                    age = String.valueOf(monthsD);
+                    age = "6";
                 } else if (monthsD >= 7 && monthsD <= 9) {
                     ageType = "months";
-                    age = String.valueOf(monthsD);
+                    age = "9";
                 } else if (monthsD >= 10 && monthsD <= 15) {
                     ageType = "months";
-                    age = String.valueOf(monthsD);
+                    age = "12";
                 }
 
                 Intent intent = new Intent(MainScreen.this, MonitoringDevelopment.class);
                 intent.putExtra("babyAmka", babyAmka);
                 intent.putExtra("ageType", ageType);
                 intent.putExtra("age", age);
+                System.out.println(age + " " + ageType);
                 startActivity(intent);
             }
         });

@@ -330,7 +330,13 @@ public class MonitoringDevelopment extends AppCompatActivity {
                         for (DataSnapshot sn : snapshot.getChildren()) {
                             GenericTypeIndicator<examinationItems> t = new GenericTypeIndicator<examinationItems>() {
                             };
-                            examination.add(sn.getValue(t));
+                            if(Integer.valueOf(age) <=4){
+                                examination.add(sn.getValue(t));
+                            }else{
+                                if(sn.getValue(t).getAgeGap().equals("all")){
+                                    examination.add(sn.getValue(t));
+                                }
+                            }
                         }
                     }
                     //calls adapter to load data into recyclerView
@@ -350,7 +356,9 @@ public class MonitoringDevelopment extends AppCompatActivity {
                         for (DataSnapshot sn : snapshot.getChildren()) {
                             GenericTypeIndicator<developmentalItems> t = new GenericTypeIndicator<developmentalItems>() {
                             };
-                            developmentalMonitoring.add(sn.getValue(t));
+                            if(sn.getValue(t).getAgeGap().equals(age)){
+                                developmentalMonitoring.add(sn.getValue(t));
+                            }
                         }
                     }
                     //calls adapter to load data into recyclerView
@@ -432,7 +440,9 @@ public class MonitoringDevelopment extends AppCompatActivity {
                     doctorText.getText().toString());
             databaseReference = firebaseDatabase.getReference("monitoringDevelopment");
             databaseReference.child(String.valueOf(monitoringDevNumber)).setValue(dev);
-            }
+            Intent intent = new Intent(MonitoringDevelopment.this, MainScreen.class);
+            startActivity(intent);
+        }
     }
 
 

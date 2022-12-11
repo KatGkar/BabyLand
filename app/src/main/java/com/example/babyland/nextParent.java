@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -247,7 +248,7 @@ public class nextParent extends AppCompatActivity{
 
     //button skip and next
     public void skip(View view){
-        /*DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
+        DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -260,6 +261,8 @@ public class nextParent extends AppCompatActivity{
                         showMessage("Success", "User created successfully!!");
                         //go to app main screen
                         Intent intent = new Intent(getApplicationContext(), MainScreen.class);
+                        User u1=null;
+                        intent.putExtra("user", u1);
                         startActivity(intent);
                     case DialogInterface.BUTTON_NEGATIVE:
                         //No button clicked
@@ -271,7 +274,7 @@ public class nextParent extends AppCompatActivity{
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to continue without partner? If no please fill in the blanks.").setPositiveButton("Yes", dialogClickListener2)
                 .setNegativeButton("No", dialogClickListener2).show();
-    */}
+    }
 
 
     User user;
@@ -370,9 +373,8 @@ public class nextParent extends AppCompatActivity{
     public void doSomething(){
 
         u1 = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, user.getAmka(), true, kids);//, UID);
-        reference = database.getReference("parent");
-        reference.child(UID).setValue(u1);
         Intent in = new Intent(this, MainScreen.class);
+        in.putExtra("user",  u1);
         startActivity(in);
     }
 

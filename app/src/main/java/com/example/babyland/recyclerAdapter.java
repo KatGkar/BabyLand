@@ -1,6 +1,7 @@
 package com.example.babyland;
 
 import android.app.Activity;
+import android.graphics.Paint;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -64,6 +65,10 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.developmental_list_item, parent, false);
         }else if(id.equals("developments")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments, parent, false);
+        }else if(id.equals("developmentalMonitoring")){
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments_developmental_monitoring, parent, false);
+        }else if(id.equals("exam")){
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments_examination, parent, false);
         }
         return new MyViewHolder(itemView, radioButtonChange, textChange);
     }
@@ -100,6 +105,24 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             String date = lists.get(position).getMeasurementDate();
             holder.ageTextView.setText(age);
             holder.dateTextView.setText(date);
+        }else if(id.equals("developmentalMonitoring")){
+            List<developmentalItems> lists = (List<developmentalItems>) list;
+            String name = lists.get(position).getName();
+            String details = lists.get(position).getDetails();
+            holder.detailsDevelopmentalMonitoringTextView.setText(details);
+            holder.nameDevelopmentalMonitoringTextView.setText(name);
+            holder.nameDevelopmentalMonitoringTextView.setPaintFlags(holder.nameDevelopmentalMonitoringTextView.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+        }else if(id.equals("exam")){
+            List<examinationItems> lists = (List<examinationItems>) list;
+            String name = lists.get(position).getName();
+            int details = lists.get(position).getDetails();
+            if(details==1){
+                holder.nameExamintionTextView.setText(name + " : Normal");
+            }else if(details==2){
+                holder.nameExamintionTextView.setText(name + " : Monitoring");
+            }else{
+                holder.nameExamintionTextView.setText(name + " : Reference");
+            }
         }
     }
 
@@ -114,7 +137,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         this.listener = listener;
     }
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView illnessName, illnessDetails, examinationListItemText, developmentalListItemText, ageTextView, dateTextView;
+        private TextView illnessName, illnessDetails, examinationListItemText, developmentalListItemText, ageTextView, dateTextView,
+                    nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExamintionTextView;
         private Switch switches;
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
@@ -213,6 +237,11 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 dateTextView = itemView.findViewById(R.id.dateTextView);
                 developmentsRelativeLayout = itemView.findViewById(R.id.developmentsRelativeLayout);
                 developmentsRelativeLayout.setOnClickListener(this);
+            }else if(id.equals("developmentalMonitoring")){
+                nameDevelopmentalMonitoringTextView = itemView.findViewById(R.id.nameShowDevelopmentsDevelopmentalMonitoringTextView);
+                detailsDevelopmentalMonitoringTextView = itemView.findViewById(R.id.detailsShowDevelopmentsDevelopmentalMonitoringTextView);
+            }else if(id.equals("exam")){
+                nameExamintionTextView = itemView.findViewById(R.id.nameAndDetailsShowDevelopmentsExaminationTextView);
             }
         }
 

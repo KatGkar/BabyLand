@@ -30,9 +30,9 @@ public class showDevelopmentsList extends AppCompatActivity {
     private ArrayList<Development> developments;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private RecyclerView developmentsRecyclerView;
+    private RecyclerView developmentsRecyclerView, developmentalMonitoringRecyclerView, examinationRecyclerView;
     private recyclerAdapter.recyclerVewOnClickListener listener;
-    private TextView ageText,weightText, lengthText, dateText;
+    private TextView ageText,weightText, lengthText, dateText, headCircumferenceText;
     private RelativeLayout developmentLayout;
 
 
@@ -52,6 +52,9 @@ public class showDevelopmentsList extends AppCompatActivity {
         lengthText = findViewById(R.id.lengthTextViewShow);
         weightText = findViewById(R.id.weightTextViewShow);
         dateText = findViewById(R.id.dateTextViewShow);
+        headCircumferenceText = findViewById(R.id.headCircumferenceTextViewShow);
+        developmentalMonitoringRecyclerView = findViewById(R.id.developmentalMonitoringRecyclerView);
+        examinationRecyclerView = findViewById(R.id.examinationRecyclerView);
 
         //setting lists
         developments = new ArrayList<>();
@@ -114,11 +117,23 @@ public class showDevelopmentsList extends AppCompatActivity {
                 developmentsRecyclerView.setVisibility(View.INVISIBLE);
                 developmentLayout.setVisibility(View.VISIBLE);
                 Development dev = developments.get(position);
-                ageText.setText(dev.getAge() + " " + dev.getAgeType());
-                lengthText.setText(dev.getLength());
-                dateText.setText(dev.getMeasurementDate());
-                weightText.setText(dev.getWeight());
-
+                ageText.setText("Age: " + dev.getAge() + " " + dev.getAgeType());
+                lengthText.setText("Length: " + dev.getLength());
+                dateText.setText("Measurement Date: " +dev.getMeasurementDate());
+                weightText.setText("Weight: " + dev.getWeight());
+                headCircumferenceText.setText("Head Circumference: " + dev.getHeadCircumference());
+                //developmental monitoring info
+                recyclerAdapter adapter = new recyclerAdapter(listener, dev.getDevelopmentalMonitoring(), "developmentalMonitoring");
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                developmentalMonitoringRecyclerView.setLayoutManager(layoutManager);
+                developmentalMonitoringRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                developmentalMonitoringRecyclerView.setAdapter(adapter);
+                //examination info
+                adapter = new recyclerAdapter(listener, dev.getExamination(), "exam");
+                layoutManager = new LinearLayoutManager(getApplicationContext());
+                examinationRecyclerView.setLayoutManager(layoutManager);
+                examinationRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                examinationRecyclerView.setAdapter(adapter);
             }
         };
     }

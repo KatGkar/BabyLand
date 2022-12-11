@@ -23,54 +23,73 @@
                 android:id="@+id/weightTextViewShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="124dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="20dp"
                 android:text="weight"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.437"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/dateTextViewShow" />
 
             <TextView
                 android:id="@+id/lengthTextViewShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="20dp"
                 android:text="length"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.433"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/weightTextViewShow" />
+                app:layout_constraintStart_toEndOf="@+id/weightTextViewShow"
+                app:layout_constraintTop_toBottomOf="@+id/ageTextViewShow" />
 
             <TextView
                 android:id="@+id/dateTextViewShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="32dp"
                 android:text="date"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.467"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lengthTextViewShow" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/ageTextViewShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="72dp"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="32dp"
                 android:text="ageText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.448"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dateTextViewShow" />
+                app:layout_constraintStart_toEndOf="@+id/dateTextViewShow"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ListView
-                android:id="@+id/tView"
-                android:layout_width="308dp"
-                android:layout_height="283dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+            <TextView
+                android:id="@+id/headCircumferenceTextViewShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:text="headCircumference"
+                app:layout_constraintStart_toEndOf="@+id/lengthTextViewShow"
                 app:layout_constraintTop_toBottomOf="@+id/ageTextViewShow" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/developmentalMonitoringRecyclerView"
+                android:layout_width="307dp"
+                android:layout_height="164dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="36dp"
+                android:background="#C2EABF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.147"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lengthTextViewShow" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/examinationRecyclerView"
+                android:layout_width="299dp"
+                android:layout_height="176dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.507"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/developmentalMonitoringRecyclerView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
