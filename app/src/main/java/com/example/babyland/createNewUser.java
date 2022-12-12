@@ -38,7 +38,7 @@ import java.util.Locale;
 public class createNewUser extends AppCompatActivity {
 
     private TextView userProfile;
-    private EditText nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne;
+    private EditText nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, dateOfBirthParentOne;
     public String[] bloodType = {"Blood Type", "A RhD positive (A+)","A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
 
@@ -50,6 +50,7 @@ public class createNewUser extends AppCompatActivity {
     DatabaseReference reference;
     Boolean flagUnique;
     ImageView bab;
+    private String emailParentOne;
 
 
     @Override
@@ -63,7 +64,6 @@ public class createNewUser extends AppCompatActivity {
         surnameParentOne = findViewById(R.id.surnameParentOne);
         amkaParentOne = findViewById(R.id.amkaParentOne);
         phoneNumberParentOne = findViewById(R.id.phoneNumberParentOne);
-        emailAddressParentOne = findViewById(R.id.emailParetntOne);
         calendar = findViewById(R.id.calendarView);
         calendarButton = findViewById(R.id.calendarButtonOnParentOne);
         infoRelativeLayout = findViewById(R.id.relativeLayoutParentOne);
@@ -72,8 +72,11 @@ public class createNewUser extends AppCompatActivity {
         bab = findViewById(R.id.imageView2);
 
         bab.setImageResource(R.drawable.baby_girl);
+
         //setting database
         database = FirebaseDatabase.getInstance();
+        emailParentOne = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
 
 
 
@@ -122,6 +125,9 @@ public class createNewUser extends AppCompatActivity {
             }
         });
 
+
+
+
         //getting date of the calendar
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -158,10 +164,10 @@ public class createNewUser extends AppCompatActivity {
 
                     }else {
                         //if date selected is now or if date selected is before date now
-                        month++;
-                        if(month == 13){
+                       // month++;
+                       /* if(month == 13){
                             month = 12;
-                        }
+                        }*/
                         if(month<=9){
                             m = "0"+ month;
                         }else{
@@ -258,7 +264,7 @@ public class createNewUser extends AppCompatActivity {
 
                             }else {
                                 //if date selected is now or if date selected is before date now
-                                month++;
+                                //month++;
                                 if(month==13){
                                     month=12;
                                 }
@@ -313,7 +319,7 @@ public class createNewUser extends AppCompatActivity {
 
     public void nextParent(View view){
         next = true;
-        /*if(TextUtils.isEmpty(nameParentOne.getText())){
+        if(TextUtils.isEmpty(nameParentOne.getText())){
             nameParentOne.setError("Please enter a name!");
             next=false;
         }
@@ -332,7 +338,7 @@ public class createNewUser extends AppCompatActivity {
         if(blood.getSelectedItem().equals("Blood Type")){
             ((TextView)blood.getSelectedView()).setError("Please choose a blood type!");
             next=false;
-        }*/
+        }
         findIfUnique();
 
     }
@@ -369,7 +375,7 @@ public class createNewUser extends AppCompatActivity {
             myIntent.putExtra("surname", surnameParentOne.getText().toString());
             myIntent.putExtra("amka", amkaParentOne.getText().toString());
             myIntent.putExtra("phoneNumber", phoneNumberParentOne.getText().toString());
-            myIntent.putExtra("email", emailAddressParentOne.getText().toString());
+            myIntent.putExtra("email", emailParentOne);
             myIntent.putExtra("birthDate", dateOfBirthParentOne.getText().toString());
             myIntent.putExtra("bloodType", blood.getSelectedItem().toString());
             this.startActivity(myIntent);

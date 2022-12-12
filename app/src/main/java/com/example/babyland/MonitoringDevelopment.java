@@ -46,7 +46,7 @@ import java.util.Locale;
 
 public class MonitoringDevelopment extends AppCompatActivity {
     private TextView dateText;
-    private EditText ageText, weightText, lengthText, headCircumferenceText, doctorText, sustenanceEditText, observationText;
+    private EditText weightText, lengthText, headCircumferenceText, doctorText, observationText;
     private ArrayList<developmentalItems> developmentalMonitoring;
     private ArrayList<examinationItems> examination;
     private ArrayList<sustenanceItems> sustenance;
@@ -75,7 +75,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
 
         //finding views on layout
         dateText = findViewById(R.id.dateText);
-        ageText = findViewById(R.id.ageText);
         weightText = findViewById(R.id.weightText);
         lengthText = findViewById(R.id.lengthText);
         headCircumferenceText = findViewById(R.id.headCircumferenceText);
@@ -88,7 +87,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
         generalLayout = findViewById(R.id.generalLayout);
         calendarView = findViewById(R.id.calendar);
         sustenanceLayout = findViewById(R.id.sustenanceLayout);
-        sustenanceEditText = findViewById(R.id.sustenanceText);
         recyclerViewExamination = findViewById(R.id.recyclerViewExamination);
         examinationLayout = findViewById(R.id.examinationLayout);
         recyclerViewDevelopmental = findViewById(R.id.recyclerViewDevelopmental);
@@ -115,6 +113,8 @@ public class MonitoringDevelopment extends AppCompatActivity {
         examinationLayout.setVisibility(View.INVISIBLE);
         developmentalLayout.setVisibility(View.INVISIBLE);
 
+        //get devs on firebase
+        monitoringDevNumber = getDevNumber();
 
         //setting hint in date
         //getting current date
@@ -421,9 +421,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
     public void saveDevelopment(View view) throws ParseException {
         Boolean error = false;
         int examinationError = 0, developmentalError = 0, sustenanceError=0;
-        if (TextUtils.isEmpty(ageText.getText())) {
-            error = true;
-        }
         if (TextUtils.isEmpty(lengthText.getText())) {
             error = true;
         }
@@ -461,14 +458,13 @@ public class MonitoringDevelopment extends AppCompatActivity {
         }
 
         if (!error) {
-            monitoringDevNumber = getDevNumber();
             Development dev = new Development(babyAmka, weightText.getText().toString(), lengthText.getText().toString(),
                     headCircumferenceText.getText().toString(), dateText.getText().toString(), age,
                     ageType, sustenance, examination, developmentalMonitoring, hearingSwitch.isChecked(), observationText.getText().toString(),
                     doctorText.getText().toString());
-            System.out.println(monitoringDevNumber + "_______________________________");
+            System.out.println(monitoringDevNumber);
             databaseReference = firebaseDatabase.getReference("monitoringDevelopment");
-            databaseReference.child(String.valueOf(monitoringDevNumber + 1)).setValue(dev);
+            databaseReference.child(String.valueOf(monitoringDevNumber +1)).setValue(dev);
             Intent intent = new Intent(MonitoringDevelopment.this, MainScreen.class);
             startActivity(intent);
         }
@@ -479,10 +475,11 @@ public class MonitoringDevelopment extends AppCompatActivity {
     //getting number of babies on database
     private int getDevNumber() {
         databaseReference = firebaseDatabase.getReference("monitoringDevelopment");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 monitoringDevNumber = (int) snapshot.getChildrenCount();
+                System.out.println(monitoringDevNumber);
             }
 
             @Override

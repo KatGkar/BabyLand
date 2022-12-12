@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,7 +37,8 @@ public class MainScreen extends AppCompatActivity {
     private ImageButton addBabyButton;
     private Spinner chooseChildSpinner;
     private Button addDevelopmentButton, showDevelopmentButton;
-    User user1;
+    private TextView ageTextView, statisticTextView;
+    int monthsD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class MainScreen extends AppCompatActivity {
         statisticLayout = findViewById(R.id.statisticLayout);
         addDevelopmentButton = findViewById(R.id.addDevelopmentButton);
         showDevelopmentButton = findViewById(R.id.showDevelopmentButton);
+        ageTextView = findViewById(R.id.ageMainScreenTextView);
+        statisticTextView = findViewById(R.id.statisticTextView);
 
         listKids=null;
         userFound = false;
@@ -62,12 +66,6 @@ public class MainScreen extends AppCompatActivity {
         //setting database
         database = FirebaseDatabase.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        if(user1!=null){
-            reference = database.getReference("parent");
-            System.out.println(user1.getAmka() +"--------------------------------------------------");
-            reference.child(user1.getAmka()).setValue(user1);
-        }
 
         //getting user info from database parent
         reference = database.getReference("parent");
@@ -105,48 +103,6 @@ public class MainScreen extends AppCompatActivity {
         addDevelopmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String babyAmka = chooseChildSpinner.getSelectedItem().toString();
-                String date = " ";
-
-                for (int i = 0; i < listKids.size(); i++) {
-                    if (listKids.get(i).getAmka() == babyAmka) {
-                        date = listKids.get(i).getDateOfBirth();
-                    }
-                }
-                Calendar cal = Calendar.getInstance();
-                int yearNow = cal.get(Calendar.YEAR);
-                int monthNow = cal.get(Calendar.MONTH) + 1;
-                int dayNow = cal.get(Calendar.DAY_OF_MONTH);
-                int i = 0;
-                String day = "", month = "", year = "";
-                for (Character c : date.toCharArray()) {
-                    if (i < 2) {
-                        day = day + c;
-                    } else if (i > 2 && i < 5) {
-                        month = month + c;
-                    } else if (i > 5 && i < 11) {
-                        year = year + c;
-                    }
-                    i++;
-                }
-                int yearOfBirth = Integer.parseInt(year);
-                int monthOfBirth = Integer.parseInt(month);
-                int dayOfBirth = Integer.parseInt(day);
-                int monthsD;
-                if (yearOfBirth == yearNow && monthOfBirth == monthNow) {
-                    if (dayNow - dayOfBirth <= 14) {
-                        monthsD = 0;
-                    } else {
-                        monthsD = 1;
-                    }
-                } else if (yearOfBirth == yearNow) {
-                    monthsD = monthNow - monthOfBirth;
-                } else {
-                    int m = 12 - monthOfBirth;
-                    int m1 = yearNow - (yearOfBirth + 1);
-                    m1 = m1 * 12;
-                    monthsD = m + m1 + monthNow;
-                }
                 String age = "";
                 String ageType = "";
                 if (monthsD == 0) {
@@ -168,13 +124,24 @@ public class MainScreen extends AppCompatActivity {
                     ageType = "months";
                     age = "12";
                 }
-
                 Intent intent = new Intent(MainScreen.this, MonitoringDevelopment.class);
-                intent.putExtra("babyAmka", babyAmka);
+                intent.putExtra("babyAmka", chooseChildSpinner.getSelectedItem().toString());
                 intent.putExtra("ageType", ageType);
                 intent.putExtra("age", age);
-                System.out.println(age + " " + ageType);
                 startActivity(intent);
+            }
+        });
+
+        chooseChildSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                findSelectedBabyAge();
+                findSelectedBabyStatistics();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -184,10 +151,12 @@ public class MainScreen extends AppCompatActivity {
     public void load(){
         if(listKids != null && !listKids.isEmpty()){
             //show panel with babies
-            //noBabyLayout.setVisibility(View.INVISIBLE);
+            ArrayAdapter<Baby> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listKids);
+            chooseChildSpinner.setAdapter(adapter);
+            findSelectedBabyAge();
+            findSelectedBabyStatistics();
             noBabyLayout.setVisibility(View.VISIBLE);
             mainScreenLayout.setVisibility(View.VISIBLE);
-            showKids();
         }else{
             if(userFound){
                 //user found with none baby
@@ -203,22 +172,90 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-    public void showKids() {
-        ArrayAdapter<Baby> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listKids);
-        chooseChildSpinner.setAdapter(adapter);
 
-        chooseChildSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    int developments=0;
+    public void findSelectedBabyStatistics(){
+        String babyAmka = chooseChildSpinner.getSelectedItem().toString();
+        developments =0;
+        reference =database.getReference("monitoringDevelopment");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-              //  showMessage("title", chooseChildSpinner.getSelectedItem().toString());
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot!=null){
+                    for(DataSnapshot snapshots : snapshot.getChildren()){
+                        GenericTypeIndicator<Development> t = new GenericTypeIndicator<Development>() {};
+                        if(snapshots.getValue(t).getAmka().equals(babyAmka)){
+                            developments++;
+                        }
+                    }
+                    statisticTextView.setText(String.valueOf(developments));
+                }
+
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
+
+
+
+    public void findSelectedBabyAge(){
+        String babyAmka = chooseChildSpinner.getSelectedItem().toString();
+        String date = " ";
+
+        for (int i = 0; i < listKids.size(); i++) {
+            if (listKids.get(i).getAmka() == babyAmka) {
+                date = listKids.get(i).getDateOfBirth();
+            }
+        }
+        Calendar cal = Calendar.getInstance();
+        int yearNow = cal.get(Calendar.YEAR);
+        int monthNow = cal.get(Calendar.MONTH) + 1;
+        int dayNow = cal.get(Calendar.DAY_OF_MONTH);
+        int i = 0;
+        String day = "", month = "", year = "";
+        for (Character c : date.toCharArray()) {
+            if (i < 2) {
+                day = day + c;
+            } else if (i > 2 && i < 5) {
+                month = month + c;
+            } else if (i > 5 && i < 11) {
+                year = year + c;
+            }
+            i++;
+        }
+        int yearOfBirth = Integer.parseInt(year);
+        int monthOfBirth = Integer.parseInt(month);
+        int dayOfBirth = Integer.parseInt(day);
+        if (yearOfBirth == yearNow && monthOfBirth == monthNow) {
+            if (dayNow - dayOfBirth <= 14) {
+                monthsD = 0;
+            } else {
+                monthsD = 1;
+            }
+        } else if (yearOfBirth == yearNow) {
+            monthsD = monthNow - monthOfBirth;
+        } else {
+            int m = 12 - monthOfBirth;
+            int m1 = yearNow - (yearOfBirth + 1);
+            m1 = m1 * 12;
+            monthsD = m + m1 + monthNow;
+        }
+        String age;
+        String ageType;
+        if (monthsD == 0) {
+            ageType = "weeks";
+            age = "1-2";
+        } else {
+            ageType = "months";
+            age = String.valueOf(monthsD);
+        }
+        ageTextView.setText(age +" " + ageType);
+    }
+
 
     //button to show development
     public void showDevelopment(View view){

@@ -2,8 +2,6 @@
 //  1 comes when date1 is higher then date2
 // -1 comes when date1 is lower then date2
 
-
-
 createNewUser
 screen app when keyboard shows ???
 name and surname only english letters???
@@ -14,25 +12,39 @@ check if parent exists already
 nextParent 
 messages watch out for second time click on buttons skip and save
 
-
 Registerrrr	there is no register page for email and password login
 
 check date on addBaby
 
-
 check on next parent create 
 
-on textViews only numbers no .,';[
-
+## on textViews only numbers no .,';[ 
 
 check user signed in
 
-on create user no need for email input
-
 on create next parent change name in database
 
+go back on some pages not back back 
+
+doctor side on app
+
+baby delete
+
+διαγράμματα 
+
+main screen details
+
+main screen on baby change change statistics
 
 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
+
+
+---------------------------------------------
+Check dates and calendars
+FrontEnd
+Facebook google sign in
+check code
+
 
 
 
