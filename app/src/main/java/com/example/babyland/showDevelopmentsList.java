@@ -33,7 +33,7 @@ public class showDevelopmentsList extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private RecyclerView developmentsRecyclerView, developmentalMonitoringRecyclerView, examinationRecyclerView, sustenanceRecyclerView;
     private recyclerAdapter.recyclerVewOnClickListener listener;
-    private TextView ageText,weightText, lengthText, dateText, headCircumferenceText, doctorTextView, observationsTextView;
+    private TextView ageText,weightText, lengthText, dateText, headCircumferenceText, doctorTextView, observationsTextView, noDevelopmentTextView;
     private RelativeLayout developmentLayout;
     private Switch hearingSwitch;
 
@@ -61,6 +61,7 @@ public class showDevelopmentsList extends AppCompatActivity {
         doctorTextView = findViewById(R.id.doctorShowDevelopmentsTextView);
         sustenanceRecyclerView = findViewById(R.id.sustenanceRecyclerView);
         observationsTextView = findViewById(R.id.observationsShowDevelopmentsTextView);
+        noDevelopmentTextView = findViewById(R.id.noDevelopmentTextView);
 
         //setting lists
         developments = new ArrayList<>();
@@ -68,6 +69,7 @@ public class showDevelopmentsList extends AppCompatActivity {
         //setting visibilities
         developmentLayout.setVisibility(View.INVISIBLE);
         developmentsRecyclerView.setVisibility(View.VISIBLE);
+        noDevelopmentTextView.setVisibility(View.INVISIBLE);
 
         //setting database
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -91,7 +93,13 @@ public class showDevelopmentsList extends AppCompatActivity {
                             developments.add(snapshots.getValue(t));
                         }
                     }
-                    setAdapter();
+                    if(developments.isEmpty()){
+                        noDevelopmentTextView.setVisibility(View.VISIBLE);
+                        noDevelopmentTextView.setText("No development for choosen child has been found!");
+                    }else{
+                        setAdapter();
+                    }
+
                 }
 
             }
@@ -114,6 +122,16 @@ public class showDevelopmentsList extends AppCompatActivity {
         developmentsRecyclerView.setAdapter(adapter);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if(developmentLayout.getVisibility() == View.VISIBLE){
+            developmentLayout.setVisibility(View.INVISIBLE);
+            developmentsRecyclerView.setVisibility(View.VISIBLE);
+        }else {
+            super.onBackPressed();
+        }
+    }
 
     //click listener to show developments details
     private void setOnClickListener() {

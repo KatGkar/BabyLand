@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -309,6 +310,14 @@ public class createNewUser extends AppCompatActivity {
 
     }
 
+
+
+
+    @Override
+    public void onBackPressed() {
+       Intent intent = new Intent(createNewUser.this, LoginRegister.class);
+       startActivity(intent);
+    }
 
     //showing messages to users
     public void showMessage(String title, String message){

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/deleteChildRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/sexImageViewDeleteChild"
+                android:layout_width="90dp"
+                android:layout_height="82dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baby_girl" />
+
+            <TextView
+                android:id="@+id/birthDateTextViewDeleteChild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="32dp"
+                android:text="BirthDate"
+                app:layout_constraintStart_toEndOf="@+id/sexImageViewDeleteChild"
+                app:layout_constraintTop_toBottomOf="@+id/nameTextViewDeleteChild" />
+
+            <TextView
+                android:id="@+id/amkaTextViewDeleteChild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="28dp"
+                android:text="amka"
+                app:layout_constraintStart_toEndOf="@+id/nameTextViewDeleteChild"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/ageTextViewDeleteChild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="32dp"
+                android:text="age"
+                app:layout_constraintStart_toEndOf="@+id/birthDateTextViewDeleteChild"
+                app:layout_constraintTop_toBottomOf="@+id/amkaTextViewDeleteChild" />
+
+            <TextView
+                android:id="@+id/nameTextViewDeleteChild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="28dp"
+                android:text="name"
+                app:layout_constraintStart_toEndOf="@+id/sexImageViewDeleteChild"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

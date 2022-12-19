@@ -44,8 +44,8 @@ public class nextParent extends AppCompatActivity{
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
     String UID;
     CalendarView calendar;
-    Button calendarButton;
-    RelativeLayout infoRelativeLayout;
+    Button calendarButton, yesButton, noButton;
+    RelativeLayout infoRelativeLayout, messageRelativeLayout;
     FirebaseDatabase database;
     DatabaseReference reference;
     int parentNumber;
@@ -86,7 +86,18 @@ public class nextParent extends AppCompatActivity{
         infoRelativeLayout = findViewById(R.id.relativeLayoutParentTwo);
         dateOfBirthParentTwo = findViewById(R.id.birthDateParentTwo);
         bloodTypeParentTwo = findViewById(R.id.bloodTypeParentTwo);
+        messageRelativeLayout = findViewById(R.id.messageRelativeLayout);
+        yesButton = findViewById(R.id.yesButton);
+        noButton = findViewById(R.id.noButton);
 
+
+        //builder
+        builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+
+        //setting visibilities
+        infoRelativeLayout.setVisibility(View.VISIBLE);
+        messageRelativeLayout.setVisibility(View.INVISIBLE);
+        calendar.setVisibility(View.INVISIBLE);
 
         //getting user UID from database
         UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -111,8 +122,6 @@ public class nextParent extends AppCompatActivity{
                 .append(dd).append(" ").append("/").append(mm + 1).append("/")
                 .append(yy));
 
-        calendar.setVisibility(View.INVISIBLE);
-        infoRelativeLayout.setVisibility(View.VISIBLE);
 
 
         //onclick listener for calendar opening
@@ -201,7 +210,28 @@ public class nextParent extends AppCompatActivity{
             }
         });
 
-
+        yesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                u1 = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, user.getAmka(), true, kids);//, UID);
+                reference = FirebaseDatabase.getInstance().getReference("parent");
+                reference.child(UID).setValue(u1);
+                for(int i=0;i<=10;i++){
+                    System.out.println(i);
+                }
+                nextParent.this.finish();
+                Intent in = new Intent(nextParent.this, MainScreen.class);
+                startActivity(in);
+            }
+        });
+        noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                go = true;
+                messageRelativeLayout.setVisibility(View.INVISIBLE);
+                infoRelativeLayout.setVisibility(View.VISIBLE);
+            }
+        });
 
 
     }
@@ -302,53 +332,14 @@ public class nextParent extends AppCompatActivity{
             }
         });
     }
+
     Boolean go;
+    private androidx.appcompat.app.AlertDialog.Builder builder;
     public void goToNext() {
         go = false;
         if (!flagUnique) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(nextParent.this);
-            builder.setMessage("Do you want to exit ?");
-            builder.setTitle("Alert !");
-            builder.setCancelable(false);
-            builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
-                dialog.dismiss();
-               doSomething();
-            });
-            builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
-                dialog.cancel();
-            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-
-            /*DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            //Yes button clicked
-                            //take parent two amka from database
-                            u1 = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, user.getAmka(), true, kids);//, UID);
-                            reference = database.getReference("parent");
-                            reference.child(UID).setValue(u1);
-                            //go to app main screen
-                            System.out.println("________________________________________________");
-                            try {
-                                dialog.dismiss();
-                                Intent intent = new Intent(getBaseContext(), MainScreen.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                getBaseContext().startActivity(intent);
-                            }catch (Exception e){
-                                System.out.println(e.getMessage());
-                            }
-                            System.out.println("------------------------------------------------------");
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            //No button clicked
-                            //Do nothing
-                            go = true;
-                    }
-                }
-            };*/
-
+            infoRelativeLayout.setVisibility(View.INVISIBLE);
+            messageRelativeLayout.setVisibility(View.VISIBLE);
         }
         if (next && flagUnique && go) {
             //if there are empty textBoxes show message
@@ -370,12 +361,6 @@ public class nextParent extends AppCompatActivity{
         }
     }
 
-    public void doSomething(){
-
-        u1 = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, user.getAmka(), true, kids);//, UID);
-        Intent in = new Intent(this, MainScreen.class);
-        startActivity(in);
-    }
 
 
 

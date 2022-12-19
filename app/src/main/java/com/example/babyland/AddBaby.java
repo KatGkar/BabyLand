@@ -166,7 +166,7 @@ public class AddBaby extends AppCompatActivity {
                         }
                         cal.set(Calendar.MONTH, month-1);
 
-                        year = (year<2010)?2010:(year>2023)?2022:year;
+                        year = (year<2019)?2019:(year>2023)?2022:year;
                         cal.set(Calendar.YEAR, year);
 
                         day = (day>cal.getActualMaximum(Calendar.DATE))?cal.getActualMaximum((Calendar.DATE)):day;

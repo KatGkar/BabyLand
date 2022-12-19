@@ -67,6 +67,8 @@ public class FamilyHistoryInput extends AppCompatActivity {
         //getting babies on database
         babyNumber = getBabyNumber();
 
+
+
         //getting parents amka
         getParentAmka();
 

@@ -211,17 +211,21 @@ public class MonitoringDevelopment extends AppCompatActivity {
         });
 
 
+        examination.clear();
+        sustenance.clear();
+        developmentalMonitoring.clear();
+        getData("examination");
+        getData("sustenance");
+        getData("developmental");
+
         //sustenance button
         sustenanceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 generalLayout.setVisibility(View.INVISIBLE);
                 sustenanceLayout.setVisibility(View.VISIBLE);
-                sustenance.clear();
-                getData("sustenance");
             }
         });
-
 
         //examination button
         examinationButton.setOnClickListener(new View.OnClickListener() {
@@ -229,11 +233,8 @@ public class MonitoringDevelopment extends AppCompatActivity {
             public void onClick(View v) {
                 generalLayout.setVisibility(View.INVISIBLE);
                 examinationLayout.setVisibility(View.VISIBLE);
-                examination.clear();
-                getData("examination");
             }
         });
-
 
         //Developmental monitoring button
         developmentalMonitoringButton.setOnClickListener(new View.OnClickListener() {
@@ -241,8 +242,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
             public void onClick(View v) {
                 generalLayout.setVisibility(View.INVISIBLE);
                 developmentalLayout.setVisibility(View.VISIBLE);
-                developmentalMonitoring.clear();
-                getData("developmental");
             }
         });
 
@@ -256,22 +255,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
         });
     }
 
-    //back buttons
-    public void backButton(View view) {
-        if (view == findViewById(R.id.backButtonObservations)) {
-            observationsLayout.setVisibility(View.INVISIBLE);
-            generalLayout.setVisibility(View.VISIBLE);
-        } else if (view == findViewById(R.id.backButtonExamination)) {
-            examinationLayout.setVisibility(View.INVISIBLE);
-            generalLayout.setVisibility(View.VISIBLE);
-        } else if (view == findViewById(R.id.backButtonSustenance)) {
-            sustenanceLayout.setVisibility(View.INVISIBLE);
-            generalLayout.setVisibility(View.VISIBLE);
-        } else if (view == findViewById(R.id.backButtonDevelopmental)) {
-            developmentalLayout.setVisibility(View.INVISIBLE);
-            generalLayout.setVisibility(View.VISIBLE);
-        }
-    }
 
 
     //showing messages to users
@@ -320,6 +303,25 @@ public class MonitoringDevelopment extends AppCompatActivity {
                     sustenance.get(position).setChecked(value);
                 }
             });
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (sustenanceLayout.getVisibility() == View.VISIBLE) {
+            sustenanceLayout.setVisibility(View.INVISIBLE);
+            generalLayout.setVisibility(View.VISIBLE);
+        } else if (examinationLayout.getVisibility() == View.VISIBLE) {
+            examinationLayout.setVisibility(View.INVISIBLE);
+            generalLayout.setVisibility(View.VISIBLE);
+        } else if (developmentalLayout.getVisibility() == View.VISIBLE) {
+            developmentalLayout.setVisibility(View.INVISIBLE);
+            generalLayout.setVisibility(View.VISIBLE);
+        } else if (observationsLayout.getVisibility() == View.VISIBLE) {
+            observationsLayout.setVisibility(View.INVISIBLE);
+            generalLayout.setVisibility(View.VISIBLE);
+        } else {
+            super.onBackPressed();
         }
     }
 
