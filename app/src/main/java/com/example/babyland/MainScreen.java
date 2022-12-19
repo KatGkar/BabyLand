@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,9 +39,10 @@ public class MainScreen extends AppCompatActivity {
     private RelativeLayout noBabyLayout, mainScreenLayout, statisticLayout;
     private ImageButton addBabyButton;
     private Spinner chooseChildSpinner;
-    private Button addDevelopmentButton, showDevelopmentButton;
+    private Button addDevelopmentButton, showDevelopmentButton, deleteChildButton;
     private TextView ageTextView, statisticTextView;
     int monthsD;
+    int developments=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +59,12 @@ public class MainScreen extends AppCompatActivity {
         showDevelopmentButton = findViewById(R.id.showDevelopmentButton);
         ageTextView = findViewById(R.id.ageMainScreenTextView);
         statisticTextView = findViewById(R.id.statisticTextView);
+        deleteChildButton = findViewById(R.id.deleteChildButton);
 
-        listKids=null;
+        listKids= new ArrayList<>();
         userFound = false;
+
+
 
         //getting visibilities on xml file
         noBabyLayout.setVisibility(View.INVISIBLE);
@@ -69,8 +76,9 @@ public class MainScreen extends AppCompatActivity {
 
         //getting user info from database parent
         reference = database.getReference("parent");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+               // reference.addValueEventListener(new ValueEventListener() {
+        @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot!=null){
                     for(DataSnapshot snapshots : snapshot.getChildren()){
@@ -82,7 +90,7 @@ public class MainScreen extends AppCompatActivity {
                         }
                     }
                 }
-                load();
+               load();
             }
 
             @Override
@@ -99,6 +107,15 @@ public class MainScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        deleteChildButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), deleteChildActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         addDevelopmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +165,35 @@ public class MainScreen extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reference = database.getReference("parent");
+        reference.addValueEventListener(new ValueEventListener() {
+            // reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot!=null){
+                    for(DataSnapshot snapshots : snapshot.getChildren()){
+                        String UID = snapshots.getKey();
+                        if (UID.equals(currentUser)) {
+                            userFound = true;
+                            GenericTypeIndicator<ArrayList<Baby>> t = new GenericTypeIndicator<ArrayList<Baby>>(){};
+                            listKids = snapshots.child("kids").getValue(t);
+                        }
+                    }
+                }
+                load();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     public void load(){
         if(listKids != null && !listKids.isEmpty()){
             //show panel with babies
@@ -155,8 +201,6 @@ public class MainScreen extends AppCompatActivity {
             chooseChildSpinner.setAdapter(adapter);
             findSelectedBabyAge();
             findSelectedBabyStatistics();
-            noBabyLayout.setVisibility(View.VISIBLE);
-            mainScreenLayout.setVisibility(View.VISIBLE);
         }else{
             if(userFound){
                 //user found with none baby
@@ -172,8 +216,6 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-
-    int developments=0;
     public void findSelectedBabyStatistics(){
         String babyAmka = chooseChildSpinner.getSelectedItem().toString();
         developments =0;
@@ -205,7 +247,6 @@ public class MainScreen extends AppCompatActivity {
     public void findSelectedBabyAge(){
         String babyAmka = chooseChildSpinner.getSelectedItem().toString();
         String date = " ";
-
         for (int i = 0; i < listKids.size(); i++) {
             if (listKids.get(i).getAmka() == babyAmka) {
                 date = listKids.get(i).getDateOfBirth();
@@ -254,6 +295,9 @@ public class MainScreen extends AppCompatActivity {
             age = String.valueOf(monthsD);
         }
         ageTextView.setText(age +" " + ageType);
+        noBabyLayout.setVisibility(View.VISIBLE);
+        mainScreenLayout.setVisibility(View.VISIBLE);
+
     }
 
 
@@ -263,10 +307,6 @@ public class MainScreen extends AppCompatActivity {
         intent.putExtra("babyAmka", chooseChildSpinner.getSelectedItem().toString());
         startActivity(intent);
     }
-
-
-
-
 
     //showing messages to users
     public void showMessage(String title, String message) {

@@ -27,6 +27,7 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
@@ -83,6 +84,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments_examination, parent, false);
         }else if(id.equals("sust")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments_sustenance, parent, false);
+        }else if(id.equals("deleteChild")){
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.child_delete, parent, false);
         }
         return new MyViewHolder(itemView, radioButtonChange, textChange, sustenanceCheck);
     }
@@ -109,10 +112,22 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             List<examinationItems> lists = (List<examinationItems>) (List<?>) list;
             String name = lists.get(position).getName();
             holder.examinationListItemText.setText(name);
+            int rad = lists.get(position).getDetails();
+            if(rad==1){
+                holder.radioButton1.setChecked(true);
+            }else if(rad==2){
+                holder.radioButton2.setChecked(true);
+            }else if(rad==3){
+                holder.radioButton3.setChecked(true);
+            }
         }else if(id.equals("developmental")){
             List<developmentalItems> lists = (List<developmentalItems>)  list;
             String name = lists.get(position).getName();
             holder.developmentalListItemText.setText(name);
+            String details = lists.get(position).getDetails();
+            if(details.length()>0) {
+                holder.developmentalEditText.setText(details);
+            }
         }else if(id.equals("developments")){
             List<Development> lists = (List<Development>) list;
             String age = lists.get(position).getAge() + " " + lists.get(position).getAgeType();
@@ -143,12 +158,73 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             List<sustenanceItems> lists = (List<sustenanceItems>) list;
             String name  = lists.get(position).getName();
             holder.checkedSustenanceMonitoring.setText(name);
+            Boolean v = lists.get(position).getChecked();
+            holder.checkedSustenanceMonitoring.setChecked(v);
         }else if(id.equals("sust")){
             List<sustenanceItems> lists = (List<sustenanceItems>) list;
             String name = lists.get(position).getName();
             Boolean value = lists.get(position).getChecked();
             holder.checkShowDevelopments.setText(name);
             holder.checkShowDevelopments.setChecked(value);
+        }else if(id.equals("deleteChild")){
+            List<Baby> lists = (List<Baby>) list;
+            String name = lists.get(position).getName();
+            String birthDate = lists.get(position).getDateOfBirth();
+            String amka = lists.get(position).getAmka();
+            String sex = lists.get(position).getSex();
+            holder.nameTextViewDelete.setText(name);
+            holder.birthDateTextViewDelete.setText(birthDate);
+            holder.amkaTextViewDelete.setText(amka);
+            if(sex.equals("BOY")){
+                Picasso.get().load(R.drawable.boy).into(holder.sexImageViewDelete);
+            }else{
+                Picasso.get().load(R.drawable.baby_girl).into(holder.sexImageViewDelete);
+            }
+            int monthsD;
+            Calendar cal = Calendar.getInstance();
+            int yearNow = cal.get(Calendar.YEAR);
+            int monthNow = cal.get(Calendar.MONTH) + 1;
+            int dayNow = cal.get(Calendar.DAY_OF_MONTH);
+            int i = 0;
+            String day = "", month = "", year = "";
+            for (Character c : birthDate.toCharArray()) {
+                if (i < 2) {
+                    day = day + c;
+                } else if (i > 2 && i < 5) {
+                    month = month + c;
+                } else if (i > 5 && i < 11) {
+                    year = year + c;
+                }
+                i++;
+            }
+            int yearOfBirth = Integer.parseInt(year);
+            int monthOfBirth = Integer.parseInt(month);
+            int dayOfBirth = Integer.parseInt(day);
+            if (yearOfBirth == yearNow && monthOfBirth == monthNow) {
+                if (dayNow - dayOfBirth <= 14) {
+                    monthsD = 0;
+                } else {
+                    monthsD = 1;
+                }
+            } else if (yearOfBirth == yearNow) {
+                monthsD = monthNow - monthOfBirth;
+            } else {
+                int m = 12 - monthOfBirth;
+                int m1 = yearNow - (yearOfBirth + 1);
+                m1 = m1 * 12;
+                monthsD = m + m1 + monthNow;
+            }
+            String age;
+            String ageType;
+            if (monthsD == 0) {
+                ageType = "weeks";
+                age = "1-2";
+            } else {
+                ageType = "months";
+                age = String.valueOf(monthsD);
+            }
+            holder.ageTextViewDelete.setText(age +" " + ageType);
+
         }
     }
 
@@ -164,14 +240,16 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     }
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView illnessName, illnessDetails, examinationListItemText, developmentalListItemText, ageTextView, dateTextView,
-                    nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExaminationTextView;
+                    nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExaminationTextView,
+                nameTextViewDelete, amkaTextViewDelete, birthDateTextViewDelete, ageTextViewDelete;
         private Switch switches;
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
         private EditText developmentalEditText;
         private CardView card;
-        private RelativeLayout developmentsRelativeLayout;
+        private RelativeLayout developmentsRelativeLayout, deleteChildRelativeLayout;
         boolean i=true;
+        private ImageView sexImageViewDelete;
         private CheckBox checkedSustenanceMonitoring, checkShowDevelopments;
 
         public MyViewHolder(final View itemView, radioButtonChange radioButtonChange, textChange textChange, sustenanceCheck sustenanceCheck) {
@@ -281,6 +359,14 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 });
             }else if(id.equals("sust")){
                 checkShowDevelopments = itemView.findViewById(R.id.checkShowDevelopments);
+            }else if(id.equals("deleteChild")) {
+                nameTextViewDelete = itemView.findViewById(R.id.nameTextViewDeleteChild);
+                amkaTextViewDelete = itemView.findViewById(R.id.amkaTextViewDeleteChild);
+                birthDateTextViewDelete = itemView.findViewById(R.id.birthDateTextViewDeleteChild);
+                ageTextViewDelete = itemView.findViewById(R.id.ageTextViewDeleteChild);
+                sexImageViewDelete = itemView.findViewById(R.id.sexImageViewDeleteChild);
+                deleteChildRelativeLayout = itemView.findViewById(R.id.deleteChildRelativeLayout);
+                deleteChildRelativeLayout.setOnClickListener(this);
             }
         }
 

@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -72,6 +74,9 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
     FrameLayout loadingFrame;
     Handler handler = new Handler();
     TextView createUser;
+    private androidx.appcompat.app.AlertDialog.Builder builder;
+    private long pressedTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,10 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         createUser = findViewById(R.id.createNewUser);
         image = findViewById(R.id.image);
 
+        //builder
+        builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+
+
         //setting image
         Picasso.get().load(R.drawable.baby_girl).into(image);
 
@@ -95,7 +104,6 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         loadingFrame.setBackgroundColor(getResources().getColor(R.color.purple_700));
         //setting design
         createUser.setPaintFlags(createUser.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
 
 
         //check if user is writing in email textView
@@ -220,6 +228,44 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
          */
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        email.setText("");
+        email.setHint("Email");
+        password.setText("");
+        password.setHint("Password");
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+            builder.setMessage("Are you sure??").setTitle("Exit app")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            FirebaseAuth.getInstance().signOut();
+                            LoginRegister.super.onBackPressed();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //  Action for 'NO' Button
+                            dialog.cancel();
+
+                        }
+                    });
+            //Creating dialog box
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else {
+            Toast.makeText(this, "Press back again if you want to go back",
+                    Toast.LENGTH_LONG).show();
+        }
+        pressedTime = System.currentTimeMillis();
+    }
 
     public void createUser(View view){
         Intent intent = new Intent(this, RegisterUsernamePasswordActivity.class);

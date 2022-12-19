@@ -14,8 +14,6 @@ messages watch out for second time click on buttons skip and save
 
 Registerrrr	there is no register page for email and password login
 
-check date on addBaby
-
 check on next parent create 
 
 ## on textViews only numbers no .,';[ 
@@ -45,7 +43,7 @@ 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
 Check dates and calendars
 FrontEnd
 Facebook google sign in
-check code
+check code (errors, fixes, comments)
 
 
 
