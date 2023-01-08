@@ -14,17 +14,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class FamilyHistoryInput extends AppCompatActivity {
     protected RecyclerView recyclerView;
@@ -37,7 +33,7 @@ public class FamilyHistoryInput extends AppCompatActivity {
     String birthDate;
     int babyNumber;
     String currentUser;
-    private User user;
+    private Parent user;
     private Baby b;
 
     @Override
@@ -85,7 +81,6 @@ public class FamilyHistoryInput extends AppCompatActivity {
 
     //adapter to load services into the recyclerView
     private void setAdapter() {
-        setOnClickListener();
         recyclerAdapter adapter = new recyclerAdapter(listener, illnesses, "illnessInput");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -95,8 +90,6 @@ public class FamilyHistoryInput extends AppCompatActivity {
                 DividerItemDecoration.VERTICAL));
     }
 
-    private void setOnClickListener() {
-    }
 
 
     //next button
@@ -135,7 +128,7 @@ public class FamilyHistoryInput extends AppCompatActivity {
 
             }
         });
-        Intent intent = new Intent(getApplicationContext(), MainScreen.class);
+        Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
         startActivity(intent);
     }
 
@@ -168,7 +161,7 @@ public class FamilyHistoryInput extends AppCompatActivity {
                 if (snapshot != null) {
                     for (DataSnapshot snapshots : snapshot.getChildren()) {
                         String UID = snapshots.getKey();
-                        user = snapshots.getValue(User.class);
+                        user = snapshots.getValue(Parent.class);
                         if (UID.equals(currentUser)) {
                             parentOneAmka = String.valueOf(snapshots.child("amka").getValue());
                             if (Boolean.valueOf(String.valueOf(snapshots.child("partner")))) {

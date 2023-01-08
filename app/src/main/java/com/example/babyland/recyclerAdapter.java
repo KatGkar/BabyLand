@@ -75,8 +75,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.developmental_list_item, parent, false);
         }else if(id.equals("sustenance")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.sustenance_list_item, parent, false);
-        }
-        else if(id.equals("developments")){
+        } else if(id.equals("developments")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments, parent, false);
         }else if(id.equals("developmentalMonitoring")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments_developmental_monitoring, parent, false);
@@ -86,6 +85,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_developments_sustenance, parent, false);
         }else if(id.equals("deleteChild")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.child_delete, parent, false);
+        }else if(id.equals("availableChildren")){
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.available_children, parent, false);
         }
         return new MyViewHolder(itemView, radioButtonChange, textChange, sustenanceCheck);
     }
@@ -224,7 +225,18 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 age = String.valueOf(monthsD);
             }
             holder.ageTextViewDelete.setText(age +" " + ageType);
-
+        }else if(id.equals("availableChildren")){
+            List<Baby> lists = (List<Baby>) list;
+            String name = lists.get(position).getName();
+            String amka = lists.get(position).getAmka();
+            String sex = lists.get(position).getSex();
+            holder.amkaAvailableChildrenText.setText(amka);
+            holder.nameAvailableChildrenText.setText(name);
+            if(sex.equals("BOY")){
+                Picasso.get().load(R.drawable.boy).into(holder.sexAvailableChildren);
+            }else{
+                Picasso.get().load(R.drawable.baby_girl).into(holder.sexAvailableChildren);
+            }
         }
     }
 
@@ -241,15 +253,16 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView illnessName, illnessDetails, examinationListItemText, developmentalListItemText, ageTextView, dateTextView,
                     nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExaminationTextView,
-                nameTextViewDelete, amkaTextViewDelete, birthDateTextViewDelete, ageTextViewDelete;
+                    nameTextViewDelete, amkaTextViewDelete, birthDateTextViewDelete, ageTextViewDelete, amkaAvailableChildrenText,
+                    nameAvailableChildrenText;
         private Switch switches;
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
         private EditText developmentalEditText;
         private CardView card;
-        private RelativeLayout developmentsRelativeLayout, deleteChildRelativeLayout;
+        private RelativeLayout developmentsRelativeLayout, deleteChildRelativeLayout, availableChildrenRelativeLayout;
         boolean i=true;
-        private ImageView sexImageViewDelete;
+        private ImageView sexImageViewDelete, sexAvailableChildren;
         private CheckBox checkedSustenanceMonitoring, checkShowDevelopments;
 
         public MyViewHolder(final View itemView, radioButtonChange radioButtonChange, textChange textChange, sustenanceCheck sustenanceCheck) {
@@ -367,6 +380,13 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 sexImageViewDelete = itemView.findViewById(R.id.sexImageViewDeleteChild);
                 deleteChildRelativeLayout = itemView.findViewById(R.id.deleteChildRelativeLayout);
                 deleteChildRelativeLayout.setOnClickListener(this);
+            }else if(id.equals("availableChildren")){
+                nameAvailableChildrenText = itemView.findViewById(R.id.nameAvailableChildrenText);
+                amkaAvailableChildrenText = itemView.findViewById(R.id.amkaAvailableChildrenText);
+                sexAvailableChildren = itemView.findViewById(R.id.sexAvailableChildren);
+                availableChildrenRelativeLayout = itemView.findViewById(R.id.availableChildrenRelativeLayout);
+                availableChildrenRelativeLayout.setOnClickListener(this);
+
             }
         }
 

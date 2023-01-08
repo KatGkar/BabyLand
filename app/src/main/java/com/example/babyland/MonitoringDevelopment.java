@@ -1,29 +1,24 @@
 package com.example.babyland;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.ShowableListMenu;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,22 +26,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
-import java.text.FieldPosition;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class MonitoringDevelopment extends AppCompatActivity {
-    private TextView dateText;
-    private EditText weightText, lengthText, headCircumferenceText, doctorText, observationText;
+    private TextView dateText, doctorText;
+    private EditText weightText, lengthText, headCircumferenceText, observationText;
     private ArrayList<developmentalItems> developmentalMonitoring;
     private ArrayList<examinationItems> examination;
     private ArrayList<sustenanceItems> sustenance;
@@ -58,7 +47,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
     private recyclerAdapter.recyclerVewOnClickListener listener;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private String babyAmka, ageType, age;
+    private String babyAmka, ageType, age, currentUser;
     private int monitoringDevNumber;
 
 
@@ -99,6 +88,27 @@ public class MonitoringDevelopment extends AppCompatActivity {
         //setting database
         firebaseDatabase = FirebaseDatabase.getInstance();
 
+        //getting doctor's info
+        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = firebaseDatabase.getReference("doctor");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot!=null){
+                    for(DataSnapshot snapshots : snapshot.getChildren()){
+                        String UID = snapshots.getKey();
+                        if (UID.equals(currentUser)) {
+                            doctorText.setText("Dr. " + snapshots.child("surname").getValue() + " " + snapshots.child("name").getValue());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         //setting lists
         examination = new ArrayList<>();
@@ -467,7 +477,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
             System.out.println(monitoringDevNumber);
             databaseReference = firebaseDatabase.getReference("monitoringDevelopment");
             databaseReference.child(String.valueOf(monitoringDevNumber +1)).setValue(dev);
-            Intent intent = new Intent(MonitoringDevelopment.this, MainScreen.class);
+            Intent intent = new Intent(MonitoringDevelopment.this, MainScreenParents.class);
             startActivity(intent);
         }
     }

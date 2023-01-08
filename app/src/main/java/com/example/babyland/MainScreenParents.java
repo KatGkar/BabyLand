@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MainScreen extends AppCompatActivity {
+public class MainScreenParents extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference reference;
@@ -39,7 +36,7 @@ public class MainScreen extends AppCompatActivity {
     private RelativeLayout noBabyLayout, mainScreenLayout, statisticLayout;
     private ImageButton addBabyButton;
     private Spinner chooseChildSpinner;
-    private Button addDevelopmentButton, showDevelopmentButton, deleteChildButton;
+    private Button showDevelopmentButton, deleteChildButton, chartButton;
     private TextView ageTextView, statisticTextView;
     int monthsD;
     int developments=0;
@@ -47,7 +44,7 @@ public class MainScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_screen);
+        setContentView(R.layout.activity_main_screen_parents);
 
         //getting views
         noBabyLayout = findViewById(R.id.noBabyLayout);
@@ -55,11 +52,11 @@ public class MainScreen extends AppCompatActivity {
         mainScreenLayout = findViewById(R.id.mainScreenLayout);
         chooseChildSpinner = findViewById(R.id.chooseBabySpinner);
         statisticLayout = findViewById(R.id.statisticLayout);
-        addDevelopmentButton = findViewById(R.id.addDevelopmentButton);
         showDevelopmentButton = findViewById(R.id.showDevelopmentButton);
         ageTextView = findViewById(R.id.ageMainScreenTextView);
         statisticTextView = findViewById(R.id.statisticTextView);
         deleteChildButton = findViewById(R.id.deleteChildButton);
+        chartButton = findViewById(R.id.chartButton);
 
         listKids= new ArrayList<>();
         userFound = false;
@@ -77,7 +74,6 @@ public class MainScreen extends AppCompatActivity {
         //getting user info from database parent
         reference = database.getReference("parent");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
-               // reference.addValueEventListener(new ValueEventListener() {
         @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot!=null){
@@ -117,37 +113,6 @@ public class MainScreen extends AppCompatActivity {
         });
 
 
-        addDevelopmentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String age = "";
-                String ageType = "";
-                if (monthsD == 0) {
-                    ageType = "weeks";
-                    age = "1-2";
-                } else if (monthsD <= 2) {
-                    ageType = "months";
-                    age = "2";
-                } else if (monthsD == 3 || monthsD == 4) {
-                    ageType = "months";
-                    age = "4";
-                } else if (monthsD == 5 || monthsD == 6) {
-                    ageType = "months";
-                    age = "6";
-                } else if (monthsD >= 7 && monthsD <= 9) {
-                    ageType = "months";
-                    age = "9";
-                } else if (monthsD >= 10 && monthsD <= 15) {
-                    ageType = "months";
-                    age = "12";
-                }
-                Intent intent = new Intent(MainScreen.this, MonitoringDevelopment.class);
-                intent.putExtra("babyAmka", chooseChildSpinner.getSelectedItem().toString());
-                intent.putExtra("ageType", ageType);
-                intent.putExtra("age", age);
-                startActivity(intent);
-            }
-        });
 
         chooseChildSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -159,6 +124,16 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+
+        chartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainScreenParents.this, HomeScreen.class);
+                intent.putExtra("babyAmka", chooseChildSpinner.getSelectedItem().toString());
+                startActivity(intent);
             }
         });
 
@@ -199,6 +174,7 @@ public class MainScreen extends AppCompatActivity {
             //show panel with babies
             ArrayAdapter<Baby> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listKids);
             chooseChildSpinner.setAdapter(adapter);
+
             findSelectedBabyAge();
             findSelectedBabyStatistics();
         }else{
@@ -218,20 +194,22 @@ public class MainScreen extends AppCompatActivity {
 
     public void findSelectedBabyStatistics(){
         String babyAmka = chooseChildSpinner.getSelectedItem().toString();
-        developments =0;
+
         reference =database.getReference("monitoringDevelopment");
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot!=null){
+                    developments=0;
                     for(DataSnapshot snapshots : snapshot.getChildren()){
                         GenericTypeIndicator<Development> t = new GenericTypeIndicator<Development>() {};
                         if(snapshots.getValue(t).getAmka().equals(babyAmka)){
                             developments++;
                         }
                     }
-                    statisticTextView.setText(String.valueOf(developments));
                 }
+                statisticTextView.setText(String.valueOf(developments));
+                System.out.println(developments + "devssssssssssssss");
 
             }
 

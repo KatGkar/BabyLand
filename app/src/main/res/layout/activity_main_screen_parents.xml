@@ -5,7 +5,7 @@
     android:id="@+id/babyAgeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainScreen">
+    tools:context=".MainScreenParents">
 
     <RelativeLayout
         android:id="@+id/mainScreenLayout"
@@ -82,26 +82,16 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/addDevelopmentButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="76dp"
-                android:text="Add Development"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/statisticLayout" />
-
-            <Button
                 android:id="@+id/showDevelopmentButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="100dp"
                 android:onClick="showDevelopment"
                 android:text="Show development"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.524"
+                app:layout_constraintHorizontal_bias="0.561"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addDevelopmentButton" />
+                app:layout_constraintTop_toBottomOf="@+id/statisticLayout" />
 
             <Button
                 android:id="@+id/deleteChildButton"
@@ -113,6 +103,17 @@
                 app:layout_constraintHorizontal_bias="0.536"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/showDevelopmentButton" />
+
+            <Button
+                android:id="@+id/chartButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="Charts"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.527"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/deleteChildButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

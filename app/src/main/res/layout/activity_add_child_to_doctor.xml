@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".addChildToDoctor">
+
+    <RelativeLayout
+        android:id="@+id/viewChildInfoLayout"
+        android:layout_width="323dp"
+        android:layout_height="607dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/ageAddChildTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="72dp"
+                android:layout_marginTop="104dp"
+                android:text="age"
+                app:layout_constraintStart_toEndOf="@+id/amkaAddChildTextView"
+                app:layout_constraintTop_toBottomOf="@+id/nameAddChildTextView" />
+
+            <Button
+                android:id="@+id/addChildButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="112dp"
+                android:text="Add Button"
+                app:layout_constraintTop_toBottomOf="@+id/amkaAddChildTextView"
+                tools:layout_editor_absoluteX="104dp" />
+
+            <TextView
+                android:id="@+id/nameAddChildTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="64dp"
+                android:text="Name"
+                app:layout_constraintStart_toEndOf="@+id/sexAddChildImage"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/amkaAddChildTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="76dp"
+                android:text="amka"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.124"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sexAddChildImage" />
+
+            <ImageView
+                android:id="@+id/sexAddChildImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="48dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/_02_parents" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/availableChildrenLayout"
+        android:layout_width="322dp"
+        android:layout_height="605dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/searchAmkaEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="27dp"
+            android:ems="10"
+            android:hint="Search...."
+            android:inputType="textPersonName" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/availableChildrenRecyclerView"
+            android:layout_width="247dp"
+            android:layout_height="510dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="78dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginBottom="17dp" />
+
+        <ImageView
+            android:id="@+id/searchButton"
+            android:layout_width="46dp"
+            android:layout_height="44dp"
+            android:layout_alignParentTop="false"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="26dp"
+            android:layout_toEndOf="@+id/searchAmkaEditText"
+            android:onClick="searchButton"
+            app:srcCompat="@drawable/_01_doctor" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

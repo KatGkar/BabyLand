@@ -54,8 +54,9 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "createUserWithEmail:success");
                         FirebaseUser user = firebaseAuth.getCurrentUser();
-                        Intent intent = new Intent(RegisterUsernamePasswordActivity.this, MainScreen.class);
+                        Intent intent = new Intent(RegisterUsernamePasswordActivity.this, LoginRegister.class);
                         startActivity(intent);
+
                     } else {
                         // If sign in fails, display a message to the user.
                         System.out.println(task.getException().getMessage());
@@ -64,7 +65,17 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity {
             });
 
         }
+
+     /*   firebaseAuth.sendSignInLinkToEmail(email, actionCodeSettings)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Email sent.");
+                        }
+                    }
+                });    }
+
+*/
     }
-
-
 }

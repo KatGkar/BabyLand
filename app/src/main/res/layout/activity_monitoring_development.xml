@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:dateTextAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -319,20 +319,6 @@
             android:layout_marginTop="29dp"
             android:text="Sustenance" />
 
-        <EditText
-            android:id="@+id/doctorText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/observationsButton"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="31dp"
-            android:layout_marginEnd="94dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Doctor" />
-
         <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
@@ -343,6 +329,18 @@
             android:layout_marginTop="0dp"
             android:onClick="saveDevelopment"
             android:text="Save" />
+
+        <TextView
+            android:id="@+id/doctorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/observationsButton"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="149dp"
+            android:layout_marginTop="43dp"
+            android:layout_marginEnd="148dp"
+            android:text="TextView" />
 
     </RelativeLayout>
 

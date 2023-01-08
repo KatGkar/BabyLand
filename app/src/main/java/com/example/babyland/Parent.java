@@ -3,12 +3,12 @@ package com.example.babyland;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User implements Serializable {
+public class Parent implements Serializable {
     private String name, surname, amka, phoneNumber, email, dateOfBirth, bloodType, partnersAmka;
     private Boolean partner;
     private ArrayList<Baby> kids;
 
-    public User(String name, String surname, String amka, String phoneNumber, String email, String dateOfBirth, String bloodType, String partnersAmka, Boolean partner, ArrayList<Baby> kids){
+    public Parent(String name, String surname, String amka, String phoneNumber, String email, String dateOfBirth, String bloodType, String partnersAmka, Boolean partner, ArrayList<Baby> kids){
         this.name = name;
         this.surname = surname;
         this.amka = amka;
@@ -21,7 +21,7 @@ public class User implements Serializable {
         this.kids = kids;
     }
 
-    public User(User u){
+    public Parent(Parent u){
         this.name = u.getName();
         this.surname = u.getSurname();
         this.amka = u.getAmka();
@@ -34,7 +34,7 @@ public class User implements Serializable {
         this.kids = u.getKids();
     }
 
-    public User() {
+    public Parent() {
     }
 
     public ArrayList<Baby> getKids() {

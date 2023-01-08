@@ -6,35 +6,37 @@ createNewUser
 screen app when keyboard shows ???
 name and surname only english letters???
 
-nextParent and createNewUser 
-check if parent exists already
 
-nextParent 
-messages watch out for second time click on buttons skip and save
-
-Registerrrr	there is no register page for email and password login
-
-check on next parent create 
+in registe page add facebook and goggle buttons 
 
 ## on textViews only numbers no .,';[ 
 
 check user signed in
+user sign out on log out
 
 on create next parent change name in database
 
-on baby delete delete develop monitoring data
+requestFocus() on wrong info 
 
 doctor side on app
-
-on app start developments number --> errors
+--see family history
+--see developments
 
 διαγράμματα 
 
-main screen details
+on MonitoringDevelopment doctors side
+
+
+change user to parent 
+
+
+view parets on show children
+view historic on show children
+
+unique child on doctors kids
 
 multilingua 
 
-user sign out on log out
 
 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
 

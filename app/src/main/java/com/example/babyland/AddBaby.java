@@ -231,7 +231,6 @@ public class AddBaby extends AppCompatActivity {
                 if(snapshot!=null){
                     for(DataSnapshot snapshots : snapshot.getChildren()){
                         String UID = snapshots.getKey();
-                        System.out.println(UID);
                         if (UID.equals(babyAmkaText.getText().toString())) {
                             flagUnique = false;
                         }

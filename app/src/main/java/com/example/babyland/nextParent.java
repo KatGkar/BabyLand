@@ -21,16 +21,15 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -89,10 +88,6 @@ public class nextParent extends AppCompatActivity{
         messageRelativeLayout = findViewById(R.id.messageRelativeLayout);
         yesButton = findViewById(R.id.yesButton);
         noButton = findViewById(R.id.noButton);
-
-
-        //builder
-        builder = new androidx.appcompat.app.AlertDialog.Builder(this);
 
         //setting visibilities
         infoRelativeLayout.setVisibility(View.VISIBLE);
@@ -210,28 +205,6 @@ public class nextParent extends AppCompatActivity{
             }
         });
 
-        yesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                u1 = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, user.getAmka(), true, kids);//, UID);
-                reference = FirebaseDatabase.getInstance().getReference("parent");
-                reference.child(UID).setValue(u1);
-                for(int i=0;i<=10;i++){
-                    System.out.println(i);
-                }
-                nextParent.this.finish();
-                Intent in = new Intent(nextParent.this, MainScreen.class);
-                startActivity(in);
-            }
-        });
-        noButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                go = true;
-                messageRelativeLayout.setVisibility(View.INVISIBLE);
-                infoRelativeLayout.setVisibility(View.VISIBLE);
-            }
-        });
 
 
     }
@@ -241,8 +214,8 @@ public class nextParent extends AppCompatActivity{
         new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 
-    User u1;
-    User u2;
+    Parent u1;
+    Parent u2;
     Boolean next;
     //button save and next
     public void next(View view) {
@@ -285,29 +258,29 @@ public class nextParent extends AppCompatActivity{
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
                         //add parent to database
-                        User u = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne,emailAddressParentOne,dateOfBirthParentOne, bloodTypeParentOne, "00000000000",false, kids);//, UID);
+                        Parent p = new Parent(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne,emailAddressParentOne,dateOfBirthParentOne, bloodTypeParentOne, "00000000000",false, kids);//, UID);
                         reference = database.getReference("parent");
-                        reference.child(UID).setValue(u);
-                        showMessage("Success", "User created successfully!!");
+                        reference.child(UID).setValue(p);
+                        Toast.makeText(nextParent.this, "This is my Toast message!", Toast.LENGTH_LONG).show();
+                        //showMessage("Success","User created successfully!!");
                         //go to app main screen
-                        Intent intent = new Intent(getApplicationContext(), MainScreen.class);
-                        User u1=null;
-                        intent.putExtra("user", u1);
+                        Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
                         startActivity(intent);
+                        finish();
+
                     case DialogInterface.BUTTON_NEGATIVE:
                         //No button clicked
                         //Do nothing
                 }
             }
         };
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to continue without partner? If no please fill in the blanks.").setPositiveButton("Yes", dialogClickListener2)
                 .setNegativeButton("No", dialogClickListener2).show();
     }
 
 
-    User user;
+    Parent parent;
     private void findIfUnique() {
         flagUnique = true;
         reference = database.getReference("parent");
@@ -319,7 +292,7 @@ public class nextParent extends AppCompatActivity{
                         String amka = String.valueOf(snapshots.child("amka").getValue());
                         if(amkaParentTwo.getText().toString().equals(amka)){
                             flagUnique = false;
-                            user = new User(snapshots.getValue(User.class));
+                            parent = new Parent(snapshots.getValue(Parent.class));
                         }
                     }
                     goToNext();
@@ -334,32 +307,38 @@ public class nextParent extends AppCompatActivity{
     }
 
     Boolean go;
-    private androidx.appcompat.app.AlertDialog.Builder builder;
-    public void goToNext() {
-        go = false;
-        if (!flagUnique) {
-            infoRelativeLayout.setVisibility(View.INVISIBLE);
-            messageRelativeLayout.setVisibility(View.VISIBLE);
-        }
-        if (next && flagUnique && go) {
-            //if there are empty textBoxes show message
-            //add parents to database
-            u1 = new User(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, amkaParentTwo.getText().toString(), true, kids);//, UID);
-            u2 = new User(nameParentTwo.getText().toString(), surnameParentTwo.getText().toString(), amkaParentTwo.getText().toString(), phoneNumberParentTwo.getText().toString(), emailAddressParentTwo.getText().toString(), dateOfBirthParentTwo.getText().toString(), bloodTypeParentTwo.getSelectedItem().toString(), amkaParentOne, true, kids);//, null);
-            //getting number of parents on database
-            reference = database.getReference("parent");
-            reference.child(UID).setValue(u1);
-            parentNumber = getParentNumber();
-            reference.child("parent" + parentNumber).setValue(u2);
-            //go to app main screen
-            showMessage("Success", "User created successfully!!");
-            //go to app main screen
-            Intent intent = new Intent(getApplicationContext(), MainScreen.class);
-            startActivity(intent);
-        } else if (next && !flagUnique) {
+    Boolean ii=false;
+
+   public void goToNext() {
+       go = false;
+       if (!flagUnique) {
+           u1 = new Parent(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, parent.getAmka(), true, kids);//, UID);
+           reference = FirebaseDatabase.getInstance().getReference("parent");
+           reference.child(UID).setValue(u1);
+           Intent in = new Intent(getApplicationContext(), MainScreenParents.class);
+           startActivity(in);
+           //infoRelativeLayout.setVisibility(View.INVISIBLE);
+           //messageRelativeLayout.setVisibility(View.VISIBLE);
+       } else {
+           //if (next && flagUnique && go) {
+           //if there are empty textBoxes show message
+           //add parents to database
+           u1 = new Parent(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, amkaParentTwo.getText().toString(), true, kids);//, UID);
+           u2 = new Parent(nameParentTwo.getText().toString(), surnameParentTwo.getText().toString(), amkaParentTwo.getText().toString(), phoneNumberParentTwo.getText().toString(), emailAddressParentTwo.getText().toString(), dateOfBirthParentTwo.getText().toString(), bloodTypeParentTwo.getSelectedItem().toString(), amkaParentOne, true, kids);//, null);
+           //getting number of parents on database
+           reference = database.getReference("parent");
+           reference.child(UID).setValue(u1);
+           reference.child(amkaParentTwo.getText().toString()).setValue(u2);
+           //go to app main screen
+           Toast.makeText(this, "User created successfully!!", Toast.LENGTH_SHORT).show();
+           //go to app main screen
+           Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
+           startActivity(intent);
+        /*} else if (next && !flagUnique) {
             amkaParentTwo.setError("Amka should be unique");
-        }
-    }
+        }*/
+       }
+   }
 
 
 

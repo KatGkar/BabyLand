@@ -40,7 +40,7 @@ public class createNewUser extends AppCompatActivity {
 
     private TextView userProfile;
     private EditText nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, dateOfBirthParentOne;
-    public String[] bloodType = {"Blood Type", "A RhD positive (A+)","A RhD negative (A-)", "B RhD positive (B+)",
+    public String[] bloodType = {"Blood Type", "A RhD positive (A+)", "A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
 
     private Spinner blood;
@@ -49,7 +49,7 @@ public class createNewUser extends AppCompatActivity {
     RelativeLayout infoRelativeLayout;
     FirebaseDatabase database;
     DatabaseReference reference;
-    Boolean flagUnique;
+    int flagUnique;
     ImageView bab;
     private String emailParentOne;
 
@@ -79,11 +79,8 @@ public class createNewUser extends AppCompatActivity {
         emailParentOne = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
 
-
-
         //setting design
-        userProfile.setPaintFlags(userProfile.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
-
+        userProfile.setPaintFlags(userProfile.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
 
         //setting blood types in list
@@ -99,14 +96,14 @@ public class createNewUser extends AppCompatActivity {
 
         // set current date into textview
         String d = String.valueOf(dd);
-        if(dd<=9){
+        if (dd <= 9) {
             d = "0" + d;
         }
-        if(mm<12){
+        if (mm < 12) {
             mm++;
         }
         String m = String.valueOf(mm);
-        if(mm<=9){
+        if (mm <= 9) {
             m = "0" + m;
         }
         dateOfBirthParentOne.setHint(new StringBuilder()
@@ -127,15 +124,12 @@ public class createNewUser extends AppCompatActivity {
         });
 
 
-
-
         //getting date of the calendar
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
-            {
-                String m="0";
-                String d="0";
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                String m = "0";
+                String d = "0";
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
                     //date1 is selected date
@@ -144,39 +138,39 @@ public class createNewUser extends AppCompatActivity {
                     int mo = Calendar.getInstance().get(Calendar.MONTH);
                     int ye = Calendar.getInstance().get(Calendar.YEAR);
                     //date2 is date now
-                    Date date2 = sdf.parse(da + "/"+ mo+ "/" + ye);
-                    if ( date1.compareTo(date2) >0 ) {
+                    Date date2 = sdf.parse(da + "/" + mo + "/" + ye);
+                    if (date1.compareTo(date2) > 0) {
                         //if date selected is after date now
                         mo++;
-                        if(mo==13){
-                            mo=12;
+                        if (mo == 13) {
+                            mo = 12;
                         }
-                        if(mo<=9){
-                            m = "0"+ mo;
-                        }else{
+                        if (mo <= 9) {
+                            m = "0" + mo;
+                        } else {
                             m = String.valueOf(mo);
                         }
-                        if(da<=9){
-                            d = "0"+da;
-                        }else{
+                        if (da <= 9) {
+                            d = "0" + da;
+                        } else {
                             d = String.valueOf(da);
                         }
                         year = Calendar.getInstance().get(Calendar.YEAR);
 
-                    }else {
+                    } else {
                         //if date selected is now or if date selected is before date now
-                       // month++;
+                        // month++;
                        /* if(month == 13){
                             month = 12;
                         }*/
-                        if(month<=9){
-                            m = "0"+ month;
-                        }else{
+                        if (month <= 9) {
+                            m = "0" + month;
+                        } else {
                             m = String.valueOf(month);
                         }
-                        if(dayOfMonth<=9){
-                            d = "0"+dayOfMonth;
-                        }else{
+                        if (dayOfMonth <= 9) {
+                            d = "0" + dayOfMonth;
+                        } else {
                             d = String.valueOf(dayOfMonth);
                         }
                     }
@@ -193,7 +187,7 @@ public class createNewUser extends AppCompatActivity {
 
         //setting listener to format textView babyBirthDate
         dateOfBirthParentOne.addTextChangedListener(new TextWatcher() {
-            private String current="";
+            private String current = "";
             private String ddmmyyyy = "ddmmyyyy";
             private Calendar cal = Calendar.getInstance();
 
@@ -204,26 +198,26 @@ public class createNewUser extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!s.toString().equals(current)){
-                    String d="0";
-                    String m="0";
+                if (!s.toString().equals(current)) {
+                    String d = "0";
+                    String m = "0";
                     String clean = s.toString().replaceAll("[^\\d.]", "");
                     String cleanC = current.replaceAll("[^\\d.]", "");
 
                     int cl = clean.length();
                     int sel = cl;
-                    for(int i=2; i<=cl && i<6; i+=2){
+                    for (int i = 2; i <= cl && i < 6; i += 2) {
                         sel++;
                     }
-                    if(clean.equals(cleanC)){
+                    if (clean.equals(cleanC)) {
                         sel--;
                     }
-                    if(clean.length()<8){
+                    if (clean.length() < 8) {
                         clean = clean + ddmmyyyy.substring(clean.length());
-                    }else{
-                        int day = Integer.parseInt(clean.substring(0,2));
-                        int month = Integer.parseInt(clean.substring(2,4));
-                        int year = Integer.parseInt(clean.substring(4,8));
+                    } else {
+                        int day = Integer.parseInt(clean.substring(0, 2));
+                        int month = Integer.parseInt(clean.substring(2, 4));
+                        int year = Integer.parseInt(clean.substring(4, 8));
 
                        /* if(month>12){
                             month = 12;
@@ -233,7 +227,7 @@ public class createNewUser extends AppCompatActivity {
                         year = (year<1970)?1970:(year>2023)?2022:year;
                         cal.set(Calendar.YEAR, year);
 */
-                        day = (day>cal.getActualMaximum(Calendar.DATE))?cal.getActualMaximum((Calendar.DATE)):day;
+                        day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum((Calendar.DATE)) : day;
                         try {
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
                             //date1 is selected date
@@ -242,41 +236,41 @@ public class createNewUser extends AppCompatActivity {
                             int mo = Calendar.getInstance().get(Calendar.MONTH);
                             int ye = Calendar.getInstance().get(Calendar.YEAR);
                             //date2 is date now
-                            Date date2 = sdf.parse(da + "/"+ mo+ "/" + ye);
-                            if ( date1.compareTo(date2) >0 ) {
+                            Date date2 = sdf.parse(da + "/" + mo + "/" + ye);
+                            if (date1.compareTo(date2) > 0) {
                                 //if date selected is after date now
                                 mo++;
-                                if(mo==13){
-                                    mo=12;
+                                if (mo == 13) {
+                                    mo = 12;
                                 }
-                                if(mo<=9){
-                                    m = "0"+ mo;
-                                }else{
+                                if (mo <= 9) {
+                                    m = "0" + mo;
+                                } else {
                                     m = String.valueOf(mo);
                                 }
-                                if(da<=9){
-                                    d = "0"+da;
-                                }else{
+                                if (da <= 9) {
+                                    d = "0" + da;
+                                } else {
                                     d = String.valueOf(da);
                                 }
                                 day = Integer.parseInt(d);
                                 month = Integer.parseInt(m);
                                 year = Calendar.getInstance().get(Calendar.YEAR);
 
-                            }else {
+                            } else {
                                 //if date selected is now or if date selected is before date now
                                 //month++;
-                                if(month==13){
-                                    month=12;
+                                if (month == 13) {
+                                    month = 12;
                                 }
-                                if(month<=9){
-                                    m = "0"+ month;
-                                }else{
+                                if (month <= 9) {
+                                    m = "0" + month;
+                                } else {
                                     m = String.valueOf(month);
                                 }
-                                if(day<=9){
-                                    d = "0"+day;
-                                }else{
+                                if (day <= 9) {
+                                    d = "0" + day;
+                                } else {
                                     d = String.valueOf(day);
                                 }
                                 day = Integer.parseInt(d);
@@ -289,16 +283,15 @@ public class createNewUser extends AppCompatActivity {
                         }
 
 
-
                         clean = String.format("%02d%02d%02d", day, month, year);
                     }
 
-                    clean = String.format("%s/%s/%s", clean.substring(0,2), clean.substring(2,4), clean.substring(4,8));
+                    clean = String.format("%s/%s/%s", clean.substring(0, 2), clean.substring(2, 4), clean.substring(4, 8));
 
-                    sel = sel<0?0:sel;
+                    sel = sel < 0 ? 0 : sel;
                     current = clean;
                     dateOfBirthParentOne.setText(current);
-                    dateOfBirthParentOne.setSelection(sel<current.length()? sel : current.length());
+                    dateOfBirthParentOne.setSelection(sel < current.length() ? sel : current.length());
                 }
             }
 
@@ -311,58 +304,61 @@ public class createNewUser extends AppCompatActivity {
     }
 
 
-
-
+    //on back button
     @Override
     public void onBackPressed() {
-       Intent intent = new Intent(createNewUser.this, LoginRegister.class);
-       startActivity(intent);
+        Intent intent = new Intent(createNewUser.this, LoginRegister.class);
+        startActivity(intent);
     }
 
     //showing messages to users
-    public void showMessage(String title, String message){
+    public void showMessage(String title, String message) {
         new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 
     Boolean next;
 
-    public void nextParent(View view){
+    public void nextParent(View view) {
         next = true;
-        if(TextUtils.isEmpty(nameParentOne.getText())){
+        if (TextUtils.isEmpty(nameParentOne.getText())) {
             nameParentOne.setError("Please enter a name!");
-            next=false;
+            next = false;
         }
-        if(TextUtils.isEmpty(surnameParentOne.getText())){
+        if (TextUtils.isEmpty(surnameParentOne.getText())) {
             surnameParentOne.setError("Please enter a surname!");
-            next=false;
+            next = false;
         }
-        if(TextUtils.isEmpty(amkaParentOne.getText()) || (amkaParentOne.getText().length() != 11)){
+        if (TextUtils.isEmpty(amkaParentOne.getText()) || (amkaParentOne.getText().length() != 11)) {
             amkaParentOne.setError("Amka should have length 11 numbers!");
-            next=false;
+            next = false;
         }
-        if(TextUtils.isEmpty(phoneNumberParentOne.getText()) || (phoneNumberParentOne.getText().length() != 10)) {
+        if (TextUtils.isEmpty(phoneNumberParentOne.getText()) || (phoneNumberParentOne.getText().length() != 10)) {
             phoneNumberParentOne.setError("Phone number should have length 11 numbers!");
             next = false;
         }
-        if(blood.getSelectedItem().equals("Blood Type")){
-            ((TextView)blood.getSelectedView()).setError("Please choose a blood type!");
-            next=false;
+        if (blood.getSelectedItem().equals("Blood Type")) {
+            ((TextView) blood.getSelectedView()).setError("Please choose a blood type!");
+            next = false;
         }
         findIfUnique();
 
     }
 
     private void findIfUnique() {
-        flagUnique = true;
+        flagUnique = 1;
         reference = database.getReference("parent");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot != null){
-                    for(DataSnapshot snapshots : snapshot.getChildren()) {
+                if (snapshot != null) {
+                    for (DataSnapshot snapshots : snapshot.getChildren()) {
                         String amka = String.valueOf(snapshots.child("amka").getValue());
-                        if(amkaParentOne.toString().equals(amka)){
-                            flagUnique = false;
+                        if (amkaParentOne.getText().toString().equals(amka)) {
+                            if (snapshots.getKey().length() == 11) {
+                                flagUnique = 3;
+                            } else {
+                                flagUnique = 2;
+                            }
                         }
                     }
                     goToNext();
@@ -377,7 +373,7 @@ public class createNewUser extends AppCompatActivity {
     }
 
     private void goToNext() {
-        if (next && flagUnique) {
+        if (next && flagUnique == 1) {
             //next screen
             Intent myIntent = new Intent(this, nextParent.class);
             myIntent.putExtra("name", nameParentOne.getText().toString());
@@ -388,9 +384,30 @@ public class createNewUser extends AppCompatActivity {
             myIntent.putExtra("birthDate", dateOfBirthParentOne.getText().toString());
             myIntent.putExtra("bloodType", blood.getSelectedItem().toString());
             this.startActivity(myIntent);
-        }else if(!flagUnique){
+        } else if (flagUnique == 2) {
             amkaParentOne.setError("Amka should be unique");
-        }
-    }
+            amkaParentOne.requestFocus();
+        } else {
+            reference = database.getReference("parent");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot != null) {
+                        for (DataSnapshot snapshots : snapshot.getChildren()) {
+                            String amka = String.valueOf(snapshots.child("amka").getValue());
+                            if (amkaParentOne.getText().toString().equals(amka)) {
 
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+    }
 }
