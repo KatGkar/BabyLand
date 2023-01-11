@@ -35,7 +35,7 @@ public class showChildren extends AppCompatActivity {
     private RelativeLayout doctorsChildrenLayout, showChildRelativeLayout;
     private RecyclerView doctorsChildrenRecyclerView;
     private recyclerAdapter.recyclerVewOnClickListener listener;
-    private Button addDevelopmentsButton, viewParentsButton, showHistoricButton;
+    private Button addDevelopmentsButton, viewParentsButton, showDevelopmentsButton, viewFamilyHistoricButton;
     private TextView nameTextView, amkaTextView, dateOfBirthTextView;
     private ImageView sexImageView;
     private int monthsD=0;
@@ -50,11 +50,12 @@ public class showChildren extends AppCompatActivity {
         showChildRelativeLayout = findViewById(R.id.showChildRelativeLayout);
         addDevelopmentsButton = findViewById(R.id.addDevelopmentsButton);
         viewParentsButton = findViewById(R.id.viewParentsButton);
-        showHistoricButton = findViewById(R.id.showHistoricButton);
+        showDevelopmentsButton = findViewById(R.id.showDevelopmentsButton);
         amkaTextView = findViewById(R.id.amkaShowChildTextView);
         nameTextView = findViewById(R.id.nameShowCihildTextViw);
         dateOfBirthTextView = findViewById(R.id.dateOfBirthShowChildTextView);
         sexImageView = findViewById(R.id.sexShowChildImageView);
+        viewFamilyHistoricButton = findViewById(R.id.viewFamilyHistoricButton);
 
         //setting database
         database = FirebaseDatabase.getInstance();
@@ -128,10 +129,16 @@ public class showChildren extends AppCompatActivity {
                         viewParents(doctorsChildren.get(position).getAmka());
                     }
                 });
-                showHistoricButton.setOnClickListener(new View.OnClickListener() {
+                showDevelopmentsButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        showHistoric(doctorsChildren.get(position).getAmka());
+                        showDevelopments(doctorsChildren.get(position).getAmka());
+                    }
+                });
+                viewFamilyHistoricButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        viewFamilyHistoric(doctorsChildren.get(position).getAmka());
                     }
                 });
             }
@@ -211,19 +218,23 @@ public class showChildren extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     private void viewParents(String babyAmka){
         Intent intent = new Intent(showChildren.this, viewParentInfo.class);
         intent.putExtra("babyAmka", babyAmka);
         startActivity(intent);
     }
 
-    private void showHistoric(String babyAmka){
-        Intent intent = new Intent(showChildren.this, showHistoric.class);
+    private void showDevelopments(String babyAmka){
+        Intent intent = new Intent(showChildren.this, showDevelopmentsList.class);
         intent.putExtra("babyAmka", babyAmka);
         startActivity(intent);
     }
 
+    private void viewFamilyHistoric(String babyAmka){
+        Intent intent = new Intent(showChildren.this, showHistoric.class);
+        intent.putExtra("babyAmka", babyAmka);
+        startActivity(intent);
+    }
 
 
 

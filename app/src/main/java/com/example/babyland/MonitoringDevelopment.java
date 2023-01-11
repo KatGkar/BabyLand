@@ -477,8 +477,9 @@ public class MonitoringDevelopment extends AppCompatActivity {
             System.out.println(monitoringDevNumber);
             databaseReference = firebaseDatabase.getReference("monitoringDevelopment");
             databaseReference.child(String.valueOf(monitoringDevNumber +1)).setValue(dev);
-            Intent intent = new Intent(MonitoringDevelopment.this, MainScreenParents.class);
-            startActivity(intent);
+           // Intent intent = new Intent(MonitoringDevelopment.this, MainScreenParents.class);
+            //startActivity(intent);
+            onBackPressed();
         }
     }
 

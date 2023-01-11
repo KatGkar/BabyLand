@@ -23,15 +23,15 @@
                 android:layout_marginTop="28dp"
                 android:text="View Parents"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/showHistoricButton" />
+                app:layout_constraintTop_toBottomOf="@+id/showDevelopmentsButton" />
 
             <Button
-                android:id="@+id/showHistoricButton"
+                android:id="@+id/showDevelopmentsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="128dp"
+                android:layout_marginStart="100dp"
                 android:layout_marginTop="28dp"
-                android:text="Show Historic"
+                android:text="show Developments"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addDevelopmentsButton" />
 
@@ -84,6 +84,16 @@
                 android:text="Add Development"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dateOfBirthShowChildTextView" />
+
+            <Button
+                android:id="@+id/viewFamilyHistoricButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="116dp"
+                android:layout_marginTop="44dp"
+                android:text="View family historic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewParentsButton" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 

@@ -1,6 +1,7 @@
 package com.example.babyland;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -87,6 +88,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.child_delete, parent, false);
         }else if(id.equals("availableChildren")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.available_children, parent, false);
+        }else if(id.equals("familyHistoric")){
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.family_historic_view, parent, false);
         }
         return new MyViewHolder(itemView, radioButtonChange, textChange, sustenanceCheck);
     }
@@ -237,6 +240,21 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             }else{
                 Picasso.get().load(R.drawable.baby_girl).into(holder.sexAvailableChildren);
             }
+        }else if(id.equals("familyHistoric")){
+            List<FamilyHistoryIllnesses> lists = (List<FamilyHistoryIllnesses>) list;
+            String name = lists.get(position).getIllness();
+            String details = lists.get(position).getDetails();
+            Boolean active = lists.get(position).getSwitches();
+            if(active){
+                holder.illnessNameTextView.setTextColor(Color.parseColor("#00FF00"));
+                holder.illnessDetailsTextView.setText(details);
+                holder.illnessDetailsTextView.setVisibility(View.VISIBLE);
+            }else{
+                holder.illnessNameTextView.setTextColor(Color.parseColor("#FF0000"));
+                holder.illnessDetailsTextView.setVisibility(View.GONE);
+            }
+            holder.illnessNameTextView.setText(name);
+
         }
     }
 
@@ -254,7 +272,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         private TextView illnessName, illnessDetails, examinationListItemText, developmentalListItemText, ageTextView, dateTextView,
                     nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExaminationTextView,
                     nameTextViewDelete, amkaTextViewDelete, birthDateTextViewDelete, ageTextViewDelete, amkaAvailableChildrenText,
-                    nameAvailableChildrenText;
+                    nameAvailableChildrenText, illnessNameTextView, illnessDetailsTextView;
         private Switch switches;
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
@@ -386,7 +404,9 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 sexAvailableChildren = itemView.findViewById(R.id.sexAvailableChildren);
                 availableChildrenRelativeLayout = itemView.findViewById(R.id.availableChildrenRelativeLayout);
                 availableChildrenRelativeLayout.setOnClickListener(this);
-
+            }else if(id.equals("familyHistoric")) {
+                illnessNameTextView = itemView.findViewById(R.id.illnessNameTextView);
+                illnessDetailsTextView = itemView.findViewById(R.id.illnessDetailsTextView);
             }
         }
 
