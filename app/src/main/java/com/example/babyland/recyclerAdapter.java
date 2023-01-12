@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -38,11 +39,19 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     private radioButtonChange radioButtonChange;
     private textChange textChange;
     private sustenanceCheck sustenanceCheck;
+    private addVaccination addVaccination;
+
+    public interface addVaccination{
+        void addVaccine(int position);
+    }
+
+    public void addVaccination(addVaccination addVaccination){this.addVaccination = addVaccination;}
 
     public interface sustenanceCheck{
         void sustenanceChecked(int position, Boolean value);
     }
 
+    public void sustenanceCheck(sustenanceCheck sustenanceCheck){this.sustenanceCheck = sustenanceCheck;}
 
     public interface textChange {
         void textChanged(int position, String text);
@@ -60,7 +69,6 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         this.radioButtonChange = radioButtonChange;
     }
 
-    public void sustenanceCheck(sustenanceCheck sustenanceCheck){this.sustenanceCheck = sustenanceCheck;}
 
 
     @NonNull
@@ -90,6 +98,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.available_children, parent, false);
         }else if(id.equals("familyHistoric")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.family_historic_view, parent, false);
+        }else if(id.equals("addVaccination")) {
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.vaccination_add_item, parent, false);
         }
         return new MyViewHolder(itemView, radioButtonChange, textChange, sustenanceCheck);
     }
@@ -254,7 +264,16 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 holder.illnessDetailsTextView.setVisibility(View.GONE);
             }
             holder.illnessNameTextView.setText(name);
-
+        }else if(id.equals("addVaccination")) {
+            List<Vaccination> lists = (List<Vaccination>) list;
+            String name = lists.get(position).getName();
+            String date = lists.get(position).getDate();
+            int timesVac = lists.get(position).getTimesVaccinated();
+            String doctorsName = lists.get(position).getDoctorName();
+            holder.timesVaccinatedTextView.setText(timesVac);
+            holder.vaccinationDoctorTextView.setText(doctorsName);
+            holder.vaccinationNameTextView.setText(name);
+            holder.vaccinationDateTextView.setText(date);
         }
     }
 
@@ -272,14 +291,17 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         private TextView illnessName, illnessDetails, examinationListItemText, developmentalListItemText, ageTextView, dateTextView,
                     nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExaminationTextView,
                     nameTextViewDelete, amkaTextViewDelete, birthDateTextViewDelete, ageTextViewDelete, amkaAvailableChildrenText,
-                    nameAvailableChildrenText, illnessNameTextView, illnessDetailsTextView;
+                    nameAvailableChildrenText, illnessNameTextView, illnessDetailsTextView, vaccinationNameTextView,
+                    vaccinationDateTextView, timesVaccinatedTextView, vaccinationDoctorTextView;
         private Switch switches;
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
         private EditText developmentalEditText;
         private CardView card;
-        private RelativeLayout developmentsRelativeLayout, deleteChildRelativeLayout, availableChildrenRelativeLayout;
-        boolean i=true;
+        private RelativeLayout developmentsRelativeLayout, deleteChildRelativeLayout, availableChildrenRelativeLayout,
+                vaccinationRelativeLayout;
+        private boolean i=true;
+        private Button addVaccineButton;
         private ImageView sexImageViewDelete, sexAvailableChildren;
         private CheckBox checkedSustenanceMonitoring, checkShowDevelopments;
 
@@ -407,6 +429,37 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             }else if(id.equals("familyHistoric")) {
                 illnessNameTextView = itemView.findViewById(R.id.illnessNameTextView);
                 illnessDetailsTextView = itemView.findViewById(R.id.illnessDetailsTextView);
+            }else if(id.equals("addVaccination")) {
+                vaccinationNameTextView = itemView.findViewById(R.id.vaccinationNameTextView);
+                vaccinationDateTextView = itemView.findViewById(R.id.vaccinationDateTextView);
+                vaccinationDoctorTextView = itemView.findViewById(R.id.vaccinationDoctorTextView);
+                timesVaccinatedTextView = itemView.findViewById(R.id.timesVaccinatedTextView);
+                addVaccineButton = itemView.findViewById(R.id.addVaccineButton);
+                vaccinationRelativeLayout = itemView.findViewById(R.id.vaccinationRelativeLayout);
+                vaccinationRelativeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(!i){
+                            vaccinationDateTextView.setVisibility(View.GONE);
+                            vaccinationDoctorTextView.setVisibility(View.GONE);
+                            addVaccineButton.setVisibility(View.GONE);
+                            timesVaccinatedTextView.setVisibility(View.GONE);
+                            i=true;
+                        }else{
+                            vaccinationDateTextView.setVisibility(View.VISIBLE);
+                            vaccinationDoctorTextView.setVisibility(View.VISIBLE);
+                            addVaccineButton.setVisibility(View.VISIBLE);
+                            timesVaccinatedTextView.setVisibility(View.VISIBLE);
+                            i=false;
+                        }
+                    }
+                });
+                addVaccineButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        addVaccination.addVaccine(getAdapterPosition());
+                    }
+                });
             }
         }
 

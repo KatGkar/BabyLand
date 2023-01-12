@@ -94,6 +94,16 @@
                 android:text="View family historic"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewParentsButton" />
+
+            <Button
+                android:id="@+id/vaccinationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="144dp"
+                android:layout_marginTop="40dp"
+                android:text="Vaccinations"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewFamilyHistoricButton" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 

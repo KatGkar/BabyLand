@@ -35,7 +35,7 @@ public class showChildren extends AppCompatActivity {
     private RelativeLayout doctorsChildrenLayout, showChildRelativeLayout;
     private RecyclerView doctorsChildrenRecyclerView;
     private recyclerAdapter.recyclerVewOnClickListener listener;
-    private Button addDevelopmentsButton, viewParentsButton, showDevelopmentsButton, viewFamilyHistoricButton;
+    private Button addDevelopmentsButton, viewParentsButton, showDevelopmentsButton, viewFamilyHistoricButton, vaccinationsButton;
     private TextView nameTextView, amkaTextView, dateOfBirthTextView;
     private ImageView sexImageView;
     private int monthsD=0;
@@ -56,6 +56,7 @@ public class showChildren extends AppCompatActivity {
         dateOfBirthTextView = findViewById(R.id.dateOfBirthShowChildTextView);
         sexImageView = findViewById(R.id.sexShowChildImageView);
         viewFamilyHistoricButton = findViewById(R.id.viewFamilyHistoricButton);
+        vaccinationsButton = findViewById(R.id.vaccinationButton);
 
         //setting database
         database = FirebaseDatabase.getInstance();
@@ -139,6 +140,13 @@ public class showChildren extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         viewFamilyHistoric(doctorsChildren.get(position).getAmka());
+                    }
+                });
+
+                vaccinationsButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        vaccinations(doctorsChildren.get(position).getAmka());
                     }
                 });
             }
@@ -232,6 +240,12 @@ public class showChildren extends AppCompatActivity {
 
     private void viewFamilyHistoric(String babyAmka){
         Intent intent = new Intent(showChildren.this, showHistoric.class);
+        intent.putExtra("babyAmka", babyAmka);
+        startActivity(intent);
+    }
+
+    private void vaccinations(String babyAmka){
+        Intent intent = new Intent(showChildren.this,AddVaccination.class);
         intent.putExtra("babyAmka", babyAmka);
         startActivity(intent);
     }

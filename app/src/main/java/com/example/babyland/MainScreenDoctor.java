@@ -96,37 +96,37 @@ public class MainScreenDoctor extends AppCompatActivity {
                 "[<7 ετών: DTaP\n" +
                 " (παιδικής ηλικίας)\n" +
                 " ≥7 ετών: Tdap/Td\n" +
-                " (τύπου ενηλίκου)]", null, null, null);
+                " (τύπου ενηλίκου)]", null, null, 0);
         reference.child("v1").setValue(v1);
         Vaccination v2 = new Vaccination("Πολιομυελίτιδας\n" +
                 "(Poliomyelitis)\n" +
-                "[IPV", null, null, null);
+                "[IPV", null, null, 0);
         reference.child("v2").setValue(v1);
         Vaccination v3 = new Vaccination("Αιμόφιλου\n" +
                 "ινφλουέντζας b\n" +
                 "(Haemophilus\n" +
                 "influenzae b)\n" +
-                "[Hib]", null, null, null);
+                "[Hib]", null, null, 0);
         reference.child("v3").setValue(v1);
         Vaccination v4 = new Vaccination("Ηπατίτιδας Β\n" +
                 "(Hepatitis B)\n" +
-                "[HepB]", null, null, null);
+                "[HepB]", null, null, 0);
         reference.child("v4").setValue(v1);
         Vaccination v5 = new Vaccination("Πνευμονιόκοκκου,\n" +
                 "συζευγμένο\n" +
                 "(Pneumococcal,\n" +
                 "conjugate)\n" +
-                "[PCV]", null, null, null);
+                "[PCV]", null, null, 0);
         reference.child("v5").setValue(v1);
-        Vaccination v6 = new Vaccination("", null, null, null);
+        Vaccination v6 = new Vaccination("", null, null, 0);
         reference.child("v6").setValue(v1);
-        Vaccination v7 = new Vaccination("", null, null, null);
+        Vaccination v7 = new Vaccination("", null, null, 0);
         reference.child("v7").setValue(v1);
-        Vaccination v8 = new Vaccination("", null, null, null);
+        Vaccination v8 = new Vaccination("", null, null, 0);
         reference.child("v8").setValue(v1);
-        Vaccination v9 = new Vaccination("", null, null, null);
+        Vaccination v9 = new Vaccination("", null, null, 0);
         reference.child("v9").setValue(v1);
-        Vaccination v10 = new Vaccination("", null, null, null);
+        Vaccination v10 = new Vaccination("", null, null, 0);
         reference.child("v10").setValue(v1);
 
 
