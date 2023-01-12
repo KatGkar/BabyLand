@@ -4,36 +4,32 @@
 
 createNewUser
 screen app when keyboard shows ???
-name and surname only english letters???
 
 
-in registe page add facebook and goggle buttons 
+in register page add facebook and goggle buttons 
 
 ## on textViews only numbers no .,';[ 
 
-check user signed in
-user sign out on log out
+
 
 on create next parent change name in database
 
 requestFocus() on wrong info 
 
-doctor side on app
---see family history
---see developments
-
 διαγράμματα 
 
-on MonitoringDevelopment doctors side
+user doctor or parent
 
+εμβόλια
+--view vaccination on doctor side
+--view vaccination on parent side
+--add vaccinaiton on doctor side
 
 change user to parent 
 
+on addChildToDoctor verification with parent amka
 
-view parets on show children
-view historic on show children
 
-unique child on doctors kids
 
 multilingua 
 
