@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -53,6 +54,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
 
+       
         //finding views
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
@@ -269,8 +271,8 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                             user.sendEmailVerification();
                             Toast.makeText(LoginRegister.this, "Please check your email ", Toast.LENGTH_SHORT).show();
                         }else{*/
-                           // Intent intent = new Intent(LoginRegister.this, MainScreenParents.class);
-                            Intent intent = new Intent(LoginRegister.this, MainScreenDoctor.class);
+                           Intent intent = new Intent(LoginRegister.this, MainScreenParents.class);
+                           // Intent intent = new Intent(LoginRegister.this, MainScreenDoctor.class);
                             startActivity(intent);
                         //}
                     }

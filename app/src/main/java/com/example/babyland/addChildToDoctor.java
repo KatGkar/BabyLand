@@ -216,7 +216,6 @@ public class addChildToDoctor extends AppCompatActivity {
                         GenericTypeIndicator<Baby> t = new GenericTypeIndicator<Baby>(){};
                         availableChildren.add(snapshots.getValue(t));
                     }
-                    Toast.makeText(addChildToDoctor.this, String.valueOf(availableChildren.size()), Toast.LENGTH_SHORT).show();
                     setAdapter();
                 }
 

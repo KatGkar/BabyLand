@@ -22,12 +22,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
@@ -52,6 +54,7 @@ public class createNewUser extends AppCompatActivity {
     int flagUnique;
     ImageView bab;
     private String emailParentOne;
+    private String UID;
 
 
     @Override
@@ -77,6 +80,8 @@ public class createNewUser extends AppCompatActivity {
         //setting database
         database = FirebaseDatabase.getInstance();
         emailParentOne = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
         //setting design
@@ -344,6 +349,7 @@ public class createNewUser extends AppCompatActivity {
 
     }
 
+    Parent parent;
     private void findIfUnique() {
         flagUnique = 1;
         reference = database.getReference("parent");
@@ -353,9 +359,11 @@ public class createNewUser extends AppCompatActivity {
                 if (snapshot != null) {
                     for (DataSnapshot snapshots : snapshot.getChildren()) {
                         String amka = String.valueOf(snapshots.child("amka").getValue());
-                        if (amkaParentOne.getText().toString().equals(amka)) {
+                        GenericTypeIndicator<Parent> t = new GenericTypeIndicator<Parent>() {};
+                        if (amkaParentOne.getText().toString().equals(snapshots.getValue(t).getAmka())) {
                             if (snapshots.getKey().length() == 11) {
                                 flagUnique = 3;
+                                parent = snapshots.getValue(t);
                             } else {
                                 flagUnique = 2;
                             }
@@ -374,7 +382,7 @@ public class createNewUser extends AppCompatActivity {
 
     private void goToNext() {
         if (next && flagUnique == 1) {
-            //next screen
+            //there is no other user with this amka number
             Intent myIntent = new Intent(this, nextParent.class);
             myIntent.putExtra("name", nameParentOne.getText().toString());
             myIntent.putExtra("surname", surnameParentOne.getText().toString());
@@ -385,28 +393,65 @@ public class createNewUser extends AppCompatActivity {
             myIntent.putExtra("bloodType", blood.getSelectedItem().toString());
             this.startActivity(myIntent);
         } else if (flagUnique == 2) {
+            //there is another user with this amka
             amkaParentOne.setError("Amka should be unique");
             amkaParentOne.requestFocus();
-        } else {
-            reference = database.getReference("parent");
-            reference.addValueEventListener(new ValueEventListener() {
+        } else if(flagUnique == 3){
+            //there is a parent with this amka number but he is not a user yet
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot != null) {
-                        for (DataSnapshot snapshots : snapshot.getChildren()) {
-                            String amka = String.valueOf(snapshots.child("amka").getValue());
-                            if (amkaParentOne.getText().toString().equals(amka)) {
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            //Yes button clicked
+                            //add parent to database
+                            if(parent.getPartner()){
+                                reference = database.getReference("parent");
+                                reference.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot != null) {
+                                            for (DataSnapshot snapshots : snapshot.getChildren()) {
+                                                String amka = String.valueOf(snapshots.child("amka").getValue());
+                                                GenericTypeIndicator<Parent> t = new GenericTypeIndicator<Parent>() {};
+                                                if (amkaParentOne.getText().toString().equals(amka)) {
+                                                    reference.child(amka).removeValue();
+                                                    reference.child(UID).setValue(parent);
+                                                    Toast.makeText(createNewUser.this, "User created!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                            Intent intent = new Intent(createNewUser.this, MainScreenParents.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
 
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }else{
+                                Intent intent = new Intent(createNewUser.this, nextParent.class);
+                                intent.putExtra("name", parent.getName());
+                                intent.putExtra("surname", parent.getSurname());
+                                intent.putExtra("amka", parent.getAmka());
+                                intent.putExtra("phoneNumber", parent.getPhoneNumber());
+                                intent.putExtra("email", parent.getEmail());
+                                intent.putExtra("birthDate", parent.getDateOfBirth());
+                                intent.putExtra("bloodType", parent.getBloodType());
+                                startActivity(intent);
                             }
-                        }
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            //Do nothing
                     }
                 }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Parent exists already continue with this parent??").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
         }
 
     }

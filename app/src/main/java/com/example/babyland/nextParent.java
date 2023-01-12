@@ -183,7 +183,7 @@ public class nextParent extends AppCompatActivity{
                         }
                         cal.set(Calendar.MONTH, month-1);
 
-                        year = (year<2010)?2010:(year>2023)?2022:year;
+                        year = (year<1970)?1970:(year>2010)?2010:year;
                         cal.set(Calendar.YEAR, year);
 
                         day = (day>cal.getActualMaximum(Calendar.DATE))?cal.getActualMaximum((Calendar.DATE)):day;
@@ -209,10 +209,6 @@ public class nextParent extends AppCompatActivity{
 
     }
 
-    //showing messages to users
-    public void showMessage(String title, String message) {
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
-    }
 
     Parent u1;
     Parent u2;
@@ -306,37 +302,47 @@ public class nextParent extends AppCompatActivity{
         });
     }
 
-    Boolean go;
-    Boolean ii=false;
-
    public void goToNext() {
-       go = false;
        if (!flagUnique) {
-           u1 = new Parent(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, parent.getAmka(), true, kids);//, UID);
-           reference = FirebaseDatabase.getInstance().getReference("parent");
-           reference.child(UID).setValue(u1);
-           Intent in = new Intent(getApplicationContext(), MainScreenParents.class);
-           startActivity(in);
-           //infoRelativeLayout.setVisibility(View.INVISIBLE);
-           //messageRelativeLayout.setVisibility(View.VISIBLE);
+           DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+               @Override
+               public void onClick(DialogInterface dialog, int which) {
+                   switch (which) {
+                       case DialogInterface.BUTTON_POSITIVE:
+                           //Yes button clicked
+                           //add parent to database
+                           u1 = new Parent(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, parent.getAmka(), true, kids);//, UID);
+                           reference = FirebaseDatabase.getInstance().getReference("parent");
+                           reference.child(UID).setValue(u1);
+                           Intent in = new Intent(getApplicationContext(), MainScreenParents.class);
+                           startActivity(in);
+                           finish();
+
+                       case DialogInterface.BUTTON_NEGATIVE:
+                           //No button clicked
+                           //Do nothing
+                   }
+               }
+           };
+           AlertDialog.Builder builder = new AlertDialog.Builder(this);
+           builder.setMessage("Parent exists already continue with this parent??").setPositiveButton("Yes", dialogClickListener)
+                   .setNegativeButton("No", dialogClickListener).show();
        } else {
-           //if (next && flagUnique && go) {
-           //if there are empty textBoxes show message
-           //add parents to database
-           u1 = new Parent(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, amkaParentTwo.getText().toString(), true, kids);//, UID);
-           u2 = new Parent(nameParentTwo.getText().toString(), surnameParentTwo.getText().toString(), amkaParentTwo.getText().toString(), phoneNumberParentTwo.getText().toString(), emailAddressParentTwo.getText().toString(), dateOfBirthParentTwo.getText().toString(), bloodTypeParentTwo.getSelectedItem().toString(), amkaParentOne, true, kids);//, null);
-           //getting number of parents on database
-           reference = database.getReference("parent");
-           reference.child(UID).setValue(u1);
-           reference.child(amkaParentTwo.getText().toString()).setValue(u2);
-           //go to app main screen
-           Toast.makeText(this, "User created successfully!!", Toast.LENGTH_SHORT).show();
-           //go to app main screen
-           Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
-           startActivity(intent);
-        /*} else if (next && !flagUnique) {
-            amkaParentTwo.setError("Amka should be unique");
-        }*/
+           if (next && flagUnique) {
+               //if there are empty textBoxes show message
+               //add parents to database
+               u1 = new Parent(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, amkaParentTwo.getText().toString(), true, kids);//, UID);
+               u2 = new Parent(nameParentTwo.getText().toString(), surnameParentTwo.getText().toString(), amkaParentTwo.getText().toString(), phoneNumberParentTwo.getText().toString(), emailAddressParentTwo.getText().toString(), dateOfBirthParentTwo.getText().toString(), bloodTypeParentTwo.getSelectedItem().toString(), amkaParentOne, true, kids);//, null);
+               //getting number of parents on database
+               reference = database.getReference("parent");
+               reference.child(UID).setValue(u1);
+               reference.child(amkaParentTwo.getText().toString()).setValue(u2);
+               //go to app main screen
+               Toast.makeText(this, "User created successfully!!", Toast.LENGTH_SHORT).show();
+               //go to app main screen
+               Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
+               startActivity(intent);
+           }
        }
    }
 
