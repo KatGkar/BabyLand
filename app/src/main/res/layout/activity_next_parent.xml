@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".nextParent">
 
     <RelativeLayout
@@ -11,6 +12,7 @@
         android:layout_width="310dp"
         android:layout_height="158dp"
         android:layout_marginTop="250dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +69,7 @@
         android:id="@+id/relativeLayoutParentTwo"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

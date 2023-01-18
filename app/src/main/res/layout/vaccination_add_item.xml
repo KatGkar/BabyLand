@@ -18,23 +18,12 @@
                 android:id="@+id/addVaccineButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="148dp"
-                android:layout_marginTop="76dp"
-                android:text="Button"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/timesVaccinatedTextView" />
-
-            <TextView
-                android:id="@+id/timesVaccinatedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="36dp"
-                android:text="TextView"
+                android:layout_marginTop="32dp"
+                android:text="Add Vaccine"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vaccinationDoctorTextView" />
+                app:layout_constraintTop_toTopOf="@+id/vaccinationDateTextView" />
 
             <TextView
                 android:id="@+id/vaccinationDateTextView"
@@ -61,12 +50,11 @@
                 android:id="@+id/vaccinationDoctorTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="84dp"
                 android:text="TextView"
                 android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vaccinationDateTextView" />
+                app:layout_constraintStart_toEndOf="@+id/vaccinationDateTextView"
+                app:layout_constraintTop_toTopOf="@+id/vaccinationDateTextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

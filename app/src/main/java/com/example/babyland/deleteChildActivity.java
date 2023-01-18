@@ -36,16 +36,16 @@ public class deleteChildActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_child);
 
+        //finding views in xml file
+        deleteChildRecyclerView = findViewById(R.id.deleteChildRecyclerView);
 
-        //builder
+        //builder to show message
         builder = new AlertDialog.Builder(this);
 
         //setting database
         database = FirebaseDatabase.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        //finding views in xml file
-        deleteChildRecyclerView = findViewById(R.id.deleteChildRecyclerView);
 
         //getting user info from database parent
         reference = database.getReference("parent");
@@ -72,9 +72,10 @@ public class deleteChildActivity extends AppCompatActivity {
     }
 
 
+    //setting adapter for recyclerView
     private void setAdapter(){
         setOnClickListener();
-        recyclerAdapter adapter = new recyclerAdapter(listener, childList, "deleteChild");
+        recyclerAdapter adapter = new recyclerAdapter(listener, childList, "deleteChild","none");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         deleteChildRecyclerView.setLayoutManager(layoutManager);
         deleteChildRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -116,6 +117,7 @@ public class deleteChildActivity extends AppCompatActivity {
         };
     }
 
+    //function to delete baby developments if baby gets deleted
     private void removeDevelopments(String amka){
         reference = FirebaseDatabase.getInstance().getReference("monitoringDevelopment");
         reference.addValueEventListener(new ValueEventListener() {
@@ -127,9 +129,7 @@ public class deleteChildActivity extends AppCompatActivity {
                         Development dev = dataSnapshot.getValue(t);
                         if(dev.getAmka().equals(amka)){
                             reference = dataSnapshot.getRef();
-                            System.out.println("____________________________________________"+ dataSnapshot.getKey());
                             reference.removeValue();
-                            //reference.child(dataSnapshot.getKey()).removeValue();
                         }
                     }
                 }

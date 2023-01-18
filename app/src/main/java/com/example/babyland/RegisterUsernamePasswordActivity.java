@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,28 +22,35 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterUsernamePasswordActivity extends AppCompatActivity {
 
-    EditText emailTextView, passwordTextView, passwordValidTextView;
-    String email, password, passwordValid;
+    private EditText emailTextView, passwordTextView, passwordValidTextView;
+    private String email, password, passwordValid;
     private FirebaseAuth firebaseAuth;
+    private Button registerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_username_password);
 
-        //getting views
+        //getting views from xml file
         emailTextView = findViewById(R.id.emailTextView);
         passwordTextView = findViewById(R.id.passwordTextView);
         passwordValidTextView = findViewById(R.id.passwordValidTextView);
+        registerButton = findViewById(R.id.registerUserButton);
 
-
-        //setting firebase
+        //setting database
         firebaseAuth = FirebaseAuth.getInstance();
 
-
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createUser(view);
+            }
+        });
     }
 
-    public void createUser(View view) {
+    //register user button
+    private void createUser(View view) {
         email = emailTextView.getText().toString();
         password = passwordTextView.getText().toString();
         passwordValid = passwordValidTextView.getText().toString();
@@ -52,8 +60,8 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "createUserWithEmail:success");
                         FirebaseUser user = firebaseAuth.getCurrentUser();
+                        Toast.makeText(RegisterUsernamePasswordActivity.this, "User created successfully!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterUsernamePasswordActivity.this, LoginRegister.class);
                         startActivity(intent);
 

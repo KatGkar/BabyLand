@@ -6,9 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Development {
-    String weight , length, headCircumference, age;
-    String ageType, observations, doctor, amka;
-    String measurementDate;
+    String weight , length, headCircumference, age, ageType, observations, doctor, amka, measurementDate;
     ArrayList<sustenanceItems> sustenance;
     ArrayList<examinationItems> examination;
     ArrayList<developmentalItems> developmentalMonitoring;

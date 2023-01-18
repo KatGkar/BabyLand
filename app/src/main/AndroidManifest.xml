@@ -16,9 +16,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BabyLand">
+        android:theme="@style/Theme.BabyLand"
+        android:windowSoftInputMode="adjustResize">
         <activity
-            android:name=".AddVaccination"
+            android:name=".UserAccount"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".createNewDoctor"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".viewVaccination"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -99,12 +114,12 @@
             android:exported="false" />
         <activity
             android:name=".LoginRegister"
-        android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainScreenParents"
@@ -113,7 +128,7 @@
             android:name=".nextParent"
             android:exported="false" />
         <activity
-            android:name=".createNewUser"
+            android:name=".createNewParent"
             android:exported="false"
             android:fitsSystemWindows="true"
             android:windowSoftInputMode="adjustResize" />

@@ -40,7 +40,7 @@ public class showHistoric extends AppCompatActivity {
         //setting database
         database = FirebaseDatabase.getInstance();
 
-        //find historic
+        //find historic from database
         reference = database.getReference("baby");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -64,8 +64,9 @@ public class showHistoric extends AppCompatActivity {
         });
     }
 
+    //setting adapter for recyclerView
     private void setAdapter() {
-        recyclerAdapter adapter = new recyclerAdapter(listener, familyHistoric, "familyHistoric");
+        recyclerAdapter adapter = new recyclerAdapter(listener, familyHistoric, "familyHistoric","none");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         familyHistoricRecyclerView.setLayoutManager(layoutManager);
         familyHistoricRecyclerView.setItemAnimator(new DefaultItemAnimator());

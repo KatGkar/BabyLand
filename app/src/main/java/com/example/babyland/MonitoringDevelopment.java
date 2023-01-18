@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +35,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MonitoringDevelopment extends AppCompatActivity {
+
     private TextView dateText, doctorText;
     private EditText weightText, lengthText, headCircumferenceText, observationText;
     private ArrayList<developmentalItems> developmentalMonitoring;
@@ -45,11 +47,10 @@ public class MonitoringDevelopment extends AppCompatActivity {
     private CalendarView calendarView;
     private RecyclerView recyclerViewExamination, recyclerViewDevelopmental, recyclerViewSustenance;
     private recyclerAdapter.recyclerVewOnClickListener listener;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
-    private String babyAmka, ageType, age, currentUser;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+    private String babyAmka, ageType, age, currentUserUID;
     private int monitoringDevNumber;
-
 
 
     @Override
@@ -57,12 +58,13 @@ public class MonitoringDevelopment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoring_development);
 
+        //getting extras
         Bundle extras = getIntent().getExtras();
         babyAmka = extras.getString("babyAmka");
         ageType = extras.getString("ageType");
         age= extras.getString("age");
 
-        //finding views on layout
+        //getting views from xml file
         dateText = findViewById(R.id.dateText);
         weightText = findViewById(R.id.weightText);
         lengthText = findViewById(R.id.lengthText);
@@ -86,18 +88,20 @@ public class MonitoringDevelopment extends AppCompatActivity {
 
 
         //setting database
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
+
+        //getting user UID
+        currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //getting doctor's info
-        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databaseReference = firebaseDatabase.getReference("doctor");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference = database.getReference("doctor");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot!=null){
                     for(DataSnapshot snapshots : snapshot.getChildren()){
                         String UID = snapshots.getKey();
-                        if (UID.equals(currentUser)) {
+                        if (UID.equals(currentUserUID)) {
                             doctorText.setText("Dr. " + snapshots.child("surname").getValue() + " " + snapshots.child("name").getValue());
                         }
                     }
@@ -114,7 +118,9 @@ public class MonitoringDevelopment extends AppCompatActivity {
         examination = new ArrayList<>();
         sustenance = new ArrayList<>();
         developmentalMonitoring = new ArrayList<>();
-
+        examination.clear();
+        sustenance.clear();
+        developmentalMonitoring.clear();
 
         //setting visibilities
         generalLayout.setVisibility(View.VISIBLE);
@@ -123,7 +129,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
         examinationLayout.setVisibility(View.INVISIBLE);
         developmentalLayout.setVisibility(View.INVISIBLE);
 
-        //get devs on firebase
+        //get number of devs on database
         monitoringDevNumber = getDevNumber();
 
         //setting hint in date
@@ -212,7 +218,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    showMessage("Watch out!!", "Something went wrong. Please try again later!");
                 }
                 dateText.setText(d + "/" + m + "/" + year);
                 calendarView.setVisibility(View.INVISIBLE);
@@ -220,10 +225,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
             }
         });
 
-
-        examination.clear();
-        sustenance.clear();
-        developmentalMonitoring.clear();
+        //getting data from database
         getData("examination");
         getData("sustenance");
         getData("developmental");
@@ -265,18 +267,10 @@ public class MonitoringDevelopment extends AppCompatActivity {
         });
     }
 
-
-
-    //showing messages to users
-    public void showMessage(String title, String message) {
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
-    }
-
-
     //loads data from list into recyclerView
     private void setAdapter(String id) {
         if (id.equals("examination")) {
-            recyclerAdapter adapter = new recyclerAdapter(listener, examination, "examination");
+            recyclerAdapter adapter = new recyclerAdapter(listener, examination, "examination","none");
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerViewExamination.setLayoutManager(layoutManager);
             recyclerViewExamination.setItemAnimator(new DefaultItemAnimator());
@@ -287,10 +281,8 @@ public class MonitoringDevelopment extends AppCompatActivity {
                     examination.get(position).setDetails(id);
                 }
             });
-            // recyclerView.addItemDecoration(new DividerItemDecoration(this,
-            //       DividerItemDecoration.HORIZONTAL));
         } else if (id.equals("developmental")) {
-            recyclerAdapter adapter = new recyclerAdapter(listener, developmentalMonitoring, "developmental");
+            recyclerAdapter adapter = new recyclerAdapter(listener, developmentalMonitoring, "developmental","none");
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerViewDevelopmental.setLayoutManager(layoutManager);
             recyclerViewDevelopmental.setItemAnimator(new DefaultItemAnimator());
@@ -302,7 +294,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
                 }
             });
         }else if(id.equals("sustenance")){
-            recyclerAdapter adapter = new recyclerAdapter(listener, sustenance, "sustenance");
+            recyclerAdapter adapter = new recyclerAdapter(listener, sustenance, "sustenance","none");
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerViewSustenance.setLayoutManager(layoutManager);
             recyclerViewSustenance.setItemAnimator(new DefaultItemAnimator());
@@ -316,6 +308,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
         }
     }
 
+    //on back button pressed
     @Override
     public void onBackPressed() {
         if (sustenanceLayout.getVisibility() == View.VISIBLE) {
@@ -336,7 +329,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
     }
 
 
-    //loading data in adapter from database
+    //getting data from database
     private void getData(String id) {
         DatabaseReference rootRef = null;
         if (id.equals("examination")) {
@@ -430,7 +423,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
 
 
     //save function
-    public void saveDevelopment(View view) throws ParseException {
+    private void saveDevelopment(View view) throws ParseException {
         Boolean error = false;
         int examinationError = 0, developmentalError = 0, sustenanceError=0;
         if (TextUtils.isEmpty(lengthText.getText())) {
@@ -475,11 +468,11 @@ public class MonitoringDevelopment extends AppCompatActivity {
                     ageType, sustenance, examination, developmentalMonitoring, hearingSwitch.isChecked(), observationText.getText().toString(),
                     doctorText.getText().toString());
             System.out.println(monitoringDevNumber);
-            databaseReference = firebaseDatabase.getReference("monitoringDevelopment");
-            databaseReference.child(String.valueOf(monitoringDevNumber +1)).setValue(dev);
-           // Intent intent = new Intent(MonitoringDevelopment.this, MainScreenParents.class);
-            //startActivity(intent);
+            reference = database.getReference("monitoringDevelopment");
+            reference.child(String.valueOf(monitoringDevNumber +1)).setValue(dev);
             onBackPressed();
+        }else{
+            Toast.makeText(this, "Something is wrong.Please check all fields!!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -487,12 +480,11 @@ public class MonitoringDevelopment extends AppCompatActivity {
 
     //getting number of babies on database
     private int getDevNumber() {
-        databaseReference = firebaseDatabase.getReference("monitoringDevelopment");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference = database.getReference("monitoringDevelopment");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 monitoringDevNumber = (int) snapshot.getChildrenCount();
-                System.out.println(monitoringDevNumber);
             }
 
             @Override

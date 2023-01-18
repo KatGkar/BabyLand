@@ -100,6 +100,7 @@ public class viewParentInfo extends AppCompatActivity {
         });
     }
 
+    //view parents info
     private void viewParentInformation(Parent parent){
         parentsRelativeLayout.setVisibility(View.INVISIBLE);
         parentInfoRelativeLayout.setVisibility(View.VISIBLE);
@@ -110,10 +111,10 @@ public class viewParentInfo extends AppCompatActivity {
         phoneNumberTextView.setText(parent.getPhoneNumber());
         bloodTypeTextView.setText(parent.getBloodType());
         dateOfBirthTextView.setText(parent.getDateOfBirth());
-        System.out.println(parent.getAmka() + " " + parent.getName() + " " + parent.getEmail());
     }
 
 
+    //finding parents from database
     private void findParents(){
         reference = database.getReference("parent");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -146,7 +147,7 @@ public class viewParentInfo extends AppCompatActivity {
         });
     }
 
-
+    //on back button pressed
     @Override
     public void onBackPressed() {
         if(parentInfoRelativeLayout.getVisibility() == View.VISIBLE){

@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,13 +32,15 @@ public class showChildren extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference reference;
-    private String currentUser;
+    private String currentUserUID;
     private ArrayList<Baby> doctorsChildren;
-    private RelativeLayout doctorsChildrenLayout, showChildRelativeLayout;
+    private RelativeLayout doctorsChildrenLayout, showChildRelativeLayout, deleteChildVerificationRelativeLayout;
     private RecyclerView doctorsChildrenRecyclerView;
     private recyclerAdapter.recyclerVewOnClickListener listener;
-    private Button addDevelopmentsButton, viewParentsButton, showDevelopmentsButton, viewFamilyHistoricButton, vaccinationsButton;
+    private Button addDevelopmentsButton, viewParentsButton, showDevelopmentsButton, viewFamilyHistoricButton, vaccinationsButton,
+            deleteChildButton, deleteChildVerificationButton;
     private TextView nameTextView, amkaTextView, dateOfBirthTextView;
+    private EditText deleteChildVerificationEditText;
     private ImageView sexImageView;
     private int monthsD=0;
 
@@ -45,6 +49,7 @@ public class showChildren extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_children);
 
+        //getting views from xml file
         doctorsChildrenLayout = findViewById(R.id.doctorsChildrenLayout);
         doctorsChildrenRecyclerView = findViewById(R.id.doctorsChildrenRecyclerView);
         showChildRelativeLayout = findViewById(R.id.showChildRelativeLayout);
@@ -57,18 +62,31 @@ public class showChildren extends AppCompatActivity {
         sexImageView = findViewById(R.id.sexShowChildImageView);
         viewFamilyHistoricButton = findViewById(R.id.viewFamilyHistoricButton);
         vaccinationsButton = findViewById(R.id.vaccinationButton);
+        deleteChildButton = findViewById(R.id.deleteBabyButton);
+        deleteChildVerificationButton = findViewById(R.id.deleteChildVerificationButton);
+        deleteChildVerificationEditText = findViewById(R.id.deleteChildVerificationEditText);
+        deleteChildVerificationRelativeLayout = findViewById(R.id.deleteChildRelativeLayout);
 
         //setting database
         database = FirebaseDatabase.getInstance();
 
+        //setting visibilities
         showChildRelativeLayout.setVisibility(View.INVISIBLE);
         doctorsChildrenLayout.setVisibility(View.VISIBLE);
+        deleteChildVerificationRelativeLayout.setVisibility(View.INVISIBLE);
 
+        //setting list
         doctorsChildren = new ArrayList<>();
 
-        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        //getting user UID
+        currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        //getting user info from database doctor
+        //getting user children from database
+        getChildren();
+    }
+
+    //getting user children from database
+    private void getChildren(){
         reference = database.getReference("doctor");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -76,7 +94,7 @@ public class showChildren extends AppCompatActivity {
                 if(snapshot!=null){
                     for(DataSnapshot snapshots : snapshot.getChildren()){
                         String UID = snapshots.getKey();
-                        if (UID.equals(currentUser)) {
+                        if (UID.equals(currentUserUID)) {
                             GenericTypeIndicator<ArrayList<Baby>> t = new GenericTypeIndicator<ArrayList<Baby>>(){};
                             doctorsChildren = snapshots.child("kids").getValue(t);
                         }
@@ -92,15 +110,15 @@ public class showChildren extends AppCompatActivity {
         });
     }
 
+    //setting adapter for recyclerView
     private void setAdapter() {
         setOnClickListener();
-        recyclerAdapter adapter = new recyclerAdapter(listener, doctorsChildren, "availableChildren");
+        recyclerAdapter adapter = new recyclerAdapter(listener, doctorsChildren, "availableChildren","none");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         doctorsChildrenRecyclerView.setLayoutManager(layoutManager);
         doctorsChildrenRecyclerView.setItemAnimator(new DefaultItemAnimator());
         doctorsChildrenRecyclerView.setAdapter(adapter);
     }
-
 
     private void setOnClickListener() {
         listener = new recyclerAdapter.recyclerVewOnClickListener() {
@@ -149,10 +167,43 @@ public class showChildren extends AppCompatActivity {
                         vaccinations(doctorsChildren.get(position).getAmka());
                     }
                 });
+
+                deleteChildButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        deleteChild(position);
+                    }
+                });
             }
         };
     }
 
+
+    //delete child button
+    private void deleteChild(int position){
+        showChildRelativeLayout.setVisibility(View.INVISIBLE);
+        deleteChildVerificationRelativeLayout.setVisibility(View.VISIBLE);
+        deleteChildVerificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String amka = deleteChildVerificationEditText.getText().toString();
+                if(amka.equals(doctorsChildren.get(position).getAmka())){
+                    doctorsChildren.remove(position);
+                    reference = database.getReference("doctor");
+                    reference.child(currentUserUID).child("kids").setValue(doctorsChildren);
+                    Toast.makeText(showChildren.this, "Child deleted successfully!", Toast.LENGTH_SHORT).show();
+                    getChildren();
+                    deleteChildVerificationRelativeLayout.setVisibility(View.INVISIBLE);
+                    doctorsChildrenLayout.setVisibility(View.VISIBLE);
+                }else{
+                    Toast.makeText(showChildren.this, "Amka is not correct. Please try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+    //on back button pressed
     @Override
     public void onBackPressed() {
         if(showChildRelativeLayout.getVisibility() == View.VISIBLE){
@@ -164,7 +215,9 @@ public class showChildren extends AppCompatActivity {
 
     }
 
+    //add development button
     private void addDevelopments(String babyAmka, String babyBirthDate){
+        //calculate child age in month
         Calendar cal = Calendar.getInstance();
         int yearNow = cal.get(Calendar.YEAR);
         int monthNow = cal.get(Calendar.MONTH) + 1;
@@ -226,27 +279,32 @@ public class showChildren extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //view parents button
     private void viewParents(String babyAmka){
         Intent intent = new Intent(showChildren.this, viewParentInfo.class);
         intent.putExtra("babyAmka", babyAmka);
         startActivity(intent);
     }
 
+    //show developments button
     private void showDevelopments(String babyAmka){
         Intent intent = new Intent(showChildren.this, showDevelopmentsList.class);
         intent.putExtra("babyAmka", babyAmka);
         startActivity(intent);
     }
 
+    //view family historic button
     private void viewFamilyHistoric(String babyAmka){
         Intent intent = new Intent(showChildren.this, showHistoric.class);
         intent.putExtra("babyAmka", babyAmka);
         startActivity(intent);
     }
 
+    //vaccinations button
     private void vaccinations(String babyAmka){
-        Intent intent = new Intent(showChildren.this,AddVaccination.class);
+        Intent intent = new Intent(showChildren.this, viewVaccination.class);
         intent.putExtra("babyAmka", babyAmka);
+        intent.putExtra("userType", "doctor");
         startActivity(intent);
     }
 

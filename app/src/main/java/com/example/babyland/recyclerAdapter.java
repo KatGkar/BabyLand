@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +33,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import okhttp3.internal.Util;
+
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
     ArrayList list;
-    String id;
+    String id, userType;
     private recyclerVewOnClickListener listener;
     private radioButtonChange radioButtonChange;
     private textChange textChange;
@@ -98,7 +101,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.available_children, parent, false);
         }else if(id.equals("familyHistoric")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.family_historic_view, parent, false);
-        }else if(id.equals("addVaccination")) {
+        }else if(id.equals("viewVaccination")) {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.vaccination_add_item, parent, false);
         }
         return new MyViewHolder(itemView, radioButtonChange, textChange, sustenanceCheck);
@@ -264,13 +267,11 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 holder.illnessDetailsTextView.setVisibility(View.GONE);
             }
             holder.illnessNameTextView.setText(name);
-        }else if(id.equals("addVaccination")) {
+        }else if(id.equals("viewVaccination")) {
             List<Vaccination> lists = (List<Vaccination>) list;
             String name = lists.get(position).getName();
             String date = lists.get(position).getDate();
-            int timesVac = lists.get(position).getTimesVaccinated();
             String doctorsName = lists.get(position).getDoctorName();
-            holder.timesVaccinatedTextView.setText(timesVac);
             holder.vaccinationDoctorTextView.setText(doctorsName);
             holder.vaccinationNameTextView.setText(name);
             holder.vaccinationDateTextView.setText(date);
@@ -280,19 +281,21 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     @Override
     public int getItemCount() {
         return list.size();
+
     }
 
-    public recyclerAdapter(recyclerVewOnClickListener listener, ArrayList list, String id) {
+    public recyclerAdapter(recyclerVewOnClickListener listener, ArrayList list, String id, String userType) {
         this.list = list;
         this.id=id;
         this.listener = listener;
+        this.userType = userType;
     }
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView illnessName, illnessDetails, examinationListItemText, developmentalListItemText, ageTextView, dateTextView,
                     nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExaminationTextView,
                     nameTextViewDelete, amkaTextViewDelete, birthDateTextViewDelete, ageTextViewDelete, amkaAvailableChildrenText,
                     nameAvailableChildrenText, illnessNameTextView, illnessDetailsTextView, vaccinationNameTextView,
-                    vaccinationDateTextView, timesVaccinatedTextView, vaccinationDoctorTextView;
+                    vaccinationDateTextView, vaccinationDoctorTextView;
         private Switch switches;
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
@@ -429,11 +432,10 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             }else if(id.equals("familyHistoric")) {
                 illnessNameTextView = itemView.findViewById(R.id.illnessNameTextView);
                 illnessDetailsTextView = itemView.findViewById(R.id.illnessDetailsTextView);
-            }else if(id.equals("addVaccination")) {
+            }else if(id.equals("viewVaccination")) {
                 vaccinationNameTextView = itemView.findViewById(R.id.vaccinationNameTextView);
                 vaccinationDateTextView = itemView.findViewById(R.id.vaccinationDateTextView);
                 vaccinationDoctorTextView = itemView.findViewById(R.id.vaccinationDoctorTextView);
-                timesVaccinatedTextView = itemView.findViewById(R.id.timesVaccinatedTextView);
                 addVaccineButton = itemView.findViewById(R.id.addVaccineButton);
                 vaccinationRelativeLayout = itemView.findViewById(R.id.vaccinationRelativeLayout);
                 vaccinationRelativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -443,15 +445,20 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                             vaccinationDateTextView.setVisibility(View.GONE);
                             vaccinationDoctorTextView.setVisibility(View.GONE);
                             addVaccineButton.setVisibility(View.GONE);
-                            timesVaccinatedTextView.setVisibility(View.GONE);
                             i=true;
                         }else{
                             vaccinationDateTextView.setVisibility(View.VISIBLE);
                             vaccinationDoctorTextView.setVisibility(View.VISIBLE);
-                            addVaccineButton.setVisibility(View.VISIBLE);
-                            timesVaccinatedTextView.setVisibility(View.VISIBLE);
                             i=false;
+                            if(userType.equals("doctor")) {
+                                if (TextUtils.isEmpty(vaccinationDoctorTextView.getText())) {
+                                    addVaccineButton.setVisibility(View.VISIBLE);
+                                } else {
+                                    addVaccineButton.setVisibility(View.INVISIBLE);
+                                }
+                            }
                         }
+
                     }
                 });
                 addVaccineButton.setOnClickListener(new View.OnClickListener() {

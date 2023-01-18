@@ -9,10 +9,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Baby {//implements Serializable {
+public class Baby {
     private String name, amka, parentOneAmka, parentTwoAmka, placeOfBirth, bloodType,  sex;
     private String dateOfBirth;
     private ArrayList<FamilyHistoryIllnesses> iln;
+    private ArrayList<Vaccination> vaccinations;
 
     @NonNull
     @Override
@@ -23,10 +24,9 @@ public class Baby {//implements Serializable {
     public Baby() {
     }
 
-
-
     public Baby(String name, String dateOfBirth, String amka, String placeOfBirth, String bloodType, String sex,
-                String parentOneAmka, String parentTwoAmka, ArrayList<FamilyHistoryIllnesses> iln) {
+                String parentOneAmka, String parentTwoAmka, ArrayList<FamilyHistoryIllnesses> iln,
+                ArrayList<Vaccination> vaccinations) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.amka = amka;
@@ -36,7 +36,9 @@ public class Baby {//implements Serializable {
         this.parentOneAmka = parentOneAmka;
         this.parentTwoAmka = parentTwoAmka;
         this.iln = iln;
+        this.vaccinations = vaccinations;
     }
+
 
     public Baby(Baby baby) {
         this.name = baby.getName();
@@ -47,6 +49,15 @@ public class Baby {//implements Serializable {
         this.parentOneAmka = baby.getParentOneAmka();
         this.parentTwoAmka = baby.getParentTwoAmka();
         this.iln = baby.getIln();
+        this.vaccinations = baby.getVaccinations();
+    }
+
+    public ArrayList<Vaccination> getVaccinations() {
+        return vaccinations;
+    }
+
+    public void setVaccinations(ArrayList<Vaccination> vaccinations) {
+        this.vaccinations = vaccinations;
     }
 
     public String getParentOneAmka() {

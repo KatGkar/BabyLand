@@ -12,27 +12,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class FamilyHistoryInput extends AppCompatActivity {
+
     protected RecyclerView recyclerView;
     protected ArrayList<FamilyHistoryIllnesses> illnesses;
+    private ArrayList<Vaccination> vaccines;
     private recyclerAdapter.recyclerVewOnClickListener listener;
-    Button nextButton;
-    FirebaseDatabase database;
-    DatabaseReference reference;
-    String name, sex, amka, birthPlace, bloodType, parentOneAmka, parentTwoAmka;
-    String birthDate;
-    int babyNumber;
-    String currentUser;
+    private Button saveButton;
+    private FirebaseDatabase database;
+    private DatabaseReference reference1, reference2;
+    private String name, sex, amka, birthPlace, bloodType, parentOneAmka, parentTwoAmka, birthDate, currentUserUID;
+    private int babyNumber;
     private Parent user;
     private Baby b;
 
@@ -40,13 +42,6 @@ public class FamilyHistoryInput extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history_input);
-
-        //getting views
-        recyclerView = findViewById(R.id.recyclerViewFamilyHistory);
-        nextButton = findViewById(R.id.nextButton);
-
-        //setting list
-        illnesses = new ArrayList<>();
 
         //getting extras
         Bundle extras = getIntent().getExtras();
@@ -57,31 +52,43 @@ public class FamilyHistoryInput extends AppCompatActivity {
         birthPlace = extras.getString("birthPlace");
         bloodType = extras.getString("bloodType");
 
+        //getting views from xml file
+        recyclerView = findViewById(R.id.recyclerViewFamilyHistory);
+        saveButton = findViewById(R.id.nextButton);
+
+        //setting lists
+        illnesses = new ArrayList<>();
+        vaccines = new ArrayList<>();
+        illnesses.clear();
+        vaccines.clear();
+
         //setting database
         database = FirebaseDatabase.getInstance();
 
         //getting babies on database
         babyNumber = getBabyNumber();
 
-
-
         //getting parents amka
         getParentAmka();
 
-        //setting list
-        illnesses = new ArrayList<>();
-        illnesses.clear();
+        //getting illness from database
         getIllnesses();
 
+        //getting vaccines from database
+        getVaccines();
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveBaby(view);
+            }
+        });
     }
 
-    public void showMessage(String title, String message) {
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
-    }
 
-    //adapter to load services into the recyclerView
+    //setting adapter for recyclerView
     private void setAdapter() {
-        recyclerAdapter adapter = new recyclerAdapter(listener, illnesses, "illnessInput");
+        recyclerAdapter adapter = new recyclerAdapter(listener, illnesses, "illnessInput", "none");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -90,35 +97,16 @@ public class FamilyHistoryInput extends AppCompatActivity {
                 DividerItemDecoration.VERTICAL));
     }
 
-
-
-    //next button
-    public void Click(View view) {
-        babyNumber = getBabyNumber();
-        b = new Baby(name, birthDate, amka, birthPlace, bloodType, sex, parentOneAmka, parentTwoAmka, illnesses);
-        reference = database.getReference("baby");
-        reference.child(amka).setValue(b);
-        updateParent();
-    }
-
-
-    private void updateParent(){
-        reference = database.getReference("parent").child(currentUser);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+    //getting vaccines from database
+    private void getVaccines(){
+        reference2 = database.getReference("vaccinations");
+        reference2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot != null) {
-                    if (snapshot.getKey().equals(currentUser)) {
-                        ArrayList<Baby> list;
-                        try {
-                            list = (ArrayList<Baby>) snapshot.child("kids").getValue();
-                            list.add(b);
-                        } catch (Exception e) {
-                            list = new ArrayList<>();
-                            list.add(b);
-                        }
-                        database.getReference("parent").child(currentUser).child("kids").setValue(list);
-                        showMessage("Success", "Child added successfully!!");
+                if(snapshot!=null){
+                    for(DataSnapshot snapshots:snapshot.getChildren()){
+                        GenericTypeIndicator<Vaccination> t = new GenericTypeIndicator<Vaccination>() {};
+                        vaccines.add(snapshots.getValue(t));
                     }
                 }
             }
@@ -128,15 +116,88 @@ public class FamilyHistoryInput extends AppCompatActivity {
 
             }
         });
-        Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
-        startActivity(intent);
+    }
+
+
+    //save baby to database
+    public void saveBaby(View view) {
+        babyNumber = getBabyNumber();
+        b = new Baby(name, birthDate, amka, birthPlace, bloodType, sex, parentOneAmka, parentTwoAmka, illnesses, vaccines);
+        reference1 = database.getReference("baby");
+        reference1.child(amka).setValue(b);
+        updateParent();
+    }
+
+    //update parents on database
+    private void updateParent(){
+        reference1 = database.getReference("parent").child(currentUserUID);
+        reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot != null) {
+                    GenericTypeIndicator<Parent> t = new GenericTypeIndicator<Parent>() {};
+                    if (snapshot.getKey().equals(currentUserUID)) {
+                        ArrayList<Baby> list;
+                        try {
+                            list = (ArrayList<Baby>) snapshot.child("kids").getValue();
+                            list.add(b);
+                        } catch (Exception e) {
+                            list = new ArrayList<>();
+                            list.add(b);
+                        }
+                        database.getReference("parent").child(currentUserUID).child("kids").setValue(list);
+                        if(snapshot.getValue(t).getPartner()){
+                            //if there is parent 2
+                            String amka1 = snapshot.getValue(t).getPartnersAmka();
+                            reference2 = database.getReference("parent");
+                            reference2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot!=null){
+                                        for (DataSnapshot snapshots : snapshot.getChildren()){
+                                            GenericTypeIndicator<Parent> g = new GenericTypeIndicator<Parent>() {};
+                                            if(snapshots.getValue(g).getAmka().equals(amka1)){
+                                                ArrayList<Baby> partList;
+                                                try {
+                                                    partList = (ArrayList<Baby>) snapshots.child("kids").getValue();
+                                                    partList.add(b);
+                                                } catch (Exception e) {
+                                                    partList = new ArrayList<>();
+                                                    partList.add(b);
+                                                }
+                                                database.getReference("parent").child(snapshots.getKey()).child("kids").setValue(partList);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                        Toast.makeText(FamilyHistoryInput.this, "Child added successfully!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
+                        startActivity(intent);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
 
     //getting number of babies on database
     private int getBabyNumber() {
-        reference = database.getReference("baby");
-        reference.addValueEventListener(new ValueEventListener() {
+        reference1 = database.getReference("baby");
+        reference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 babyNumber = (int) snapshot.getChildrenCount();
@@ -150,22 +211,22 @@ public class FamilyHistoryInput extends AppCompatActivity {
         return babyNumber + 1;
     }
 
-    //getting parents amka
+    //getting parents amka from database
     private void getParentAmka() {
-        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         //getting user amka from database
-        reference = database.getReference("parent");
-        reference.addValueEventListener(new ValueEventListener() {
+        reference1 = database.getReference("parent");
+        reference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot != null) {
                     for (DataSnapshot snapshots : snapshot.getChildren()) {
-                        String UID = snapshots.getKey();
-                        user = snapshots.getValue(Parent.class);
-                        if (UID.equals(currentUser)) {
+                        GenericTypeIndicator<Parent> t = new GenericTypeIndicator<Parent>() {};
+                        user = snapshots.getValue(t);
+                        if (snapshots.getKey().equals(currentUserUID)) {
                             parentOneAmka = String.valueOf(snapshots.child("amka").getValue());
-                            if (Boolean.valueOf(String.valueOf(snapshots.child("partner")))) {
-                                parentTwoAmka = String.valueOf(snapshots.child("partnerAmka"));
+                            if (snapshots.getValue(t).getPartner()) {
+                                parentTwoAmka = snapshots.getValue(t).getPartnersAmka();
                             } else {
                                 parentTwoAmka = "00000000000";
                             }
@@ -181,7 +242,7 @@ public class FamilyHistoryInput extends AppCompatActivity {
         });
     }
 
-    //loading data in adapter from database
+    //getting illnesses from database
     private void getIllnesses() {
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("illnesses");
         rootRef.addValueEventListener(new ValueEventListener() {
@@ -193,7 +254,6 @@ public class FamilyHistoryInput extends AppCompatActivity {
                         illnesses.add(ill);
                     }
                 }
-                //calls adapter to load data into recyclerView
                 setAdapter();
             }
 

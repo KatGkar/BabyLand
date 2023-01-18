@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,26 +38,27 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AddBaby extends AppCompatActivity {
-    TextView babyNameText, babyAmkaText, babyBirthPlaceText;
-    EditText babyBirthDate;
-    RadioButton babyBoy, babyGirl;
-    public String[] bloodType = {"Blood Type", "A RhD positive (A+)","A RhD negative (A-)", "B RhD positive (B+)",
+    private TextView babyNameText, babyAmkaText, babyBirthPlaceText;
+    private EditText babyBirthDate;
+    private RadioButton babyBoy, babyGirl;
+    private String[] bloodType = {"Blood Type", "A RhD positive (A+)","A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
     private Spinner babyBloodTypeSpinner;
-    RadioGroup radioGroup;
-    CalendarView calendar;
-    Button calendarButton;
-    RelativeLayout infoRelativeLayout;
-    FirebaseDatabase database;
-    DatabaseReference reference;
-    Boolean flagUnique;
+    private RadioGroup radioGroup;
+    private CalendarView calendar;
+    private Button calendarButton;
+    private RelativeLayout infoRelativeLayout;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+    private Boolean flagUnique, flagNext;
+    private String sex, warnings;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_baby);
-        //adding new baby
+
         //finding views on xml file
         babyNameText = findViewById(R.id.babyNameText);
         babyAmkaText = findViewById(R.id.babyAmkaText);
@@ -75,7 +77,6 @@ public class AddBaby extends AppCompatActivity {
 
         //setting default sex
         babyGirl.setChecked(true);
-
 
         //setting hint in babyBirthDate
         //getting current date
@@ -191,38 +192,37 @@ public class AddBaby extends AppCompatActivity {
 
     }
 
-    String sex;
-    Boolean next;
-    String warnings;
+
     //check restrictions and add new baby or show error messages
     public void addNewBaby(View view){
-        next=true;
-        warnings = "Field";
+        flagNext=true;
         if(babyGirl.isChecked()) {
             sex= "GIRL";
-        }else{
+        }else if(babyBoy.isChecked()){
             sex ="BOY";
         }
         if(TextUtils.isEmpty(babyNameText.getText())) {
             babyNameText.setError("Enter a name please!");
-            next=false;
+            babyNameText.requestFocus();
+            flagNext=false;
         }
         if(!(babyAmkaText.getText().length() == 11) || (TextUtils.isEmpty(babyAmkaText.getText()))) {
             babyAmkaText.setError("Amka length must be 11 numbers!");
-            next=false;
+            babyAmkaText.requestFocus();
+            flagNext=false;
         }
         if(TextUtils.isEmpty(babyBirthPlaceText.getText())){
             babyBirthPlaceText.setError("Please enter a birth place!");
-            next=false;
+            babyBirthPlaceText.requestFocus();
+            flagNext=false;
         }
         if(babyBloodTypeSpinner.getSelectedItem().equals("Blood Type")){
             ((TextView)babyBloodTypeSpinner.getSelectedView()).setError("Please choose a blood type!");
-            next=false;
+            babyBloodTypeSpinner.requestFocus();
+            flagNext=false;
         }
-        findIfUnique();
-    }
 
-    private void findIfUnique() {
+        //find if amka number is unique
         flagUnique = true;
         reference = database.getReference("baby");
         reference.addValueEventListener(new ValueEventListener() {
@@ -235,7 +235,7 @@ public class AddBaby extends AppCompatActivity {
                             flagUnique = false;
                         }
                     }
-                    goToNext();
+                    check();
                 }
             }
 
@@ -246,8 +246,9 @@ public class AddBaby extends AppCompatActivity {
         });
     }
 
-    private void goToNext(){
-        if(next && flagUnique) {
+    //check if restrictions are met
+    private void check(){
+        if(flagNext && flagUnique) {
             Intent myIntent = new Intent(this, FamilyHistoryInput.class);
             myIntent.putExtra("sex", sex);
             myIntent.putExtra("name", babyNameText.getText().toString());
@@ -257,16 +258,9 @@ public class AddBaby extends AppCompatActivity {
             myIntent.putExtra("bloodType", babyBloodTypeSpinner.getSelectedItem().toString());
             this.startActivity(myIntent);
         }else if(!flagUnique) {
-            showMessage("Warning", "Baby amka exists already!!");
+            Toast.makeText(this, "Amka number exists already!!", Toast.LENGTH_SHORT).show();
             babyAmkaText.setError("Amka should be unique");
         }
-    }
-
-
-
-
-    public void showMessage(String title, String message){
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 
 }

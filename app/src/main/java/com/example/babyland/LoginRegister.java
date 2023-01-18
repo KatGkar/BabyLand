@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -33,17 +34,17 @@ import com.squareup.picasso.Picasso;
 public class LoginRegister extends AppCompatActivity { //implements GoogleApiClient.OnConnectionFailedListener {
 
     private ImageView facebookButton, googleButton, image, loading;
-    CallbackManager callbackManager;
-    public FirebaseAuth mfirebaseAuth;
+    private CallbackManager callbackManager;
+    private FirebaseAuth mfirebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleApiClient mGoogleApiClient;
     private final static int RC_SIGN_IN = 123;
     private EditText email, password;
-    long delay = 1000;
-    long lastEditText = 0;
-    FrameLayout loadingFrame;
-    Handler handler = new Handler();
-    TextView createUser;
+    private long delay = 1000;
+    private long lastEditText = 0;
+    private FrameLayout loadingFrame;
+    private Handler handler = new Handler();
+    private TextView createUser;
     private androidx.appcompat.app.AlertDialog.Builder builder;
     private long pressedTime;
 
@@ -53,7 +54,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
 
-        //finding views
+        //getting views from xml file
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         loading = findViewById(R.id.loading);
@@ -62,9 +63,8 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         createUser = findViewById(R.id.createNewUser);
         image = findViewById(R.id.image);
 
-        //builder
+        //builder to show messages
         builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-
 
         //setting image
         Picasso.get().load(R.drawable.baby_girl).into(image);
@@ -72,6 +72,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         //setting visibilities
         loadingFrame.setVisibility(View.INVISIBLE);
         loadingFrame.setBackgroundColor(getResources().getColor(R.color.purple_700));
+
         //setting design
         createUser.setPaintFlags(createUser.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -199,6 +200,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
     }
 
 
+    //on resume
     @Override
     protected void onResume() {
         super.onResume();
@@ -209,6 +211,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
 
     }
 
+    //on back button pressed
     @Override
     public void onBackPressed() {
         if (pressedTime + 2000 > System.currentTimeMillis()) {
@@ -269,9 +272,10 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                             user.sendEmailVerification();
                             Toast.makeText(LoginRegister.this, "Please check your email ", Toast.LENGTH_SHORT).show();
                         }else{*/
-                           // Intent intent = new Intent(LoginRegister.this, MainScreenParents.class);
-                            Intent intent = new Intent(LoginRegister.this, MainScreenDoctor.class);
-                            startActivity(intent);
+                           //Intent intent = new Intent(LoginRegister.this, MainScreenParents.class);
+                            //Intent intent = new Intent(LoginRegister.this, MainScreenDoctor.class);
+                        Intent intent = new Intent(LoginRegister.this, doctorParentChoose.class);
+                        startActivity(intent);
                         //}
                     }
                 })

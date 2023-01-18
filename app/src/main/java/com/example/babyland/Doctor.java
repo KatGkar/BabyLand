@@ -2,6 +2,7 @@ package com.example.babyland;
 
 import java.util.ArrayList;
 
+
 public class Doctor {
     String name, medicalID, phoneNumber, email, surname;
     ArrayList<Baby> kids;
@@ -13,6 +14,9 @@ public class Doctor {
         this.email = email;
         this.kids = kids;
         this.surname = surname;
+    }
+
+    public Doctor() {
     }
 
     public String getSurname() {

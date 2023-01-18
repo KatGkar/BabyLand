@@ -1,37 +1,23 @@
-//  0 comes when two date are same,
-//  1 comes when date1 is higher then date2
-// -1 comes when date1 is lower then date2
-
 createNewUser
 screen app when keyboard shows ???
 
-
-in register page add facebook and goggle buttons 
+##in register page add facebook and goggle buttons 
 
 ## on textViews only numbers no .,';[ 
 
-
-
-on create next parent change name in database
-
-requestFocus() on wrong info 
+##requestFocus() on wrong info 
 
 διαγράμματα 
 
-user doctor or parent
 
 εμβόλια
 --view vaccination on doctor side
 --view vaccination on parent side
 --add vaccinaiton on doctor side
 
-change user to parent 
-
-on addChildToDoctor verification with parent amka
-
-
 
 multilingua 
+
 
 
 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
@@ -42,13 +28,7 @@ Check dates and calendars
 FrontEnd
 Facebook google sign in
 check code (errors, fixes, comments)
-
-
-
-
-monitoring develpment
---doctor
-
+back button
 
 
 

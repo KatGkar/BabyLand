@@ -2,14 +2,16 @@ package com.example.babyland;
 
 public class Vaccination {
     String name, date, doctorName;
-    int timesVaccinated;
+    int uniqueID;
 
+    public Vaccination() {
+    }
 
-    public Vaccination(String name, String date, String doctorName, int timesVaccinated) {
+    public Vaccination(String name, String date, String doctorName, int uniqueID) {
         this.name = name;
         this.date = date;
         this.doctorName = doctorName;
-        this.timesVaccinated = timesVaccinated;
+        this.uniqueID = uniqueID;
     }
 
     public String getName() {
@@ -36,11 +38,11 @@ public class Vaccination {
         this.doctorName = doctorName;
     }
 
-    public int getTimesVaccinated() {
-        return timesVaccinated;
+    public int getUniqueID() {
+        return uniqueID;
     }
 
-    public void setTimesVaccinated(int timesVaccinated) {
-        this.timesVaccinated = timesVaccinated;
+    public void setUniqueID(int uniqueID) {
+        this.uniqueID = uniqueID;
     }
 }

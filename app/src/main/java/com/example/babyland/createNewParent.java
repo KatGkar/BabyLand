@@ -8,11 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,44 +20,47 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class createNewUser extends AppCompatActivity {
+public class createNewParent extends AppCompatActivity {
 
     private TextView userProfile;
     private EditText nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, dateOfBirthParentOne;
-    public String[] bloodType = {"Blood Type", "A RhD positive (A+)", "A RhD negative (A-)", "B RhD positive (B+)",
+    private String[] bloodType = {"Blood Type", "A RhD positive (A+)", "A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
 
     private Spinner blood;
-    CalendarView calendar;
-    Button calendarButton;
-    RelativeLayout infoRelativeLayout;
-    FirebaseDatabase database;
-    DatabaseReference reference;
-    int flagUnique;
-    ImageView bab;
-    private String emailParentOne;
+    private CalendarView calendar;
+    private Button calendarButton;
+    private RelativeLayout infoRelativeLayout;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+    private int flagUnique;
+    private ImageView bab;
+    private Boolean flagNext;
+    private String emailParentOne, currentUserUID;
+    private  Parent parent;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_new_user);
+        setContentView(R.layout.activity_create_new_parent);
 
-        //finding views
+        //finding views from xml file
         userProfile = findViewById(R.id.profileUser);
         nameParentOne = findViewById(R.id.nameParentOne);
         surnameParentOne = findViewById(R.id.surnameParentOne);
@@ -72,11 +73,15 @@ public class createNewUser extends AppCompatActivity {
         blood = findViewById(R.id.bloodTypeParentOne);
         bab = findViewById(R.id.imageView2);
 
+        //setting image
         bab.setImageResource(R.drawable.baby_girl);
 
         //setting database
         database = FirebaseDatabase.getInstance();
         emailParentOne = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        //getting user UID
+        currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
         //setting design
@@ -87,7 +92,6 @@ public class createNewUser extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, bloodType);
         blood.setAdapter(adapter);
 
-        //setting hint in babyBirthDate
         //getting current date
         Calendar cal = Calendar.getInstance();
         int yy = cal.get(Calendar.YEAR);
@@ -110,9 +114,9 @@ public class createNewUser extends AppCompatActivity {
                 .append(d).append(" ").append("/").append(m).append("/")
                 .append(yy));
 
+        //setting visibilities
         calendar.setVisibility(View.INVISIBLE);
         infoRelativeLayout.setVisibility(View.VISIBLE);
-
 
         //onclick listener for calendar opening
         calendarButton.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +126,6 @@ public class createNewUser extends AppCompatActivity {
                 infoRelativeLayout.setVisibility(View.INVISIBLE);
             }
         });
-
 
         //getting date of the calendar
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -177,7 +180,6 @@ public class createNewUser extends AppCompatActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    showMessage("Watch out!!", "Something went wrong. Please try again later!");
                 }
                 dateOfBirthParentOne.setText(d + "/" + m + "/" + year);
                 calendar.setVisibility(View.INVISIBLE);
@@ -279,7 +281,6 @@ public class createNewUser extends AppCompatActivity {
 
                         } catch (Exception e) {
                             e.printStackTrace();
-                            showMessage("Watch out!!", "Something went wrong. Please try again later!");
                         }
 
 
@@ -304,47 +305,47 @@ public class createNewUser extends AppCompatActivity {
     }
 
 
-    //on back button
+    //on back button pressed
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(createNewUser.this, LoginRegister.class);
+        Intent intent = new Intent(createNewParent.this, LoginRegister.class);
         startActivity(intent);
     }
 
-    //showing messages to users
-    public void showMessage(String title, String message) {
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
-    }
 
-    Boolean next;
-
+    //check textViews and amka number
     public void nextParent(View view) {
-        next = true;
+        flagNext = true;
         if (TextUtils.isEmpty(nameParentOne.getText())) {
             nameParentOne.setError("Please enter a name!");
-            next = false;
+            nameParentOne.requestFocus();
+            flagNext = false;
         }
         if (TextUtils.isEmpty(surnameParentOne.getText())) {
             surnameParentOne.setError("Please enter a surname!");
-            next = false;
+            surnameParentOne.requestFocus();
+            flagNext = false;
         }
         if (TextUtils.isEmpty(amkaParentOne.getText()) || (amkaParentOne.getText().length() != 11)) {
             amkaParentOne.setError("Amka should have length 11 numbers!");
-            next = false;
+            amkaParentOne.requestFocus();
+            flagNext = false;
         }
         if (TextUtils.isEmpty(phoneNumberParentOne.getText()) || (phoneNumberParentOne.getText().length() != 10)) {
             phoneNumberParentOne.setError("Phone number should have length 11 numbers!");
-            next = false;
+            phoneNumberParentOne.requestFocus();
+            flagNext = false;
         }
         if (blood.getSelectedItem().equals("Blood Type")) {
             ((TextView) blood.getSelectedView()).setError("Please choose a blood type!");
-            next = false;
+            blood.requestFocus();
+            flagNext = false;
         }
-        findIfUnique();
 
-    }
-
-    private void findIfUnique() {
+        //check if amka number is unique
+        //flagUnique = 1 --> amka number is unique
+        //flagUnique = 2 --> amka number is being user by another parent (parent!=user)
+        //flagUnique = 3 --> amka number is being used by another user
         flagUnique = 1;
         reference = database.getReference("parent");
         reference.addValueEventListener(new ValueEventListener() {
@@ -352,16 +353,17 @@ public class createNewUser extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot != null) {
                     for (DataSnapshot snapshots : snapshot.getChildren()) {
-                        String amka = String.valueOf(snapshots.child("amka").getValue());
-                        if (amkaParentOne.getText().toString().equals(amka)) {
+                        GenericTypeIndicator<Parent> t = new GenericTypeIndicator<Parent>() {};
+                        if (amkaParentOne.getText().toString().equals(snapshots.getValue(t).getAmka())) {
                             if (snapshots.getKey().length() == 11) {
                                 flagUnique = 3;
+                                parent = snapshots.getValue(t);
                             } else {
                                 flagUnique = 2;
                             }
                         }
                     }
-                    goToNext();
+                    check();
                 }
             }
 
@@ -372,9 +374,9 @@ public class createNewUser extends AppCompatActivity {
         });
     }
 
-    private void goToNext() {
-        if (next && flagUnique == 1) {
-            //next screen
+    private void check() {
+        if (flagNext && flagUnique == 1) {
+            //there is no other user with this amka number
             Intent myIntent = new Intent(this, nextParent.class);
             myIntent.putExtra("name", nameParentOne.getText().toString());
             myIntent.putExtra("surname", surnameParentOne.getText().toString());
@@ -385,28 +387,65 @@ public class createNewUser extends AppCompatActivity {
             myIntent.putExtra("bloodType", blood.getSelectedItem().toString());
             this.startActivity(myIntent);
         } else if (flagUnique == 2) {
+            //there is another user with this amka
             amkaParentOne.setError("Amka should be unique");
             amkaParentOne.requestFocus();
-        } else {
-            reference = database.getReference("parent");
-            reference.addValueEventListener(new ValueEventListener() {
+        } else if(flagUnique == 3){
+            //there is a parent with this amka number but he is not a user yet
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot != null) {
-                        for (DataSnapshot snapshots : snapshot.getChildren()) {
-                            String amka = String.valueOf(snapshots.child("amka").getValue());
-                            if (amkaParentOne.getText().toString().equals(amka)) {
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            //Yes button clicked
+                            //add parent to database
+                            if(parent.getPartner()){
+                                reference = database.getReference("parent");
+                                reference.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot != null) {
+                                            for (DataSnapshot snapshots : snapshot.getChildren()) {
+                                                String amka = String.valueOf(snapshots.child("amka").getValue());
+                                                GenericTypeIndicator<Parent> t = new GenericTypeIndicator<Parent>() {};
+                                                if (amkaParentOne.getText().toString().equals(amka)) {
+                                                    reference.child(amka).removeValue();
+                                                    reference.child(currentUserUID).setValue(parent);
+                                                    Toast.makeText(createNewParent.this, "User created!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                            Intent intent = new Intent(createNewParent.this, MainScreenParents.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
 
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }else{
+                                Intent intent = new Intent(createNewParent.this, nextParent.class);
+                                intent.putExtra("name", parent.getName());
+                                intent.putExtra("surname", parent.getSurname());
+                                intent.putExtra("amka", parent.getAmka());
+                                intent.putExtra("phoneNumber", parent.getPhoneNumber());
+                                intent.putExtra("email", parent.getEmail());
+                                intent.putExtra("birthDate", parent.getDateOfBirth());
+                                intent.putExtra("bloodType", parent.getBloodType());
+                                startActivity(intent);
                             }
-                        }
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            //Do nothing
                     }
                 }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Parent exists already continue with this parent??").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
         }
 
     }

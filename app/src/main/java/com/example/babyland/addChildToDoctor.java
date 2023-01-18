@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,17 +33,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class addChildToDoctor extends AppCompatActivity {
-    private EditText searchAmkaEditText;
-    private TextView nameAddChildTextView, amkaAddChildTextView, ageAddChildTextView;
+    private EditText searchAmkaEditText, verificationEditText;
+    private TextView nameAddChildTextView, amkaAddChildTextView, ageAddChildTextView, verificationTextView;
     private RecyclerView availableChildrenRecyclerView;
-    FirebaseDatabase database;
-    DatabaseReference reference;
-    private ArrayList<Baby> availableChildren, doctorsChildren;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+    private ArrayList<Baby> availableChildren, doctorsChildren = null;
     private ImageView sexAddChildImageView, searchButton;
     private recyclerAdapter.recyclerVewOnClickListener listener;
-    private RelativeLayout viewChildInfoLayout, availableChildrenLayout;
-    private Button addChildButton;
-    private String currentUser;
+    private RelativeLayout viewChildInfoLayout, availableChildrenLayout, verificationRelativeLayout;
+    private Button addChildButton, verificationButton;
+    private String currentUserUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,24 +61,33 @@ public class addChildToDoctor extends AppCompatActivity {
         addChildButton = findViewById(R.id.addChildButton);
         sexAddChildImageView = findViewById(R.id.sexAddChildImage);
         searchButton = findViewById(R.id.searchButton);
+        verificationButton = findViewById(R.id.verificationButton);
+        verificationEditText = findViewById(R.id.verificationEditTextView);
+        verificationRelativeLayout = findViewById(R.id.verificaitonRelativeLayout);
+        verificationTextView = findViewById(R.id.verificationTextView);
 
         //setting visibilities
         viewChildInfoLayout.setVisibility(View.INVISIBLE);
         availableChildrenLayout.setVisibility(View.VISIBLE);
+        verificationRelativeLayout.setVisibility(View.INVISIBLE);
 
         //setting database
         database = FirebaseDatabase.getInstance();
+
+        //setting text
+        verificationTextView.setText("Please type ones parent amka to verify the addition");
 
         //setting arrays
         availableChildren = new ArrayList<>();
         doctorsChildren = new ArrayList<>();
 
         //getting current user
-        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        //getting children on doctor list from database
         getDoctorsChildren();
 
-        //getting children from database
+        //getting available children from database
         getAvailableChildren();
 
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -88,9 +98,10 @@ public class addChildToDoctor extends AppCompatActivity {
         });
     }
 
+    //setting adapter for recyclerView
     private void setAdapter() {
         setOnClickListener();
-        recyclerAdapter adapter = new recyclerAdapter(listener, availableChildren, "availableChildren");
+        recyclerAdapter adapter = new recyclerAdapter(listener, availableChildren, "availableChildren","none");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         availableChildrenRecyclerView.setLayoutManager(layoutManager);
         availableChildrenRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -163,15 +174,32 @@ public class addChildToDoctor extends AppCompatActivity {
                     public void onClick(View view) {
                         Baby b = availableChildren.get(position);
                         Boolean unique=true;
-                        for(int i=0;i<doctorsChildren.size();i++){
-                            if(b.getAmka().equals(doctorsChildren.get(i).getAmka()))
-                            {
-                                unique = false;
+                        if(!doctorsChildren.isEmpty()) {
+                            for (int i = 0; i < doctorsChildren.size(); i++) {
+                                if (b.getAmka().equals(doctorsChildren.get(i).getAmka())) {
+                                    unique = false;
+                                }
                             }
                         }
                         if(unique) {
-                            doctorsChildren.add(availableChildren.get(position));
-                            updateDatabase();
+                            viewChildInfoLayout.setVisibility(View.INVISIBLE);
+                            verificationRelativeLayout.setVisibility(View.VISIBLE);
+                            verificationButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    String amka = verificationEditText.getText().toString();
+                                    String amka1 = availableChildren.get(position).getParentOneAmka();
+                                    String amka2 = availableChildren.get(position).getParentTwoAmka();
+                                    if(amka.equals(amka1) || amka.equals(amka2)) {
+                                        doctorsChildren.add(availableChildren.get(position));
+                                        updateDatabase();
+                                        onBackPressed();
+                                    }else{
+                                        Toast.makeText(addChildToDoctor.this, "Wrong amka. Please try again", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
                         }else{
                             Toast.makeText(addChildToDoctor.this, "Child already added", Toast.LENGTH_SHORT).show();
                         }
@@ -182,6 +210,7 @@ public class addChildToDoctor extends AppCompatActivity {
         };
     }
 
+    //getting children from doctor list
     private void getDoctorsChildren(){
         reference = database.getReference("doctor");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -190,9 +219,16 @@ public class addChildToDoctor extends AppCompatActivity {
                 if(snapshot!=null){
                     for(DataSnapshot snapshots:snapshot.getChildren()){
                         GenericTypeIndicator<ArrayList<Baby>> t = new GenericTypeIndicator<ArrayList<Baby>>() {};
-                        if(snapshots.getKey().equals(currentUser)){
+                        if(snapshots.getKey().equals(currentUserUID)){
                             doctorsChildren = snapshots.child("kids").getValue(t);
                         }
+                    }
+                    try{
+                        if(doctorsChildren.isEmpty()){
+                            doctorsChildren = null;
+                        }
+                    }catch (Exception e){
+                        doctorsChildren = new ArrayList<>();
                     }
                 }
             }
@@ -205,6 +241,7 @@ public class addChildToDoctor extends AppCompatActivity {
     }
 
 
+    //getting all available children from database
     private void getAvailableChildren(){
         availableChildren.clear();
         reference = database.getReference("baby");
@@ -216,7 +253,6 @@ public class addChildToDoctor extends AppCompatActivity {
                         GenericTypeIndicator<Baby> t = new GenericTypeIndicator<Baby>(){};
                         availableChildren.add(snapshots.getValue(t));
                     }
-                    Toast.makeText(addChildToDoctor.this, String.valueOf(availableChildren.size()), Toast.LENGTH_SHORT).show();
                     setAdapter();
                 }
 
@@ -229,15 +265,16 @@ public class addChildToDoctor extends AppCompatActivity {
         });
     }
 
+    //update doctor list on database
     private void updateDatabase(){
-        reference = database.getReference("doctor").child(currentUser);
+        reference = database.getReference("doctor").child(currentUserUID);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot != null) {
-                    if (snapshot.getKey().equals(currentUser)) {
-                        database.getReference("doctor").child(currentUser).child("kids").setValue(doctorsChildren);
-                        showMessage("Success", "Child added successfully!!");
+                    if (snapshot.getKey().equals(currentUserUID)) {
+                        database.getReference("doctor").child(currentUserUID).child("kids").setValue(doctorsChildren);
+                        Toast.makeText(addChildToDoctor.this, "Child added successfully", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -249,24 +286,26 @@ public class addChildToDoctor extends AppCompatActivity {
         });
     }
 
-    public void showMessage(String title, String message) {
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
-    }
-
+    //fixing on back press button
     @Override
     public void onBackPressed() {
         if(viewChildInfoLayout.getVisibility() == View.VISIBLE){
             viewChildInfoLayout.setVisibility(View.INVISIBLE);
             availableChildrenLayout.setVisibility(View.VISIBLE);
+        }else if(verificationRelativeLayout.getVisibility() == View.VISIBLE){
+            verificationRelativeLayout.setVisibility(View.INVISIBLE);
+            viewChildInfoLayout.setVisibility(View.VISIBLE);
         }else{
             super.onBackPressed();
         }
 
     }
 
+    //search button
     private void searchButton(View view){
         String amka1 = searchAmkaEditText.getText().toString();
         if(!TextUtils.isEmpty(searchAmkaEditText.getText())) {
+            //if textview is not empty
             availableChildren.clear();
             reference = database.getReference("baby");
             reference.addListenerForSingleValueEvent(new ValueEventListener() {

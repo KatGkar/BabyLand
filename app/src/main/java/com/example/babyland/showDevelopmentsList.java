@@ -29,8 +29,8 @@ public class showDevelopmentsList extends AppCompatActivity {
 
     private String babyAmka;
     private ArrayList<Development> developments;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
     private RecyclerView developmentsRecyclerView, developmentalMonitoringRecyclerView, examinationRecyclerView, sustenanceRecyclerView;
     private recyclerAdapter.recyclerVewOnClickListener listener;
     private TextView ageText,weightText, lengthText, dateText, headCircumferenceText, doctorTextView, observationsTextView, noDevelopmentTextView;
@@ -47,7 +47,7 @@ public class showDevelopmentsList extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         babyAmka = extras.getString("babyAmka");
 
-        //getting views
+        //getting views from xml file
         developmentsRecyclerView = findViewById(R.id.developmentsRecyclerView);
         developmentLayout = findViewById(R.id.developmentLayout);
         ageText = findViewById(R.id.ageTextViewShow);
@@ -72,7 +72,7 @@ public class showDevelopmentsList extends AppCompatActivity {
         noDevelopmentTextView.setVisibility(View.INVISIBLE);
 
         //setting database
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         //getting data from database
         getDevelopments();
@@ -80,10 +80,10 @@ public class showDevelopmentsList extends AppCompatActivity {
 
     }
 
-
+    //getting developments form database
     private void getDevelopments(){
-        databaseReference = firebaseDatabase.getReference("monitoringDevelopment");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        reference = database.getReference("monitoringDevelopment");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot!=null){
@@ -112,17 +112,17 @@ public class showDevelopmentsList extends AppCompatActivity {
 
     }
 
-    //loads data from list into recyclerView
+    //loading data into recyclerView
     private void setAdapter() {
         setOnClickListener();
-        recyclerAdapter adapter = new recyclerAdapter(listener, developments, "developments");
+        recyclerAdapter adapter = new recyclerAdapter(listener, developments, "developments","none");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         developmentsRecyclerView.setLayoutManager(layoutManager);
         developmentsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         developmentsRecyclerView.setAdapter(adapter);
     }
 
-
+    //on back button pressed
     @Override
     public void onBackPressed() {
         if(developmentLayout.getVisibility() == View.VISIBLE){
@@ -150,19 +150,19 @@ public class showDevelopmentsList extends AppCompatActivity {
                 doctorTextView.setText(dev.getDoctor());
                 observationsTextView.setText(dev.getObservations());
                 //developmental monitoring info
-                recyclerAdapter adapter = new recyclerAdapter(listener, dev.getDevelopmentalMonitoring(), "developmentalMonitoring");
+                recyclerAdapter adapter = new recyclerAdapter(listener, dev.getDevelopmentalMonitoring(), "developmentalMonitoring","none");
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 developmentalMonitoringRecyclerView.setLayoutManager(layoutManager);
                 developmentalMonitoringRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 developmentalMonitoringRecyclerView.setAdapter(adapter);
                 //examination info
-                adapter = new recyclerAdapter(listener, dev.getExamination(), "exam");
+                adapter = new recyclerAdapter(listener, dev.getExamination(), "exam","none");
                 layoutManager = new LinearLayoutManager(getApplicationContext());
                 examinationRecyclerView.setLayoutManager(layoutManager);
                 examinationRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 examinationRecyclerView.setAdapter(adapter);
                 //sustenance info
-                adapter = new recyclerAdapter(listener, dev.getSustenance(), "sust");
+                adapter = new recyclerAdapter(listener, dev.getSustenance(), "sust","none");
                 layoutManager = new LinearLayoutManager(getApplicationContext());
                 sustenanceRecyclerView.setLayoutManager(layoutManager);
                 sustenanceRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -171,10 +171,5 @@ public class showDevelopmentsList extends AppCompatActivity {
         };
     }
 
-
-    //showing messages to users
-    public void showMessage(String title, String message) {
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
-    }
 
 }
