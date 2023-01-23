@@ -5,18 +5,47 @@ screen app when keyboard shows ???
 
 ## on textViews only numbers no .,';[ 
 
-##requestFocus() on wrong info 
 
-διαγράμματα 
+google facebook login register
 
+#ffe4e1
+#ca9ab6
+#b9d5ea
+#C1126B
 
+#E20059
+#ECEAE7
+#ffe4e1
 
 multilingua 
 
 
+-----Design done-----
+AddChildToDoctor
+createNewDoctor
+createNewParent
+DoctorParentChoose
+LoginRegister
+MainScreenDoctor
+RegisterUsernamePasswordActivity
+viewParentInfo
+
+-----Design not done-----
+AddBaby
+deleteChildActivity
+FamilyHistoryInput
+MainScreenParents
+MonitoringDevelopment
+nextParent
+showDevelopmentsList
+showHistoric
+SpinnerAdapter
+UserAccount
+viewCharts
+viewVaccination
+
 
 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
-
 
 ---------------------------------------------
 Check dates and calendars
@@ -27,27 +56,20 @@ back button
 set database
 
 
-google fonts
-major mono
-zen dots
+
+RegisterUsernamePassword
+DoctorParentChoose
+
+
 
 
 erros, variables, comments, name on all .java files
 --LoginRegister
---HomeScreen
 
 check messages shown
 check if custom tab activity is needed
 
 createNewUser, nextParent, addBaby, monitoringDevelopemnt --> date on month, watch out for calendars
-
-
-
-
-
-
-
-
 
 
 

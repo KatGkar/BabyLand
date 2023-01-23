@@ -1,7 +1,6 @@
 package com.example.babyland;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -26,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class MainScreenParents extends AppCompatActivity {
 
@@ -159,7 +157,7 @@ public class MainScreenParents extends AppCompatActivity {
         chartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainScreenParents.this, HomeScreen.class);
+                Intent intent = new Intent(MainScreenParents.this, viewCharts.class);
                 intent.putExtra("babyAmka", chooseChildSpinner.getSelectedItem().toString());
                 startActivity(intent);
             }

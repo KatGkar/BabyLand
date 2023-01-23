@@ -3,36 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/fui_transparent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/availableChildrenRelativeLayout"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewAvailableChildren"
         android:layout_width="match_parent"
+        android:background="@color/fui_transparent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="visible"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="8dp"
+        app:cardMaxElevation="10dp"
+        app:cardPreventCornerOverlap="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:background="@color/fui_transparent"
+            android:layout_height="100dp">
 
             <TextView
                 android:id="@+id/nameAvailableChildrenText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
+                android:layout_marginStart="45dp"
                 android:layout_marginTop="24dp"
                 android:text="TextView"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/sexAvailableChildren"
                 app:layout_constraintTop_toBottomOf="@+id/amkaAvailableChildrenText" />
 
             <TextView
                 android:id="@+id/amkaAvailableChildrenText"
                 android:layout_width="wrap_content"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="16dp"
                 android:text="TextView"
                 app:layout_constraintStart_toEndOf="@+id/sexAvailableChildren"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -42,11 +52,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/baby_girl" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

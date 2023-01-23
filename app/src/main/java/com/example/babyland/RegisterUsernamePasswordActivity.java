@@ -4,6 +4,8 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +28,8 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity {
     private String email, password, passwordValid;
     private FirebaseAuth firebaseAuth;
     private Button registerButton;
+    private ConstraintLayout constraintLayout;
+    private Boolean flagNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +41,13 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity {
         passwordTextView = findViewById(R.id.passwordTextView);
         passwordValidTextView = findViewById(R.id.passwordValidTextView);
         registerButton = findViewById(R.id.registerUserButton);
+        constraintLayout = findViewById(R.id.constrainLayoutRegisterUsernamePassword);
 
         //setting database
         firebaseAuth = FirebaseAuth.getInstance();
+
+        //UI
+        constraintLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.gradient));
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +62,27 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity {
         email = emailTextView.getText().toString();
         password = passwordTextView.getText().toString();
         passwordValid = passwordValidTextView.getText().toString();
-        if (password.equals(passwordValid)) {
+        flagNext = true;
+        if(email.isEmpty()) {
+            flagNext = false;
+            emailTextView.setError("Please fill in an email!!");
+            emailTextView.requestFocus();
+        }
+        if(password.isEmpty()){
+            flagNext = false;
+            passwordTextView.setError("Please choose a password!!");
+            passwordTextView.requestFocus();
+        }
+        if(passwordValid.isEmpty()){
+            flagNext = false;
+            passwordValidTextView.setError("Please confirm password!!");
+            passwordValidTextView.requestFocus();
+        }
+        if(!password.equals(passwordValid)){
+            flagNext = false;
+            passwordValidTextView.setError("Password do not match!!");
+        }
+        if(flagNext) {
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -64,16 +92,13 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity {
                         Toast.makeText(RegisterUsernamePasswordActivity.this, "User created successfully!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterUsernamePasswordActivity.this, LoginRegister.class);
                         startActivity(intent);
-
                     } else {
                         // If sign in fails, display a message to the user.
                         System.out.println(task.getException().getMessage());
                     }
                 }
             });
-
         }
-
      /*   firebaseAuth.sendSignInLinkToEmail(email, actionCodeSettings)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

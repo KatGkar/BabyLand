@@ -3,6 +3,8 @@ package com.example.babyland;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,15 +15,13 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
-import com.facebook.login.Login;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,7 +33,7 @@ import com.squareup.picasso.Picasso;
 
 public class LoginRegister extends AppCompatActivity { //implements GoogleApiClient.OnConnectionFailedListener {
 
-    private ImageView facebookButton, googleButton, image, loading;
+    private ImageView facebookButton, googleButton, image, loadingFrame;
     private CallbackManager callbackManager;
     private FirebaseAuth mfirebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -42,11 +42,12 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
     private EditText email, password;
     private long delay = 1000;
     private long lastEditText = 0;
-    private FrameLayout loadingFrame;
     private Handler handler = new Handler();
     private TextView createUser;
     private androidx.appcompat.app.AlertDialog.Builder builder;
     private long pressedTime;
+    private ConstraintLayout constraintLayout;
+    private RelativeLayout loginRelativeLayout;
 
 
     @Override
@@ -57,24 +58,26 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         //getting views from xml file
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
-        loading = findViewById(R.id.loading);
         loadingFrame = findViewById(R.id.loadingFrame);
         mfirebaseAuth = FirebaseAuth.getInstance();
         createUser = findViewById(R.id.createNewUser);
         image = findViewById(R.id.image);
+        constraintLayout = findViewById(R.id.constrainLayoutLoginRegister);
+        loginRelativeLayout = findViewById(R.id.loginRelativeLayout);
+
+        //UI
+        constraintLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.gradient));
+        createUser.setPaintFlags(createUser.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
 
         //builder to show messages
         builder = new androidx.appcompat.app.AlertDialog.Builder(this);
 
         //setting image
-        Picasso.get().load(R.drawable.baby_girl).into(image);
+        Picasso.get().load(R.drawable.babylandlogo).into(image);
 
         //setting visibilities
         loadingFrame.setVisibility(View.INVISIBLE);
-        loadingFrame.setBackgroundColor(getResources().getColor(R.color.purple_700));
-
-        //setting design
-        createUser.setPaintFlags(createUser.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        loginRelativeLayout.setVisibility(View.VISIBLE);
 
 
         //check if user is writing in email textView
@@ -204,6 +207,8 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
     @Override
     protected void onResume() {
         super.onResume();
+        loadingFrame.setVisibility(View.INVISIBLE   );
+        loginRelativeLayout.setVisibility(View.VISIBLE);
         email.setText("");
         email.setHint("Email");
         password.setText("");
@@ -234,7 +239,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
             AlertDialog alert = builder.create();
             alert.show();
         } else {
-            Toast.makeText(this, "Press back again if you want to go back",
+            Toast.makeText(this, "Press back again if you want to exit",
                     Toast.LENGTH_LONG).show();
         }
         pressedTime = System.currentTimeMillis();
@@ -254,6 +259,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
             if (System.currentTimeMillis() > (lastEditText + delay - 500)) {
                 if ((!TextUtils.isEmpty(email.getText().toString()) && !TextUtils.isEmpty(password.getText().toString()))) {
                     loadingFrame.setVisibility(View.VISIBLE);
+                    loginRelativeLayout.setVisibility(View.INVISIBLE);
                     checkLogin();
                 }
             }
@@ -265,7 +271,9 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         mfirebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        loadingFrame.setVisibility(View.INVISIBLE);
+                        loadingFrame.setVisibility(View.VISIBLE);
+                        //loadingFrame.setVisibility(View.INVISIBLE);
+                        //loginRelativeLayout.setVisibility(View.VISIBLE);
                         //continue to next page
                         FirebaseUser user = mfirebaseAuth.getCurrentUser();
                        /* if(!user.isEmailVerified()){
@@ -274,7 +282,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                         }else{*/
                            //Intent intent = new Intent(LoginRegister.this, MainScreenParents.class);
                             //Intent intent = new Intent(LoginRegister.this, MainScreenDoctor.class);
-                        Intent intent = new Intent(LoginRegister.this, doctorParentChoose.class);
+                        Intent intent = new Intent(LoginRegister.this, DoctorParentChoose.class);
                         startActivity(intent);
                         //}
                     }
@@ -284,6 +292,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         loadingFrame.setVisibility(View.INVISIBLE);
+                        loginRelativeLayout.setVisibility(View.VISIBLE);
                         showMessage("Error! Wrong credentials!", e.getMessage());
                     }
                 });

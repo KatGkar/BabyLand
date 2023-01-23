@@ -2,12 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutAddChildToDoctor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".addChildToDoctor">
+    android:background="@drawable/gradient"
+    tools:context=".AddChildToDoctor">
 
     <RelativeLayout
-        android:id="@+id/verificaitonRelativeLayout"
+        android:id="@+id/verificationRelativeLayout"
         android:layout_width="336dp"
         android:layout_height="371dp"
         android:visibility="visible"
@@ -24,7 +26,7 @@
                 android:id="@+id/verificationEditTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="40dp"
                 android:ems="10"
                 android:hint="12345678912"
                 android:inputType="textPersonName"
@@ -37,15 +39,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
-                android:text="TextView"
+                android:fontFamily="@font/bai_jamjuree"
+                android:text="Please type one parent amka to verify the addition"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.446"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
+                android:background="@drawable/facebook_google_buttons"
                 android:id="@+id/verificationButton"
                 android:layout_width="wrap_content"
+                android:text="Verify"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -57,64 +65,86 @@
 
     <RelativeLayout
         android:id="@+id/viewChildInfoLayout"
-        android:layout_width="323dp"
-        android:layout_height="607dp"
+        android:layout_width="400dp"
+        android:layout_height="690dp"
+        android:background="@drawable/gradient_darker"
+        android:elevation="20dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddChildToDoctor"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="350dp"
+            android:layout_height="426dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="78dp"
+            android:background="@drawable/gradient"
+            android:elevation="20dp">
 
             <TextView
                 android:id="@+id/ageAddChildTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="72dp"
-                android:layout_marginTop="104dp"
+                android:layout_marginTop="20dp"
                 android:text="age"
-                app:layout_constraintStart_toEndOf="@+id/amkaAddChildTextView"
-                app:layout_constraintTop_toBottomOf="@+id/nameAddChildTextView" />
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/amkaAddChildTextView" />
 
             <Button
                 android:id="@+id/addChildButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="112dp"
-                android:text="Add Button"
-                app:layout_constraintTop_toBottomOf="@+id/amkaAddChildTextView"
-                tools:layout_editor_absoluteX="104dp" />
+                android:layout_marginTop="108dp"
+                android:background="@drawable/facebook_google_buttons"
+                android:text="Add Child"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/amkaAddChildTextView" />
 
             <TextView
                 android:id="@+id/nameAddChildTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="52dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="20dp"
                 android:text="Name"
-                app:layout_constraintStart_toEndOf="@+id/sexAddChildImage"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sexAddChildImage" />
 
             <TextView
                 android:id="@+id/amkaAddChildTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="76dp"
+                android:layout_marginTop="20dp"
                 android:text="amka"
+                android:textColor="@color/black"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.124"
+                app:layout_constraintHorizontal_bias="0.508"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sexAddChildImage" />
+                app:layout_constraintTop_toBottomOf="@+id/nameAddChildTextView" />
 
             <ImageView
                 android:id="@+id/sexAddChildImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
                 android:layout_marginTop="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/_02_parents" />
@@ -125,11 +155,14 @@
         android:id="@+id/availableChildrenLayout"
         android:layout_width="322dp"
         android:layout_height="605dp"
+        android:background="@color/fui_transparent"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddChildToDoctor"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.50">
 
         <EditText
             android:id="@+id/searchAmkaEditText"
@@ -140,33 +173,46 @@
             android:layout_marginStart="42dp"
             android:layout_marginTop="27dp"
             android:ems="10"
-            android:hint="Search...."
+            android:hint="Search by amka...."
             android:inputType="textPersonName" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/availableChildrenRecyclerView"
-            android:layout_width="247dp"
-            android:layout_height="510dp"
+            android:layout_width="match_parent"
+            android:layout_height="526dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="42dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="78dp"
-            android:layout_marginEnd="33dp"
-            android:layout_marginBottom="17dp" />
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="1dp"
+            android:background="@color/fui_transparent" />
 
         <ImageView
             android:id="@+id/searchButton"
-            android:layout_width="46dp"
-            android:layout_height="44dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentTop="false"
             android:layout_marginStart="18dp"
             android:layout_marginTop="26dp"
             android:layout_toEndOf="@+id/searchAmkaEditText"
             android:onClick="searchButton"
-            app:srcCompat="@drawable/_01_doctor" />
+            app:srcCompat="@drawable/search" />
 
     </RelativeLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationViewAddChildToDoctor"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/main_menu"
+        app:elevation="10dp"
+        app:itemBackground="@drawable/navigation_items_background"
+        app:itemTextColor="@color/navigation_items_text"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/main" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

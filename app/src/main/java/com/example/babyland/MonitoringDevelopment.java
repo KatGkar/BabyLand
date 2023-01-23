@@ -3,22 +3,31 @@ package com.example.babyland;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,6 +60,8 @@ public class MonitoringDevelopment extends AppCompatActivity {
     private DatabaseReference reference;
     private String babyAmka, ageType, age, currentUserUID;
     private int monitoringDevNumber;
+    private Menu the_menu;
+    private BottomNavigationView bottomNavigationView;
 
 
     @Override
@@ -85,7 +96,11 @@ public class MonitoringDevelopment extends AppCompatActivity {
         observationsLayout = findViewById(R.id.observationsLayout);
         observationText = findViewById(R.id.observationsText);
         recyclerViewSustenance = findViewById(R.id.recyclerViewSustenance);
+        bottomNavigationView = findViewById(R.id.bottomNavigationViewMonitoringDevelopment);
 
+        //UI
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        hearingSwitch.setTextColor(Color.RED);
 
         //setting database
         database = FirebaseDatabase.getInstance();
@@ -152,6 +167,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
             m = "0" + m;
         }
         dateText.setText(new StringBuilder()
+                .append("Date: ")
                 .append(d).append("/").append(m).append("/")
                 .append(yy));
 
@@ -265,6 +281,105 @@ public class MonitoringDevelopment extends AppCompatActivity {
                 observationsLayout.setVisibility(View.VISIBLE);
             }
         });
+
+        //setting listener for navigation bar
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+
+
+        //on item click
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        return true;
+                    case R.id.navigation_add:
+                        addChild();
+                        return true;
+                    case R.id.navigation_account:
+                        settingsButton();
+                        return true;
+                }
+                return false;
+            }
+        });
+
+        //hearing switch color changer
+        hearingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    hearingSwitch.setTextColor(Color.GREEN);
+                }else{
+                    hearingSwitch.setTextColor(Color.RED);
+                }
+            }
+        });
+
+    }
+
+
+    //on resume button
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView.setSelectedItemId(R.id.home);
+    }
+
+    @SuppressLint("RestrictedApi")
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        MenuBuilder m = (MenuBuilder) menu;
+        m.setOptionalIconsVisible(true);
+
+        //get the menu
+        the_menu = menu;
+
+        //Called when a menu item with is collapsed.
+        MenuItem.OnActionExpandListener actionExpandListener = new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                return true;
+            }
+        };
+
+
+        return true;
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    //go to settings
+    private void settingsButton(){
+        Intent intent = new Intent(MonitoringDevelopment.this, UserAccount.class);
+        intent.putExtra("user", "doctor");
+        startActivity(intent);
+    }
+
+    //go to add child page
+    private void addChild(){
+        Intent intent = new Intent(MonitoringDevelopment.this, AddChildToDoctor.class);
+        startActivity(intent);
     }
 
     //loads data from list into recyclerView

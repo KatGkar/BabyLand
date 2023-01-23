@@ -2,13 +2,22 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,13 +29,15 @@ import java.util.ArrayList;
 
 public class viewParentInfo extends AppCompatActivity {
 
-    private TextView nameTextView, surnameTextView, amkaTextView, emailTextView, phoneNumberTextView, bloodTypeTextView,
-            dateOfBirthTextView, amkaParentOneTextView, amkaParentTwoTextView;
+    private TextView nameTextView, amkaTextView, emailTextView, phoneNumberTextView, bloodTypeTextView,
+            dateOfBirthTextView, amkaParentOneTextView, amkaParentTwoTextView, parentInfoTextView;
     private RelativeLayout parentsRelativeLayout, parentInfoRelativeLayout;
     private String babyAmka;
+    protected Menu the_menu;
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private Parent parent1, parent2;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +51,6 @@ public class viewParentInfo extends AppCompatActivity {
         //getting views from xml file
         nameTextView = findViewById(R.id.nameParentInfoTextView);
         amkaTextView = findViewById(R.id.amkaParentInfoTextView);
-        surnameTextView = findViewById(R.id.surnameParentInfoTextView);
         emailTextView = findViewById(R.id.emailParentInfoTextView);
         phoneNumberTextView = findViewById(R.id.phoneNumberParentInfoTextView);
         bloodTypeTextView = findViewById(R.id.bloodTypeParentInfoTextView);
@@ -49,7 +59,12 @@ public class viewParentInfo extends AppCompatActivity {
         parentInfoRelativeLayout = findViewById(R.id.parentInfoRelativeLayout);
         amkaParentOneTextView = findViewById(R.id.amkaParentOneParentInfoTextView);
         amkaParentTwoTextView = findViewById(R.id.amkaParentTwoParentInfoTextView);
+        bottomNavigationView = findViewById(R.id.bottomNavigationViewViewParentInfo);
+        parentInfoTextView = findViewById(R.id.parentInfoTextView);
 
+        //UI
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        parentInfoTextView.setPaintFlags(parentInfoTextView.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
 
         //setting database
         database = FirebaseDatabase.getInstance();
@@ -98,21 +113,98 @@ public class viewParentInfo extends AppCompatActivity {
                 viewParentInformation(parent2);
             }
         });
+
+        //setting listener for navigation bar
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+
+        //on item click
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        Intent intent = new Intent(viewParentInfo.this, MainScreenDoctor.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.navigation_add:
+                        addChild();
+                        return true;
+                    case R.id.navigation_account:
+                        settingsButton();
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    @SuppressLint("RestrictedApi")
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        MenuBuilder m = (MenuBuilder) menu;
+        m.setOptionalIconsVisible(true);
+
+        //get the menu
+        the_menu = menu;
+
+        //Called when a menu item with is collapsed.
+        MenuItem.OnActionExpandListener actionExpandListener = new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                return true;
+            }
+        };
+
+
+        return true;
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    //go to settings
+    private void settingsButton(){
+        Intent intent = new Intent(viewParentInfo.this, UserAccount.class);
+        intent.putExtra("user", "doctor");
+        startActivity(intent);
     }
 
     //view parents info
     private void viewParentInformation(Parent parent){
         parentsRelativeLayout.setVisibility(View.INVISIBLE);
         parentInfoRelativeLayout.setVisibility(View.VISIBLE);
-        nameTextView.setText(parent.getName());
-        amkaTextView.setText(parent.getAmka());
-        surnameTextView.setText(parent.getSurname());
-        emailTextView.setText(parent.getEmail());
-        phoneNumberTextView.setText(parent.getPhoneNumber());
-        bloodTypeTextView.setText(parent.getBloodType());
-        dateOfBirthTextView.setText(parent.getDateOfBirth());
+        nameTextView.setText("Fullname: "+parent.getName());
+        amkaTextView.setText("Amka: " +parent.getAmka());
+        emailTextView.setText("Email: "+parent.getEmail());
+        phoneNumberTextView.setText("Phone number: "+parent.getPhoneNumber());
+        bloodTypeTextView.setText("Blood type: "+parent.getBloodType());
+        dateOfBirthTextView.setText("Birth date: "+parent.getDateOfBirth());
     }
 
+    //go to add child page
+    private void addChild(){
+        Intent intent = new Intent(viewParentInfo.this, AddChildToDoctor.class);
+        startActivity(intent);
+    }
 
     //finding parents from database
     private void findParents(){
@@ -131,9 +223,9 @@ public class viewParentInfo extends AppCompatActivity {
                             parent2 = snapshots.getValue(t);
                         }
                     }
-                    amkaParentOneTextView.setText(parent1.getAmka());
+                    amkaParentOneTextView.setText("Parent amka: " +parent1.getAmka());
                     if(!parent2.getAmka().equals("00000000000")){
-                        amkaParentTwoTextView.setText(parent2.getAmka());
+                        amkaParentTwoTextView.setText("Co-parent amka: " + parent2.getAmka());
                     }else{
                         amkaParentTwoTextView.setVisibility(View.INVISIBLE);
                     }

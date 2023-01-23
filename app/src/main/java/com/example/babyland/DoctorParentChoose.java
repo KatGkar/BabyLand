@@ -2,11 +2,14 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -15,12 +18,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class doctorParentChoose extends AppCompatActivity {
+public class DoctorParentChoose extends AppCompatActivity {
 
-    private ImageView doctorButton, parentButton;
+    private ImageView doctorButton, parentButton, loadingImageView;
+    private TextView chooseTypeTextView;
     private String currentUserUID;
     private FirebaseDatabase database;
     private DatabaseReference reference;
+    private ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,19 @@ public class doctorParentChoose extends AppCompatActivity {
         //getting views from xml file
         doctorButton = findViewById(R.id.doctorButton);
         parentButton = findViewById(R.id.parentsButton);
+        constraintLayout = findViewById(R.id.constrainLayoutDoctorParentChoose);
+        loadingImageView = findViewById(R.id.loadingImageView);
+        chooseTypeTextView = findViewById(R.id.chooseTypeTextView);
+
+        //UI
+        constraintLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.gradient));
+        chooseTypeTextView.setText("Please choose user type...");
+
+        //setting visibilities
+        doctorButton.setVisibility(View.INVISIBLE);
+        parentButton.setVisibility(View.INVISIBLE);
+        chooseTypeTextView.setVisibility(View.INVISIBLE);
+        loadingImageView.setVisibility(View.VISIBLE);
 
         //setting database
         database = FirebaseDatabase.getInstance();
@@ -37,9 +55,6 @@ public class doctorParentChoose extends AppCompatActivity {
         //getting user UID
         currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        //setting visibilities
-        doctorButton.setVisibility(View.INVISIBLE);
-        parentButton.setVisibility(View.INVISIBLE);
 
         //checking if user is a doctor
         reference = database.getReference("doctor");
@@ -49,7 +64,7 @@ public class doctorParentChoose extends AppCompatActivity {
                 if(snapshot!=null){
                     for(DataSnapshot snapshots:snapshot.getChildren()){
                         if(snapshots.getKey().equals(currentUserUID)){
-                            Intent intent = new Intent(doctorParentChoose.this, MainScreenDoctor.class);
+                            Intent intent = new Intent(DoctorParentChoose.this, MainScreenDoctor.class);
                             startActivity(intent);
                         }
                     }
@@ -70,7 +85,7 @@ public class doctorParentChoose extends AppCompatActivity {
                 if(snapshot!=null){
                     for(DataSnapshot snapshots:snapshot.getChildren()){
                         if(snapshots.getKey().equals(currentUserUID)){
-                            Intent intent = new Intent(doctorParentChoose.this, MainScreenParents.class);
+                            Intent intent = new Intent(DoctorParentChoose.this, MainScreenParents.class);
                             startActivity(intent);
                         }
                     }
@@ -88,7 +103,7 @@ public class doctorParentChoose extends AppCompatActivity {
         doctorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(doctorParentChoose.this, createNewDoctor.class);
+                Intent intent = new Intent(DoctorParentChoose.this, createNewDoctor.class);
                 startActivity(intent);
             }
         });
@@ -97,7 +112,7 @@ public class doctorParentChoose extends AppCompatActivity {
         parentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(doctorParentChoose.this, createNewParent.class);
+                Intent intent = new Intent(DoctorParentChoose.this, createNewParent.class);
                 startActivity(intent);
             }
         });
@@ -106,6 +121,8 @@ public class doctorParentChoose extends AppCompatActivity {
 
     //if it is first time log in for user
     private void showLayout(){
+        loadingImageView.setVisibility(View.INVISIBLE);
+        chooseTypeTextView.setVisibility(View.VISIBLE);
         doctorButton.setVisibility(View.VISIBLE);
         parentButton.setVisibility(View.VISIBLE);
     }

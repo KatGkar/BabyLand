@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient"
     tools:context=".MonitoringDevelopment">
 
     <CalendarView
@@ -11,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:dateTextAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -202,146 +203,181 @@
 
     <RelativeLayout
         android:id="@+id/generalLayout"
-        android:layout_width="355dp"
-        android:layout_height="675dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMonitoringDevelopment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/headCircumferenceText"
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lengthText"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="62dp"
-            android:layout_marginTop="20dp"
-            android:ems="3"
-            android:hint="Head Circumference in cm"
-            android:inputType="number"
-            android:visibility="visible" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="410dp"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/dateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="144dp"
-            android:layout_marginTop="17dp"
-            android:text="TextView" />
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/facebook_google_buttons"
+                android:onClick="saveDevelopment"
+                android:text="Save measurement"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/developmentalMonitoringButton" />
 
-        <EditText
-            android:id="@+id/weightText"
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/button3"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="66dp"
-            android:layout_marginTop="25dp"
-            android:ems="3"
-            android:hint="Weight in cm"
-            android:inputType="number" />
+            <Button
+                android:id="@+id/developmentalMonitoringButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/facebook_google_buttons"
+                android:text="Developmental Monitoring"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.50"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sustenanceButton" />
 
-        <EditText
-            android:id="@+id/lengthText"
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/weightText"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="62dp"
-            android:layout_marginTop="20dp"
-            android:ems="3"
-            android:hint="Length in cm"
-            android:inputType="number" />
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.50"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/doctorText" />
 
-        <Button
-            android:id="@+id/examinationButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/sustenanceButton"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="132dp"
-            android:layout_marginTop="21dp"
-            android:text="Examination" />
+            <Button
+                android:id="@+id/sustenanceButton"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/facebook_google_buttons"
+                android:text="Sustenance"
+                app:layout_constraintStart_toEndOf="@+id/examinationButton"
+                app:layout_constraintTop_toTopOf="@+id/examinationButton" />
 
-        <Button
-            android:id="@+id/developmentalMonitoringButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/examinationButton"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="68dp"
-            android:layout_marginTop="22dp"
-            android:layout_marginEnd="92dp"
-            android:text="Developmental Monitoring"
-            android:textAlignment="center" />
+            <Button
+                android:id="@+id/examinationButton"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/facebook_google_buttons"
+                android:text="Examination"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hearingSwitch" />
 
-        <Switch
-            android:id="@+id/hearingSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/developmentalMonitoringButton"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="132dp"
-            android:layout_marginTop="20dp"
-            android:text="Hearing" />
+            <EditText
+                android:id="@+id/headCircumferenceText"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:ems="3"
+                android:hint="Head Circumference in cm"
+                android:inputType="number"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.50"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lengthText" />
 
-        <Button
-            android:id="@+id/observationsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/hearingSwitch"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="132dp"
-            android:layout_marginTop="21dp"
-            android:gravity="center"
-            android:text="Observations" />
+            <EditText
+                android:id="@+id/lengthText"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:ems="3"
+                android:hint="Length in cm"
+                android:inputType="number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.50"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/weightText" />
 
-        <Button
-            android:id="@+id/sustenanceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/headCircumferenceText"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="108dp"
-            android:layout_marginTop="29dp"
-            android:text="Sustenance" />
+            <Button
+                android:id="@+id/observationsButton"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/facebook_google_buttons"
+                android:gravity="center"
+                android:text="Observations"
+                app:layout_constraintStart_toEndOf="@+id/sustenanceButton"
+                app:layout_constraintTop_toTopOf="@+id/sustenanceButton" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:onClick="saveDevelopment"
-            android:text="Save" />
+            <Switch
+                android:id="@+id/hearingSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Hearing"
+                app:track="@drawable/toogle_track"
+                android:thumb="@drawable/toogle_thumb"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/headCircumferenceText" />
 
-        <TextView
-            android:id="@+id/doctorText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/observationsButton"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="149dp"
-            android:layout_marginTop="43dp"
-            android:layout_marginEnd="148dp"
-            android:text="TextView" />
+            <EditText
+                android:id="@+id/weightText"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ems="3"
+                android:hint="Weight in cm"
+                android:inputType="number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dateText" />
+
+            <TextView
+                android:id="@+id/doctorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationViewMonitoringDevelopment"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/main_menu"
+        app:elevation="10dp"
+        app:itemBackground="@drawable/navigation_items_background"
+        app:itemTextColor="@color/navigation_items_text"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/main" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

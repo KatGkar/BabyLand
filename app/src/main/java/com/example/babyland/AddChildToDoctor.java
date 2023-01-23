@@ -1,16 +1,21 @@
 package com.example.babyland;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,8 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,11 +38,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class addChildToDoctor extends AppCompatActivity {
+public class AddChildToDoctor extends AppCompatActivity {
     private EditText searchAmkaEditText, verificationEditText;
     private TextView nameAddChildTextView, amkaAddChildTextView, ageAddChildTextView, verificationTextView;
     private RecyclerView availableChildrenRecyclerView;
     private FirebaseDatabase database;
+    protected Menu the_menu;
     private DatabaseReference reference;
     private ArrayList<Baby> availableChildren, doctorsChildren = null;
     private ImageView sexAddChildImageView, searchButton;
@@ -44,6 +51,7 @@ public class addChildToDoctor extends AppCompatActivity {
     private RelativeLayout viewChildInfoLayout, availableChildrenLayout, verificationRelativeLayout;
     private Button addChildButton, verificationButton;
     private String currentUserUID;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +71,13 @@ public class addChildToDoctor extends AppCompatActivity {
         searchButton = findViewById(R.id.searchButton);
         verificationButton = findViewById(R.id.verificationButton);
         verificationEditText = findViewById(R.id.verificationEditTextView);
-        verificationRelativeLayout = findViewById(R.id.verificaitonRelativeLayout);
+        verificationRelativeLayout = findViewById(R.id.verificationRelativeLayout);
         verificationTextView = findViewById(R.id.verificationTextView);
+        bottomNavigationView = findViewById(R.id.bottomNavigationViewAddChildToDoctor);
+
+        //UI
+        bottomNavigationView.setSelectedItemId(R.id.navigation_add);
+        verificationTextView.setText("Please type one parent amka to verify the addition");
 
         //setting visibilities
         viewChildInfoLayout.setVisibility(View.INVISIBLE);
@@ -74,8 +87,6 @@ public class addChildToDoctor extends AppCompatActivity {
         //setting database
         database = FirebaseDatabase.getInstance();
 
-        //setting text
-        verificationTextView.setText("Please type ones parent amka to verify the addition");
 
         //setting arrays
         availableChildren = new ArrayList<>();
@@ -96,7 +107,53 @@ public class addChildToDoctor extends AppCompatActivity {
                 searchButton(view);
             }
         });
+
+        //setting listener for navigation bar
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+
+        //on item click
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        Intent intent = new Intent(AddChildToDoctor.this, MainScreenDoctor.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.navigation_add:
+                        return true;
+                    case R.id.navigation_account:
+                        settingsButton();
+                        return true;
+                }
+                return false;
+            }
+        });
+
     }
+
+
+    //on resume page
+
+
+    @Override
+    protected void onResume() {
+        bottomNavigationView.setSelectedItemId(R.id.navigation_add);
+        super.onResume();
+    }
+
+    //go to setting menu
+    private void settingsButton(){
+        Intent intent = new Intent(AddChildToDoctor.this, UserAccount.class);
+        intent.putExtra("user", "doctor");
+        startActivity(intent);
+    }
+
 
     //setting adapter for recyclerView
     private void setAdapter() {
@@ -117,12 +174,12 @@ public class addChildToDoctor extends AppCompatActivity {
                 availableChildrenLayout.setVisibility(View.INVISIBLE);
                 viewChildInfoLayout.setVisibility(View.VISIBLE);
                 Baby baby = availableChildren.get(position);
-                nameAddChildTextView.setText(baby.getName());
-                amkaAddChildTextView.setText(baby.getAmka());
+                nameAddChildTextView.setText("Name: " +baby.getName());
+                amkaAddChildTextView.setText("Amka: " +baby.getAmka());
                 if(baby.getSex().equals("BOY")){
-                    Picasso.get().load(R.drawable.boy).into(sexAddChildImageView);
+                    Picasso.get().load(R.drawable._02_baby_boy_1).into(sexAddChildImageView);
                 }else{
-                    Picasso.get().load(R.drawable.baby_girl).into(sexAddChildImageView);
+                    Picasso.get().load(R.drawable.baby_girl1).into(sexAddChildImageView);
                 }
                 int monthsD;
                 Calendar cal = Calendar.getInstance();
@@ -167,7 +224,7 @@ public class addChildToDoctor extends AppCompatActivity {
                     ageType = "months";
                     age = String.valueOf(monthsD);
                 }
-                ageAddChildTextView.setText(age +" " + ageType);
+                ageAddChildTextView.setText("Age: " + age +" " + ageType);
 
                 addChildButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -183,6 +240,7 @@ public class addChildToDoctor extends AppCompatActivity {
                         }
                         if(unique) {
                             viewChildInfoLayout.setVisibility(View.INVISIBLE);
+                            availableChildrenLayout.setVisibility(View.INVISIBLE);
                             verificationRelativeLayout.setVisibility(View.VISIBLE);
                             verificationButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -195,13 +253,13 @@ public class addChildToDoctor extends AppCompatActivity {
                                         updateDatabase();
                                         onBackPressed();
                                     }else{
-                                        Toast.makeText(addChildToDoctor.this, "Wrong amka. Please try again", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AddChildToDoctor.this, "Wrong amka. Please try again", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
 
                         }else{
-                            Toast.makeText(addChildToDoctor.this, "Child already added", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddChildToDoctor.this, "Child already added", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -209,6 +267,44 @@ public class addChildToDoctor extends AppCompatActivity {
             }
         };
     }
+    @SuppressLint("RestrictedApi")
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        MenuBuilder m = (MenuBuilder) menu;
+        m.setOptionalIconsVisible(true);
+
+        //get the menu
+        the_menu = menu;
+
+        //Called when a menu item with is collapsed.
+        MenuItem.OnActionExpandListener actionExpandListener = new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                return true;
+            }
+        };
+
+
+        return true;
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     //getting children from doctor list
     private void getDoctorsChildren(){
@@ -274,7 +370,7 @@ public class addChildToDoctor extends AppCompatActivity {
                 if (snapshot != null) {
                     if (snapshot.getKey().equals(currentUserUID)) {
                         database.getReference("doctor").child(currentUserUID).child("kids").setValue(doctorsChildren);
-                        Toast.makeText(addChildToDoctor.this, "Child added successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddChildToDoctor.this, "Child added successfully", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -291,6 +387,7 @@ public class addChildToDoctor extends AppCompatActivity {
     public void onBackPressed() {
         if(viewChildInfoLayout.getVisibility() == View.VISIBLE){
             viewChildInfoLayout.setVisibility(View.INVISIBLE);
+            availableChildrenLayout.setClickable(true);
             availableChildrenLayout.setVisibility(View.VISIBLE);
         }else if(verificationRelativeLayout.getVisibility() == View.VISIBLE){
             verificationRelativeLayout.setVisibility(View.INVISIBLE);

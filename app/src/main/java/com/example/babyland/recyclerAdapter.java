@@ -249,9 +249,9 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             holder.amkaAvailableChildrenText.setText(amka);
             holder.nameAvailableChildrenText.setText(name);
             if(sex.equals("BOY")){
-                Picasso.get().load(R.drawable.boy).into(holder.sexAvailableChildren);
+                Picasso.get().load(R.drawable._02_baby_boy_1).into(holder.sexAvailableChildren);
             }else{
-                Picasso.get().load(R.drawable.baby_girl).into(holder.sexAvailableChildren);
+                Picasso.get().load(R.drawable.baby_girl1).into(holder.sexAvailableChildren);
             }
         }else if(id.equals("familyHistoric")){
             List<FamilyHistoryIllnesses> lists = (List<FamilyHistoryIllnesses>) list;
@@ -300,7 +300,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
         private EditText developmentalEditText;
-        private CardView card;
+        private CardView card, cardViewAdd;
         private RelativeLayout developmentsRelativeLayout, deleteChildRelativeLayout, availableChildrenRelativeLayout,
                 vaccinationRelativeLayout;
         private boolean i=true;
@@ -427,8 +427,10 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 nameAvailableChildrenText = itemView.findViewById(R.id.nameAvailableChildrenText);
                 amkaAvailableChildrenText = itemView.findViewById(R.id.amkaAvailableChildrenText);
                 sexAvailableChildren = itemView.findViewById(R.id.sexAvailableChildren);
-                availableChildrenRelativeLayout = itemView.findViewById(R.id.availableChildrenRelativeLayout);
-                availableChildrenRelativeLayout.setOnClickListener(this);
+                //availableChildrenRelativeLayout = itemView.findViewById(R.id.availableChildrenRelativeLayout);
+                //availableChildrenRelativeLayout.setOnClickListener(this);
+                cardViewAdd = itemView.findViewById(R.id.cardViewAvailableChildren);
+                cardViewAdd.setOnClickListener(this);
             }else if(id.equals("familyHistoric")) {
                 illnessNameTextView = itemView.findViewById(R.id.illnessNameTextView);
                 illnessDetailsTextView = itemView.findViewById(R.id.illnessDetailsTextView);

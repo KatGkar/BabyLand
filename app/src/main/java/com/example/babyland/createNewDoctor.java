@@ -2,6 +2,8 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ public class createNewDoctor extends AppCompatActivity {
     private String currentUserUID, currentUserEmail;
     private FirebaseDatabase database;
     private DatabaseReference reference;
+    private ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,10 @@ public class createNewDoctor extends AppCompatActivity {
         medicalIDEditText = findViewById(R.id.doctorMedicalIDEditTextView);
         phoneNumberEditText = findViewById(R.id.doctorPhoneNumberEditTextView);
         saveButton = findViewById(R.id.saveDoctorInfoButton);
+        constraintLayout = findViewById(R.id.constrainLayoutCreateNewDoctor);
+
+        //UI
+        constraintLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.gradient));
 
         //getting user from database
         currentUserEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -109,7 +116,7 @@ public class createNewDoctor extends AppCompatActivity {
 
     //check if restrictions are met
     private void check(){
-        if(flagUnique){
+        if(flagUnique && flagNext){
             //save into database
             Doctor doctor = new Doctor(nameEditText.getText().toString(), medicalIDEditText.getText().toString(),
                     phoneNumberEditText.getText().toString(), currentUserEmail, null, surnameEditText.getText().toString());
@@ -119,7 +126,7 @@ public class createNewDoctor extends AppCompatActivity {
             Intent intent = new Intent(createNewDoctor.this, MainScreenDoctor.class);
             startActivity(intent);
             finish();
-        }else{
+        }else if(!flagUnique){
             Toast.makeText(this, "Doctor exists already! Please try again", Toast.LENGTH_SHORT).show();
         }
     }

@@ -2,21 +2,21 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,24 +35,25 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class createNewParent extends AppCompatActivity {
+public class createNewParent extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private TextView userProfile;
     private EditText nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, dateOfBirthParentOne;
     private String[] bloodType = {"Blood Type", "A RhD positive (A+)", "A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
-
+    private int[] bloodImages = {R.drawable.blood_type, R.drawable.a_plus, R.drawable.a_minus,
+            R.drawable.b_minus, R.drawable.b_plus, R.drawable.o_plus, R.drawable.o_minus,
+            R.drawable.ab_minus, R.drawable.ab_minus};
     private Spinner blood;
     private CalendarView calendar;
-    private Button calendarButton;
+    private Button calendarButton, nextParentButton;
     private RelativeLayout infoRelativeLayout;
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private int flagUnique;
-    private ImageView bab;
     private Boolean flagNext;
     private String emailParentOne, currentUserUID;
     private  Parent parent;
+    private ConstraintLayout constraintLayout;
 
 
     @Override
@@ -61,7 +62,6 @@ public class createNewParent extends AppCompatActivity {
         setContentView(R.layout.activity_create_new_parent);
 
         //finding views from xml file
-        userProfile = findViewById(R.id.profileUser);
         nameParentOne = findViewById(R.id.nameParentOne);
         surnameParentOne = findViewById(R.id.surnameParentOne);
         amkaParentOne = findViewById(R.id.amkaParentOne);
@@ -71,10 +71,11 @@ public class createNewParent extends AppCompatActivity {
         infoRelativeLayout = findViewById(R.id.relativeLayoutParentOne);
         dateOfBirthParentOne = findViewById(R.id.birthDateParentOne);
         blood = findViewById(R.id.bloodTypeParentOne);
-        bab = findViewById(R.id.imageView2);
+        constraintLayout = findViewById(R.id.constraintLayoutCreateNewParent);
+        nextParentButton = findViewById(R.id.nextParentButton);
 
-        //setting image
-        bab.setImageResource(R.drawable.baby_girl);
+        //UI
+        constraintLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.gradient));
 
         //setting database
         database = FirebaseDatabase.getInstance();
@@ -84,13 +85,13 @@ public class createNewParent extends AppCompatActivity {
         currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
-        //setting design
-        userProfile.setPaintFlags(userProfile.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-
         //setting blood types in list
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, bloodType);
-        blood.setAdapter(adapter);
+        //xArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, bloodType);
+        //blood.setAdapter(adapter);
+        // Setting a Custom Adapter to the Spinner
+        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),bloodImages,bloodType);
+        blood.setAdapter(customAdapter);
+        blood.setOnItemSelectedListener(this);
 
         //getting current date
         Calendar cal = Calendar.getInstance();
@@ -138,7 +139,7 @@ public class createNewParent extends AppCompatActivity {
                     //date1 is selected date
                     Date date1 = sdf.parse(dayOfMonth + "/" + month + "/" + year);
                     int da = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                    int mo = Calendar.getInstance().get(Calendar.MONTH);
+                    int mo = Calendar.getInstance().get(Calendar.MONTH) + 1;
                     int ye = Calendar.getInstance().get(Calendar.YEAR);
                     //date2 is date now
                     Date date2 = sdf.parse(da + "/" + mo + "/" + ye);
@@ -302,6 +303,13 @@ public class createNewParent extends AppCompatActivity {
             }
         });
 
+        nextParentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextParent(view);
+            }
+        });
+
     }
 
 
@@ -314,7 +322,7 @@ public class createNewParent extends AppCompatActivity {
 
 
     //check textViews and amka number
-    public void nextParent(View view) {
+    private void nextParent(View view) {
         flagNext = true;
         if (TextUtils.isEmpty(nameParentOne.getText())) {
             nameParentOne.setError("Please enter a name!");
@@ -337,7 +345,7 @@ public class createNewParent extends AppCompatActivity {
             flagNext = false;
         }
         if (blood.getSelectedItem().equals("Blood Type")) {
-            ((TextView) blood.getSelectedView()).setError("Please choose a blood type!");
+            Toast.makeText(this, "Please a choose a blood type!", Toast.LENGTH_SHORT).show();
             blood.requestFocus();
             flagNext = false;
         }
@@ -374,6 +382,7 @@ public class createNewParent extends AppCompatActivity {
         });
     }
 
+    //check if restrictions are met
     private void check() {
         if (flagNext && flagUnique == 1) {
             //there is no other user with this amka number
@@ -447,6 +456,17 @@ public class createNewParent extends AppCompatActivity {
             builder.setMessage("Parent exists already continue with this parent??").setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
         }
+
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }
