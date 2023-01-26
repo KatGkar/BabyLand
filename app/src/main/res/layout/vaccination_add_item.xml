@@ -5,10 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/vaccinationRelativeLayout"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewVaccinations"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="8dp"
+        app:cardMaxElevation="10dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="false"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -20,8 +31,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/facebook_google_buttons"
                 android:text="Add Vaccine"
                 android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/vaccinationDateTextView" />
 
@@ -31,7 +45,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
+                android:fontFamily="@font/bai_jamjuree"
                 android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/vaccinationNameTextView" />
@@ -40,9 +58,16 @@
                 android:id="@+id/vaccinationNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                android:text="TextView"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:text="Vaccinations"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,11 +75,16 @@
                 android:id="@+id/vaccinationDoctorTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="84dp"
+                android:layout_marginStart="30sp"
+                android:fontFamily="@font/bai_jamjuree"
                 android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
                 android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@+id/vaccinationDateTextView"
                 app:layout_constraintTop_toTopOf="@+id/vaccinationDateTextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

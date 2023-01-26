@@ -272,9 +272,19 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             String name = lists.get(position).getName();
             String date = lists.get(position).getDate();
             String doctorsName = lists.get(position).getDoctorName();
-            holder.vaccinationDoctorTextView.setText(doctorsName);
+            if(date!=null){
+                holder.vaccinationDoctorTextView.setText(doctorsName);
+                holder.vaccinationDateTextView.setText(date);
+                holder.addVaccineButton.setVisibility(View.GONE);
+            }else{
+                holder.vaccinationDateTextView.setText("None");
+                holder.vaccinationDoctorTextView.setText("None");
+                holder.addVaccineButton.setVisibility(View.GONE);
+            }
+            if(name==null){
+                holder.cardViewVaccinations.setClickable(false);
+            }
             holder.vaccinationNameTextView.setText(name);
-            holder.vaccinationDateTextView.setText(date);
         }
     }
 
@@ -300,9 +310,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
         private EditText developmentalEditText;
-        private CardView card, cardViewAdd;
-        private RelativeLayout developmentsRelativeLayout, deleteChildRelativeLayout, availableChildrenRelativeLayout,
-                vaccinationRelativeLayout;
+        private CardView card, cardViewAdd, cardViewExamination, cardViewVaccinations;
+        private RelativeLayout developmentsRelativeLayout, deleteChildRelativeLayout, availableChildrenRelativeLayout;
         private boolean i=true;
         private Button addVaccineButton;
         private ImageView sexImageViewDelete, sexAvailableChildren;
@@ -333,10 +342,11 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 examinationListItemText = itemView.findViewById(R.id.examinationListItemText);
                 radioButton1 = itemView.findViewById(R.id.radioButton1);
                 radioButton2 = itemView.findViewById(R.id.radioButton2);
+                cardViewExamination = itemView.findViewById(R.id.cardViewExamination);
                 radioButton3 = itemView.findViewById(R.id.radioButton3);
                 radioGroup = itemView.findViewById(R.id.radioGroupExaminationList);
                 radioGroup.setVisibility(itemView.GONE);
-                examinationListItemText.setOnClickListener(new View.OnClickListener() {
+                cardViewExamination.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                          if(!i){
@@ -439,8 +449,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 vaccinationDateTextView = itemView.findViewById(R.id.vaccinationDateTextView);
                 vaccinationDoctorTextView = itemView.findViewById(R.id.vaccinationDoctorTextView);
                 addVaccineButton = itemView.findViewById(R.id.addVaccineButton);
-                vaccinationRelativeLayout = itemView.findViewById(R.id.vaccinationRelativeLayout);
-                vaccinationRelativeLayout.setOnClickListener(new View.OnClickListener() {
+                cardViewVaccinations = itemView.findViewById(R.id.cardViewVaccinations);
+                cardViewVaccinations.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if(!i){

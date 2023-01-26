@@ -193,8 +193,6 @@ public class viewVaccination extends AppCompatActivity {
         vaccinationRecyclerView.setLayoutManager(layoutManager);
         vaccinationRecyclerView.setItemAnimator(new DefaultItemAnimator());
         vaccinationRecyclerView.setAdapter(adapter);
-        vaccinationRecyclerView.addItemDecoration(new DividerItemDecoration(viewVaccination.this,
-                DividerItemDecoration.VERTICAL));
         adapter.addVaccination(new recyclerAdapter.addVaccination() {
             @Override
             public void addVaccine(int position) {

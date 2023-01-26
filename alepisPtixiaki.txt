@@ -28,6 +28,7 @@ DoctorParentChoose
 LoginRegister
 MainScreenDoctor
 RegisterUsernamePasswordActivity
+MonitoringDevelopment
 viewParentInfo
 
 -----Design not done-----
@@ -35,11 +36,9 @@ AddBaby
 deleteChildActivity
 FamilyHistoryInput
 MainScreenParents
-MonitoringDevelopment
 nextParent
 showDevelopmentsList
 showHistoric
-SpinnerAdapter
 UserAccount
 viewCharts
 viewVaccination

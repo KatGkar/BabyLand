@@ -11,7 +11,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="CheckBox"
+        android:layout_marginEnd="5dp"
+        android:fontFamily="@font/bai_jamjuree"
+        android:gravity="center_horizontal"
+        android:text="Hello"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:buttonTint="@color/pinkDark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

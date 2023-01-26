@@ -1,7 +1,6 @@
 package com.example.babyland;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -9,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
     private ArrayList<developmentalItems> developmentalMonitoring;
     private ArrayList<examinationItems> examination;
     private ArrayList<sustenanceItems> sustenance;
-    private Button sustenanceButton, examinationButton, developmentalMonitoringButton, observationsButton;
+    private Button sustenanceButton, examinationButton, developmentalMonitoringButton, observationsButton, saveMeasurementButton;
     private Switch hearingSwitch;
     private RelativeLayout generalLayout, sustenanceLayout, examinationLayout, developmentalLayout, observationsLayout;
     private CalendarView calendarView;
@@ -62,7 +63,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
     private int monitoringDevNumber;
     private Menu the_menu;
     private BottomNavigationView bottomNavigationView;
-
+    private Boolean flagBack=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
         observationText = findViewById(R.id.observationsText);
         recyclerViewSustenance = findViewById(R.id.recyclerViewSustenance);
         bottomNavigationView = findViewById(R.id.bottomNavigationViewMonitoringDevelopment);
+        saveMeasurementButton = findViewById(R.id.saveMeasurementsButton);
 
         //UI
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
@@ -136,6 +138,9 @@ public class MonitoringDevelopment extends AppCompatActivity {
         examination.clear();
         sustenance.clear();
         developmentalMonitoring.clear();
+
+        //setting flags
+        flagBack = false;
 
         //setting visibilities
         generalLayout.setVisibility(View.VISIBLE);
@@ -290,7 +295,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
             }
         });
 
-
         //on item click
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -321,6 +325,12 @@ public class MonitoringDevelopment extends AppCompatActivity {
             }
         });
 
+        saveMeasurementButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveDevelopment(view);
+            }
+        });
     }
 
 
@@ -360,11 +370,8 @@ public class MonitoringDevelopment extends AppCompatActivity {
 
     }
 
-
     @Override
     public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -438,11 +445,36 @@ public class MonitoringDevelopment extends AppCompatActivity {
         } else if (observationsLayout.getVisibility() == View.VISIBLE) {
             observationsLayout.setVisibility(View.INVISIBLE);
             generalLayout.setVisibility(View.VISIBLE);
-        } else {
-            super.onBackPressed();
+        } else if(calendarView.getVisibility() == View.VISIBLE){
+            calendarView.setVisibility(View.INVISIBLE);
+            generalLayout.setVisibility(View.VISIBLE);
+        }else {
+            if (!flagBack) {
+                DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Yes button clicked
+                                //add parent to database
+                                flagBack = true;
+                                onBackPressed();
+                                finish();
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                //Do nothing
+                        }
+                    }
+                };
+                android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to go back? All changes you made will be lost").setPositiveButton("Yes", dialogClickListener2)
+                        .setNegativeButton("No", dialogClickListener2).show();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
-
 
     //getting data from database
     private void getData(String id) {
@@ -536,9 +568,8 @@ public class MonitoringDevelopment extends AppCompatActivity {
 
     }
 
-
     //save function
-    private void saveDevelopment(View view) throws ParseException {
+    private void saveDevelopment(View view){
         Boolean error = false;
         int examinationError = 0, developmentalError = 0, sustenanceError=0;
         if (TextUtils.isEmpty(lengthText.getText())) {
@@ -590,7 +621,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
             Toast.makeText(this, "Something is wrong.Please check all fields!!", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 
     //getting number of babies on database
