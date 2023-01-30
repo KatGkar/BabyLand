@@ -14,7 +14,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -34,21 +34,23 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class nextParent extends AppCompatActivity{
+public class nextParent extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private TextView userProfile;
     private EditText nameParentTwo, surnameParentTwo, amkaParentTwo, phoneNumberParentTwo, emailAddressParentTwo,
             dateOfBirthParentTwo;
     private String  nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne,
             bloodTypeParentOne, currentUserUID;
-    private String[] bloodType = {"A RhD positive (A+)", "A RhD negative (A-)", "B RhD positive (B+)",
+    private String[] bloodType = {"Blood Type", "A RhD positive (A+)", "A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
+    private int[] bloodImages = {R.drawable.blood_type_black, R.drawable.a_plus, R.drawable.a_minus,
+            R.drawable.b_minus, R.drawable.b_plus, R.drawable.o_plus, R.drawable.o_minus,
+            R.drawable.ab_minus, R.drawable.ab_minus};
     private CalendarView calendar;
-    private Button calendarButton, yesButton, noButton, saveButton, skipButton;
-    private RelativeLayout infoRelativeLayout, messageRelativeLayout;
+    private Button calendarButton,  saveButton, skipButton;
+    private RelativeLayout infoRelativeLayout;
     private FirebaseDatabase database;
     private DatabaseReference reference;
-    private int parentNumber;
     private Spinner bloodTypeParentTwo;
     private ArrayList<Baby> kids;
     private Boolean flagUnique, flagNext;
@@ -82,15 +84,11 @@ public class nextParent extends AppCompatActivity{
         infoRelativeLayout = findViewById(R.id.relativeLayoutParentTwo);
         dateOfBirthParentTwo = findViewById(R.id.birthDateParentTwo);
         bloodTypeParentTwo = findViewById(R.id.bloodTypeParentTwo);
-        messageRelativeLayout = findViewById(R.id.messageRelativeLayout);
-        yesButton = findViewById(R.id.yesButton);
-        noButton = findViewById(R.id.noButton);
         saveButton = findViewById(R.id.saveButton);
         skipButton = findViewById(R.id.skipButton);
 
         //setting visibilities
         infoRelativeLayout.setVisibility(View.VISIBLE);
-        messageRelativeLayout.setVisibility(View.INVISIBLE);
         calendar.setVisibility(View.INVISIBLE);
 
         //setting database
@@ -106,8 +104,9 @@ public class nextParent extends AppCompatActivity{
         userProfile.setPaintFlags(userProfile.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         //setting blood types in list
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, bloodType);
-        bloodTypeParentTwo.setAdapter(adapter);
+        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),bloodImages,bloodType);
+        bloodTypeParentTwo.setAdapter(customAdapter);
+        bloodTypeParentTwo.setOnItemSelectedListener(this);
 
         //setting hint in babyBirthDate
         //getting current date
@@ -120,8 +119,6 @@ public class nextParent extends AppCompatActivity{
         dateOfBirthParentTwo.setHint(new StringBuilder()
                 .append(dd).append(" ").append("/").append(mm + 1).append("/")
                 .append(yy));
-
-
 
         //onclick listener for calendar opening
         calendarButton.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +147,7 @@ public class nextParent extends AppCompatActivity{
                 infoRelativeLayout.setVisibility(View.VISIBLE);
             }
         });
+
         //setting listener to format textView babyBirthDate
         dateOfBirthParentTwo.addTextChangedListener(new TextWatcher() {
             private String current="";
@@ -222,6 +220,98 @@ public class nextParent extends AppCompatActivity{
                 skip(view);
             }
         });
+
+        //checking textviews input type
+        nameParentTwo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
+                    flagNext = false;
+                    nameParentTwo.setError("Only letters please!!");
+                }
+            }
+        });
+        surnameParentTwo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
+                    flagNext = false;
+                    surnameParentTwo.setError("Only letters please!!");
+                }
+            }
+        });
+        phoneNumberParentTwo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    flagNext = false;
+                    phoneNumberParentTwo.setError("Only numbers please!!");
+                }
+            }
+        });
+        amkaParentTwo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    flagNext = false;
+                    amkaParentTwo.setError("Only numbers please!!");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        bloodTypeParentTwo.setSelection(i);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
     //check textViews and amka number
@@ -253,7 +343,7 @@ public class nextParent extends AppCompatActivity{
             flagNext = false;
         }
         if(bloodTypeParentTwo.getSelectedItem().equals("Blood Type")){
-            ((TextView)bloodTypeParentTwo.getSelectedView()).setError("Please choose a blood type!");
+            Toast.makeText(this, "Please choose a blood type!!", Toast.LENGTH_SHORT).show();
             bloodTypeParentTwo.requestFocus();
             flagNext=false;
         }

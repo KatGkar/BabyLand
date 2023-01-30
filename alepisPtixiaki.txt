@@ -1,68 +1,26 @@
-createNewUser
-screen app when keyboard shows ???
-
 ##in register page add facebook and goggle buttons 
-
-## on textViews only numbers no .,';[ 
-
-
 google facebook login register
+
+view chart on doctor side
 
 #ffe4e1
 #ca9ab6
 #b9d5ea
 #C1126B
-
 #E20059
 #ECEAE7
-#ffe4e1
 
-multilingua 
-
-
------Design done-----
-AddChildToDoctor
-createNewDoctor
-createNewParent
-DoctorParentChoose
-LoginRegister
-MainScreenDoctor
-RegisterUsernamePasswordActivity
-MonitoringDevelopment
-viewParentInfo
-
------Design not done-----
-AddBaby
-deleteChildActivity
-FamilyHistoryInput
-MainScreenParents
-nextParent
-showDevelopmentsList
-showHistoric
-UserAccount
-viewCharts
-viewVaccination
+multilingua 	
 
 
-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
-
----------------------------------------------
 Check dates and calendars
 FrontEnd
 Facebook google sign in
-check code (errors, fixes, comments)
+check code ( comments)
 back button
 set database
 
-
-
-RegisterUsernamePassword
-DoctorParentChoose
-
-
-
-
-erros, variables, comments, name on all .java files
+variables, comments, name on all .java files
 --LoginRegister
 
 check messages shown
@@ -71,20 +29,9 @@ check if custom tab activity is needed
 createNewUser, nextParent, addBaby, monitoringDevelopemnt --> date on month, watch out for calendars
 
 
-
-
-
-hgartzonikas@gmail.com
-123456
-
-
 design patrern
 mvc oattern 
-
-
-
-
-
+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
 
 
 

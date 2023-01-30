@@ -4,14 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient"
     tools:context=".showHistoric">
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Family Historic"
+        android:fontFamily="@font/bai_jamjuree"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/familyHistoricRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.781" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/familyHistoricRecyclerView"
-        android:layout_width="363dp"
-        android:layout_height="684dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="340dp"
+        android:layout_height="580dp"
+        android:background="@drawable/gradient"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewShowHistoric"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.765" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationViewShowHistoric"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/main_menu"
+        app:elevation="10dp"
+        app:itemBackground="@drawable/navigation_items_background"
+        app:itemTextColor="@color/navigation_items_text"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/main" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

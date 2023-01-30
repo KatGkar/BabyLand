@@ -2,13 +2,19 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,10 +41,11 @@ public class viewVaccination extends AppCompatActivity {
     private RecyclerView vaccinationRecyclerView;
     private String babyAmka, currentUserUID, doctorName, m, d, userType;
     private FirebaseDatabase database;
+    private BottomNavigationView bottomNavigationView;
     private DatabaseReference reference, reference2;
     private Button addOtherVaccineButton, saveVaccineButton;
     private recyclerAdapter.recyclerVewOnClickListener listener;
-    private RelativeLayout addOtherVaccineRelativeLayout;
+    private RelativeLayout addOtherVaccineRelativeLayout, vaccinesRelativeLayout;
     private TextView doctorNameTextView, dateVaccinatedTextView;
     private EditText vaccineNameEditText;
     private int mm, yy, dd, vaccineNumber;;
@@ -53,6 +62,7 @@ public class viewVaccination extends AppCompatActivity {
         userType = extras.getString("userType");
 
         //getting views from xml
+        bottomNavigationView = findViewById(R.id.bottomNavigationViewViewVaccination);
         vaccinationRecyclerView = findViewById(R.id.vaccinationRecyclerView);
         addOtherVaccineButton = findViewById(R.id.addOtherVaccineButton);
         saveVaccineButton = findViewById(R.id.saveVaccineButton);
@@ -60,16 +70,23 @@ public class viewVaccination extends AppCompatActivity {
         doctorNameTextView = findViewById(R.id.doctorNameTextView);
         dateVaccinatedTextView = findViewById(R.id.dateVaccinatedTextView);
         vaccineNameEditText = findViewById(R.id.vaccineNameEditText);
+        vaccinesRelativeLayout = findViewById(R.id.vaccRelativeLayout);
+
+        //UI
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
         //setting database
         database = FirebaseDatabase.getInstance();
 
+        //setting list
+        vaccines = new ArrayList<>();
+
         //setting visibilities
-        vaccinationRecyclerView.setVisibility(View.VISIBLE);
+        vaccinesRelativeLayout.setVisibility(View.VISIBLE);
         addOtherVaccineRelativeLayout.setVisibility(View.INVISIBLE);
-        if(userType.equals("parent")){
+        if (userType.equals("parent")) {
             addOtherVaccineButton.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             addOtherVaccineButton.setVisibility(View.VISIBLE);
         }
 
@@ -104,8 +121,8 @@ public class viewVaccination extends AppCompatActivity {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot!=null){
-                    for(DataSnapshot snapshots : snapshot.getChildren()){
+                if (snapshot != null) {
+                    for (DataSnapshot snapshots : snapshot.getChildren()) {
                         String UID = snapshots.getKey();
                         if (UID.equals(currentUserUID)) {
                             doctorName = "Dr. " + snapshots.child("surname").getValue() + " " + snapshots.child("name").getValue();
@@ -145,11 +162,60 @@ public class viewVaccination extends AppCompatActivity {
                 addOtherVaccine(view);
             }
         });
+
+        //setting listener for navigation bar
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+
+        //on item click
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        return true;
+                    case R.id.navigation_add:
+                        addChild();
+                        return true;
+                    case R.id.navigation_account:
+                        settingsButton();
+                        return true;
+                }
+                return false;
+            }
+        });
+
     }
+
+    //go to settings
+    private void settingsButton(){
+        Intent intent = new Intent(viewVaccination.this, UserAccount.class);
+        intent.putExtra("user", "doctor");
+        startActivity(intent);
+    }
+
+
+    //on page resume
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+    }
+
+    //go to add child page
+    private void addChild(){
+        Intent intent = new Intent(viewVaccination.this, AddChildToDoctor.class);
+        startActivity(intent);
+    }
+
 
     //add other vaccine button
     private void addOtherVaccine(View view){
-        vaccinationRecyclerView.setVisibility(View.INVISIBLE);
+        vaccinesRelativeLayout.setVisibility(View.INVISIBLE);
         addOtherVaccineButton.setVisibility(View.INVISIBLE);
         addOtherVaccineRelativeLayout.setVisibility(View.VISIBLE);
         doctorNameTextView.setText(doctorName);
@@ -179,7 +245,7 @@ public class viewVaccination extends AppCompatActivity {
                     vaccines.add(vac);
                     addOtherVaccineButton.setVisibility(View.VISIBLE);
                     addOtherVaccineRelativeLayout.setVisibility(View.INVISIBLE);
-                    vaccinationRecyclerView.setVisibility(View.VISIBLE);
+                    vaccinesRelativeLayout.setVisibility(View.VISIBLE);
                     setAdapter();
                 }
             }
@@ -210,7 +276,7 @@ public class viewVaccination extends AppCompatActivity {
         if(addOtherVaccineRelativeLayout.getVisibility() == View.VISIBLE){
             addOtherVaccineRelativeLayout.setVisibility(View.INVISIBLE);
             addOtherVaccineButton.setVisibility(View.VISIBLE);
-            vaccinationRecyclerView.setVisibility(View.VISIBLE);
+            vaccinesRelativeLayout.setVisibility(View.VISIBLE);
         }else{
             super.onBackPressed();
         }

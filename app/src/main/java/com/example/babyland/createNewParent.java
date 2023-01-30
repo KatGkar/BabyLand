@@ -19,7 +19,6 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -79,6 +78,8 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
 
         //setting database
         database = FirebaseDatabase.getInstance();
+
+        //getting user's email
         emailParentOne = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         //getting user UID
@@ -86,9 +87,6 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
 
 
         //setting blood types in list
-        //xArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, bloodType);
-        //blood.setAdapter(adapter);
-        // Setting a Custom Adapter to the Spinner
         CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),bloodImages,bloodType);
         blood.setAdapter(customAdapter);
         blood.setOnItemSelectedListener(this);
@@ -310,6 +308,67 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
             }
         });
 
+        //texviews correct input type
+        nameParentOne.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
+                    flagNext=false;
+                    nameParentOne.setError("Only letters please!!");
+                }
+            }
+        });
+        surnameParentOne.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
+                    flagNext=false;
+                    surnameParentOne.setError("Only letters please!!");
+                }
+            }
+        });
+        amkaParentOne.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    flagNext=false;
+                    amkaParentOne.setError("Only numbers please!!");
+                }
+            }
+        });
     }
 
 

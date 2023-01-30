@@ -5,10 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/deleteChildRelativeLayout"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewDeleteChild"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="8dp"
+        app:cardMaxElevation="10dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="false"
+
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -16,54 +27,68 @@
 
             <ImageView
                 android:id="@+id/sexImageViewDeleteChild"
-                android:layout_width="90dp"
-                android:layout_height="82dp"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baby_girl" />
+                app:srcCompat="@drawable/baby_girl1" />
 
             <TextView
                 android:id="@+id/birthDateTextViewDeleteChild"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/bai_jamjuree"
                 android:text="BirthDate"
-                app:layout_constraintStart_toEndOf="@+id/sexImageViewDeleteChild"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                app:layout_constraintBaseline_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/nameTextViewDeleteChild"
                 app:layout_constraintTop_toBottomOf="@+id/nameTextViewDeleteChild" />
 
             <TextView
                 android:id="@+id/amkaTextViewDeleteChild"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/bai_jamjuree"
                 android:text="amka"
-                app:layout_constraintStart_toEndOf="@+id/nameTextViewDeleteChild"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/birthDateTextViewDeleteChild"
+                app:layout_constraintTop_toBottomOf="@id/birthDateTextViewDeleteChild" />
 
             <TextView
                 android:id="@+id/ageTextViewDeleteChild"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/bai_jamjuree"
                 android:text="age"
-                app:layout_constraintStart_toEndOf="@+id/birthDateTextViewDeleteChild"
-                app:layout_constraintTop_toBottomOf="@+id/amkaTextViewDeleteChild" />
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/nameTextViewDeleteChild"
+                app:layout_constraintTop_toTopOf="@+id/nameTextViewDeleteChild" />
 
             <TextView
                 android:id="@+id/nameTextViewDeleteChild"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/bai_jamjuree"
                 android:text="name"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/sexImageViewDeleteChild"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

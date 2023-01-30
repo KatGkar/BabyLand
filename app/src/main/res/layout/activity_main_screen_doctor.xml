@@ -10,13 +10,60 @@
 
 
     <RelativeLayout
+        android:id="@+id/noChildRelativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddBaby"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/noChildButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/facebook_google_buttons"
+                android:backgroundTint="@color/fui_bgGoogle"
+                android:cropToPadding="true"
+                android:elevation="20dp"
+                android:text="Add child"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView28" />
+
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
+                android:text="No child took over yet"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/deleteChildRelativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="2dp"
         android:background="@drawable/gradient_darker"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMainScreenDoctor"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddBaby"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -48,12 +95,24 @@
 
             <EditText
                 android:id="@+id/deleteChildVerificationEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="230dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="35dp"
+                android:background="@drawable/edit_texts"
+                android:elevation="20dp"
                 android:ems="10"
-                android:hint="Amka"
+                android:fontFamily="@font/bai_jamjuree"
+                android:hint="Amka..."
                 android:inputType="textPersonName"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:shadowDx="2"
+                android:shadowDy="4"
+                android:shadowRadius="2"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +129,7 @@
                 android:textColor="#000000"
                 android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -80,8 +139,8 @@
         android:id="@+id/showChildRelativeLayout"
         android:layout_width="415dp"
         android:layout_height="657dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMainScreenDoctor"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddBaby"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -158,8 +217,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="dateBirth"
                 android:fontFamily="@font/bai_jamjuree"
+                android:text="dateBirth"
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="16dp"
@@ -219,7 +278,7 @@
         android:layout_width="390dp"
         android:layout_height="636dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMainScreenDoctor"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddBaby"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -254,7 +313,7 @@
     </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationViewMainScreenDoctor"
+        android:id="@+id/bottomNavigationViewAddBaby"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@drawable/main_menu"

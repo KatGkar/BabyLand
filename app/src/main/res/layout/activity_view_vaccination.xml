@@ -7,46 +7,41 @@
     tools:context=".viewVaccination">
 
     <RelativeLayout
+        android:id="@+id/vaccRelativeLayout"
         android:layout_width="match_parent"
-        android:background="@drawable/gradient_darker"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        android:background="@drawable/gradient"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewViewVaccination"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="373dp"
-            android:layout_height="682dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
             android:background="@drawable/gradient">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/vaccinationRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="570dp"
-                android:layout_marginTop="12dp"
+                android:layout_width="349dp"
+                android:layout_height="554dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/addOtherVaccineButton"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView21"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
             <Button
                 android:id="@+id/addOtherVaccineButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/facebook_google_buttons"
                 android:layout_marginBottom="10dp"
+                android:background="@drawable/facebook_google_buttons"
                 android:text="Add another vaccine"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -72,24 +67,37 @@
 
     <RelativeLayout
         android:id="@+id/addOtherVaccineRelativeLayout"
-        android:layout_width="360dp"
-        android:layout_height="431dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/gradient_darker"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewViewVaccination"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="360dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="190dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="190dp"
+            android:background="@drawable/gradient">
 
             <Button
                 android:id="@+id/saveVaccineButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/facebook_google_buttons"
                 android:text="Add Vaccine"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,9 +107,14 @@
                 android:id="@+id/dateVaccinatedTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="TextView"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:text="Vaccinations"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.53"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/doctorNameTextView" />
 
@@ -110,23 +123,48 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
+                android:fontFamily="@font/bai_jamjuree"
                 android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/vaccineNameEditText" />
 
             <EditText
                 android:id="@+id/vaccineNameEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="72dp"
+                android:layout_width="230dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="48dp"
+                android:background="@drawable/edit_texts"
+                android:elevation="20dp"
                 android:ems="10"
-                android:hint="Name"
+                android:hint="Vaccination name..."
                 android:inputType="textPersonName"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:shadowDx="2"
+                android:shadowDy="4"
+                android:shadowRadius="2"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationViewViewVaccination"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/main_menu"
+        app:elevation="10dp"
+        app:itemBackground="@drawable/navigation_items_background"
+        app:itemTextColor="@color/navigation_items_text"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/main" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,7 @@
 package com.example.babyland;
 
-import android.app.Activity;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,24 +13,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import okhttp3.internal.Util;
 
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
     ArrayList list;
@@ -157,7 +148,9 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             String details = lists.get(position).getDetails();
             holder.detailsDevelopmentalMonitoringTextView.setText(details);
             holder.nameDevelopmentalMonitoringTextView.setText(name);
-            holder.nameDevelopmentalMonitoringTextView.setPaintFlags(holder.nameDevelopmentalMonitoringTextView.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+            if(details!=" "){
+                holder.detailsDevelopmentalMonitoringTextView.setText("Nothing");
+            }
         }else if(id.equals("exam")){
             List<examinationItems> lists = (List<examinationItems>) list;
             String name = lists.get(position).getName();
@@ -189,13 +182,13 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             String birthDate = lists.get(position).getDateOfBirth();
             String amka = lists.get(position).getAmka();
             String sex = lists.get(position).getSex();
-            holder.nameTextViewDelete.setText(name);
-            holder.birthDateTextViewDelete.setText(birthDate);
-            holder.amkaTextViewDelete.setText(amka);
+            holder.nameTextViewDelete.setText("Name: "+ name);
+            holder.birthDateTextViewDelete.setText("Birth date: "+birthDate);
+            holder.amkaTextViewDelete.setText("Amka: "+amka);
             if(sex.equals("BOY")){
-                Picasso.get().load(R.drawable.boy).into(holder.sexImageViewDelete);
+                Picasso.get().load(R.drawable._02_baby_boy_1).into(holder.sexImageViewDelete);
             }else{
-                Picasso.get().load(R.drawable.baby_girl).into(holder.sexImageViewDelete);
+                Picasso.get().load(R.drawable.baby_girl1).into(holder.sexImageViewDelete);
             }
             int monthsD;
             Calendar cal = Calendar.getInstance();
@@ -240,7 +233,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 ageType = "months";
                 age = String.valueOf(monthsD);
             }
-            holder.ageTextViewDelete.setText(age +" " + ageType);
+            holder.ageTextViewDelete.setText("Age: "+age +" " + ageType);
         }else if(id.equals("availableChildren")){
             List<Baby> lists = (List<Baby>) list;
             String name = lists.get(position).getName();
@@ -275,16 +268,17 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             if(date!=null){
                 holder.vaccinationDoctorTextView.setText(doctorsName);
                 holder.vaccinationDateTextView.setText(date);
-                holder.addVaccineButton.setVisibility(View.GONE);
             }else{
                 holder.vaccinationDateTextView.setText("None");
                 holder.vaccinationDoctorTextView.setText("None");
-                holder.addVaccineButton.setVisibility(View.GONE);
             }
             if(name==null){
                 holder.cardViewVaccinations.setClickable(false);
             }
             holder.vaccinationNameTextView.setText(name);
+            holder.addVaccineButton.setVisibility(View.GONE);
+            holder.vaccinationDateTextView.setVisibility(View.GONE);
+            holder.vaccinationDoctorTextView.setVisibility(View.GONE);
         }
     }
 
@@ -310,8 +304,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
         private EditText developmentalEditText;
-        private CardView card, cardViewAdd, cardViewExamination, cardViewVaccinations;
-        private RelativeLayout developmentsRelativeLayout, deleteChildRelativeLayout, availableChildrenRelativeLayout;
+        private CardView card, cardViewAdd, cardViewExamination, cardViewVaccinations, cardViewDevelopments, cardViewDeleteChild;
         private boolean i=true;
         private Button addVaccineButton;
         private ImageView sexImageViewDelete, sexAvailableChildren;
@@ -321,9 +314,9 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             super(itemView);
             if (id.equals("illnessInput")) {
                 List<FamilyHistoryIllnesses> lists = (List<FamilyHistoryIllnesses>) (List<?>) list;
-                illnessName = itemView.findViewById(R.id.ilnessName);
+                illnessName = itemView.findViewById(R.id.illnessName);
                 switches = itemView.findViewById(R.id.switches);
-                illnessDetails = itemView.findViewById(R.id.ilnessDetails);
+                illnessDetails = itemView.findViewById(R.id.illnessDetails);
                 switches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -408,8 +401,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             }else if(id.equals("developments")){
                 ageTextView = itemView.findViewById(R.id.ageTextView);
                 dateTextView = itemView.findViewById(R.id.dateTextView);
-                developmentsRelativeLayout = itemView.findViewById(R.id.developmentsRelativeLayout);
-                developmentsRelativeLayout.setOnClickListener(this);
+                cardViewDevelopments = itemView.findViewById(R.id.cardViewDevelopments);
+                cardViewDevelopments.setOnClickListener(this);
             }else if(id.equals("developmentalMonitoring")){
                 nameDevelopmentalMonitoringTextView = itemView.findViewById(R.id.nameShowDevelopmentsDevelopmentalMonitoringTextView);
                 detailsDevelopmentalMonitoringTextView = itemView.findViewById(R.id.detailsShowDevelopmentsDevelopmentalMonitoringTextView);
@@ -431,14 +424,12 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 birthDateTextViewDelete = itemView.findViewById(R.id.birthDateTextViewDeleteChild);
                 ageTextViewDelete = itemView.findViewById(R.id.ageTextViewDeleteChild);
                 sexImageViewDelete = itemView.findViewById(R.id.sexImageViewDeleteChild);
-                deleteChildRelativeLayout = itemView.findViewById(R.id.deleteChildRelativeLayout);
-                deleteChildRelativeLayout.setOnClickListener(this);
+                cardViewDeleteChild = itemView.findViewById(R.id.cardViewDeleteChild);
+                cardViewDeleteChild.setOnClickListener(this);
             }else if(id.equals("availableChildren")){
                 nameAvailableChildrenText = itemView.findViewById(R.id.nameAvailableChildrenText);
                 amkaAvailableChildrenText = itemView.findViewById(R.id.amkaAvailableChildrenText);
                 sexAvailableChildren = itemView.findViewById(R.id.sexAvailableChildren);
-                //availableChildrenRelativeLayout = itemView.findViewById(R.id.availableChildrenRelativeLayout);
-                //availableChildrenRelativeLayout.setOnClickListener(this);
                 cardViewAdd = itemView.findViewById(R.id.cardViewAvailableChildren);
                 cardViewAdd.setOnClickListener(this);
             }else if(id.equals("familyHistoric")) {
@@ -463,10 +454,10 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                             vaccinationDoctorTextView.setVisibility(View.VISIBLE);
                             i=false;
                             if(userType.equals("doctor")) {
-                                if (TextUtils.isEmpty(vaccinationDoctorTextView.getText())) {
+                                if (vaccinationDoctorTextView.getText() == "None") {
                                     addVaccineButton.setVisibility(View.VISIBLE);
                                 } else {
-                                    addVaccineButton.setVisibility(View.INVISIBLE);
+                                    addVaccineButton.setVisibility(View.GONE);
                                 }
                             }
                         }

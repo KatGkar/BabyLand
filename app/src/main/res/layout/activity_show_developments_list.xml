@@ -4,49 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient"
     tools:context=".showDevelopmentsList">
 
-    <RelativeLayout
-        android:id="@+id/developmentLayout"
-        android:layout_width="362dp"
-        android:layout_height="720dp"
+    <TextView
+        android:id="@+id/doctorShowDevelopmentsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/bai_jamjuree"
+        android:text="Doctor"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollViewShowDevs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:scrollbarThumbVertical="@drawable/scrollbar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewShowDevelopments"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/doctorShowDevelopmentsTextView">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/weightTextViewShow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginTop="20dp"
-                android:text="weight"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dateTextViewShow" />
-
-            <TextView
-                android:id="@+id/lengthTextViewShow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="20dp"
-                android:text="length"
-                app:layout_constraintStart_toEndOf="@+id/weightTextViewShow"
-                app:layout_constraintTop_toBottomOf="@+id/ageTextViewShow" />
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/dateTextViewShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
                 android:text="date"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,110 +60,229 @@
                 android:id="@+id/ageTextViewShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center_horizontal"
                 android:text="ageText"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/dateTextViewShow"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/weightTextViewShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center_horizontal"
+                android:text="weight"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dateTextViewShow" />
+
+            <TextView
+                android:id="@+id/lengthTextViewShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center_horizontal"
+                android:text="length"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/weightTextViewShow"
+                app:layout_constraintTop_toBottomOf="@+id/ageTextViewShow" />
 
             <TextView
                 android:id="@+id/headCircumferenceTextViewShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
                 android:layout_marginTop="20dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center_horizontal"
                 android:text="headCircumference"
-                app:layout_constraintStart_toEndOf="@+id/lengthTextViewShow"
-                app:layout_constraintTop_toBottomOf="@+id/ageTextViewShow" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/developmentalMonitoringRecyclerView"
-                android:layout_width="303dp"
-                android:layout_height="111dp"
-                android:layout_marginTop="3dp"
-                android:background="#C2EABF"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.44"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hearingShowDevelopmentsSwitch" />
+                app:layout_constraintTop_toBottomOf="@+id/weightTextViewShow" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/examinationRecyclerView"
-                android:layout_width="301dp"
-                android:layout_height="131dp"
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
-                android:background="#E6CECE"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/recycler"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.459"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/developmentalMonitoringRecyclerView" />
+                app:layout_constraintTop_toBottomOf="@+id/headCircumferenceTextViewShow">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/sustenanceRecyclerView"
-                android:layout_width="302dp"
-                android:layout_height="143dp"
-                android:layout_marginTop="20dp"
-                android:background="#BFECF4"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/developmentalMonitoringRecyclerView"
+                    android:layout_width="325dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/gradient" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/recycler"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.45"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/examinationRecyclerView" />
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/examinationRecyclerView"
+                    android:layout_width="325dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/gradient" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/recycler"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout2">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/sustenanceRecyclerView"
+                    android:layout_width="325dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/gradient" />
+            </RelativeLayout>
 
             <Switch
                 android:id="@+id/hearingShowDevelopmentsSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:clickable="false"
-                android:text="Switch"
+                android:gravity="center_horizontal"
+                android:text="Hearing"
+                android:thumb="@drawable/toogle_thumb"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.467"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lengthTextViewShow" />
-
-            <TextView
-                android:id="@+id/doctorShowDevelopmentsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Doctor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/observationsShowDevelopmentsTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/observationsShowDevelopmentsTextView"
+                app:track="@drawable/toogle_track" />
 
             <TextView
                 android:id="@+id/observationsShowDevelopmentsTextView"
-                android:layout_width="293dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center_horizontal"
                 android:scrollbars="vertical"
                 android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.48"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sustenanceRecyclerView" />
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout3" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+            android:id="@+id/textViewDevelopments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bai_jamjuree"
+            android:text="Developments"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/developmentsRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.781" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/developmentsRecyclerView"
-        android:layout_width="350dp"
-        android:layout_height="645dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/developmentsRecyclerView"
+            android:layout_width="341dp"
+            android:layout_height="599dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewShowDevelopments"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/noDevelopmentTextView"
+        android:textStyle="bold"
         android:layout_width="193dp"
         android:layout_height="124dp"
+        android:fontFamily="@font/bai_jamjuree"
         android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.388" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationViewShowDevelopments"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/main_menu"
+        app:elevation="10dp"
+        app:itemBackground="@drawable/navigation_items_background"
+        app:itemTextColor="@color/navigation_items_text"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/main" />
 </androidx.constraintlayout.widget.ConstraintLayout>

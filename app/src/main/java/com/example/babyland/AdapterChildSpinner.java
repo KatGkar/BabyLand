@@ -8,17 +8,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CustomAdapter extends BaseAdapter {
+import java.util.ArrayList;
 
+public class AdapterChildSpinner extends BaseAdapter {
     Context context;
     int images[];
-    String[] bloodType;
+    ArrayList<Baby> listKids;
     LayoutInflater inflater;
 
-    public CustomAdapter(Context applicationContext, int[] images, String[] bloodType) {
+        public AdapterChildSpinner(Context applicationContext, int[] images, ArrayList<Baby>listKids) {
         this.context = applicationContext;
         this.images = images;
-        this.bloodType = bloodType;
+        this.listKids = listKids;
         inflater = (LayoutInflater.from(applicationContext));
     }
 
@@ -27,19 +28,23 @@ public class CustomAdapter extends BaseAdapter {
         view = inflater.inflate(R.layout.spinner_items, null);
         ImageView icon = (ImageView) view.findViewById(R.id.imgLanguage);
         TextView names = (TextView) view.findViewById(R.id.tvLanguage);
-        icon.setImageResource(images[i]);
-        names.setText(bloodType[i]);
+        if (listKids.get(i).getSex().equals("BOY")) {
+            icon.setImageResource(images[0]);
+        } else {
+            icon.setImageResource(images[1]);
+        }
+        names.setText(listKids.get(i).getAmka());
         return view;
     }
 
     @Override
     public int getCount() {
-        return bloodType.length;
+        return listKids.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return bloodType[i];
+        return listKids.get(i).getAmka();
     }
 
     @Override

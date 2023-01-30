@@ -3,17 +3,25 @@ package com.example.babyland;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,7 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FamilyHistoryInput extends AppCompatActivity {
+public class FamilyHistoryInput extends AppCompatActivity{
 
     protected RecyclerView recyclerView;
     protected ArrayList<FamilyHistoryIllnesses> illnesses;
@@ -35,8 +43,8 @@ public class FamilyHistoryInput extends AppCompatActivity {
     private DatabaseReference reference1, reference2;
     private String name, sex, amka, birthPlace, bloodType, parentOneAmka, parentTwoAmka, birthDate, currentUserUID;
     private int babyNumber;
-    private Parent user;
     private Baby b;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +63,10 @@ public class FamilyHistoryInput extends AppCompatActivity {
         //getting views from xml file
         recyclerView = findViewById(R.id.recyclerViewFamilyHistory);
         saveButton = findViewById(R.id.nextButton);
+        bottomNavigationView = findViewById(R.id.bottomNavigationViewFamilyHistoryInput);
+
+        //UI
+        bottomNavigationView.setSelectedItemId(R.id.navigation_add);
 
         //setting lists
         illnesses = new ArrayList<>();
@@ -83,8 +95,42 @@ public class FamilyHistoryInput extends AppCompatActivity {
                 saveBaby(view);
             }
         });
+
+        //setting listener for navigation bar
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+
+        //on item click
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        Intent intent = new Intent(FamilyHistoryInput.this, MainScreenParents.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.navigation_add:
+                        return true;
+                    case R.id.navigation_account:
+                        settingsButton();
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
+
+    //go to settings page
+    private void settingsButton(){
+        Intent intent = new Intent(FamilyHistoryInput.this, UserAccount.class);
+        intent.putExtra("user", "parent");
+        startActivity(intent);
+    }
 
     //setting adapter for recyclerView
     private void setAdapter() {
@@ -118,6 +164,13 @@ public class FamilyHistoryInput extends AppCompatActivity {
         });
     }
 
+
+    //on resume page
+    @Override
+    protected void onResume() {
+        bottomNavigationView.setSelectedItemId(R.id.navigation_add);
+        super.onResume();
+    }
 
     //save baby to database
     public void saveBaby(View view) {
@@ -222,7 +275,6 @@ public class FamilyHistoryInput extends AppCompatActivity {
                 if (snapshot != null) {
                     for (DataSnapshot snapshots : snapshot.getChildren()) {
                         GenericTypeIndicator<Parent> t = new GenericTypeIndicator<Parent>() {};
-                        user = snapshots.getValue(t);
                         if (snapshots.getKey().equals(currentUserUID)) {
                             parentOneAmka = String.valueOf(snapshots.child("amka").getValue());
                             if (snapshots.getValue(t).getPartner()) {

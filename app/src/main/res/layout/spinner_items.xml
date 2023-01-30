@@ -13,9 +13,9 @@
 
         <ImageView
             android:id="@+id/imgLanguage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/_01_doctor"></ImageView>
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/doctor"></ImageView>
 
         <TextView
             android:id="@+id/tvLanguage"

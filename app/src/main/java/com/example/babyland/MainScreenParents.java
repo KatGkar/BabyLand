@@ -2,19 +2,25 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,21 +32,21 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MainScreenParents extends AppCompatActivity {
+public class MainScreenParents extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private FirebaseDatabase database;
-    private DatabaseReference reference;
-    private Boolean userFound = false;
+    private DatabaseReference reference, reference1;
     private ArrayList<Baby> listKids;
     private String currentUserUID;
-    private RelativeLayout noBabyLayout, mainScreenLayout, statisticLayout, doctorInfoRelativeLayout;
-    private ImageButton addBabyButton;
+    private BottomNavigationView bottomNavigationView;
+    private RelativeLayout noBabyLayout, mainScreenLayout, doctorInfoRelativeLayout;
     private Spinner chooseChildSpinner;
-    private Button showDevelopmentButton, deleteChildButton, chartButton, settingsButton, viewDoctorInfoButton, addNewBabyButton,
-                    viewVaccinesButton;
+    private Button showDevelopmentButton, deleteChildButton, chartButton, viewDoctorInfoButton,
+                    viewVaccinesButton, addBabyButton;
     private TextView ageTextView, statisticTextView, doctorFullNameTextView, doctorEmailTextView, doctorPhoneNumberTextView,
-                    doctorMedicalIDTextView;
-    private int monthsD, developments=0;
+                    doctorMedicalIDTextView, vaccinationsTextView, statisticsTextView;
+    private int monthsD, developments=0, vaccinations=0;
+    private int[] sexImages = {R.drawable.male, R.drawable.female};
     private Doctor doctor=null;
 
     @Override
@@ -53,27 +59,28 @@ public class MainScreenParents extends AppCompatActivity {
         addBabyButton = findViewById(R.id.addBabyButton);
         mainScreenLayout = findViewById(R.id.mainScreenLayout);
         chooseChildSpinner = findViewById(R.id.chooseBabySpinner);
-        statisticLayout = findViewById(R.id.statisticLayout);
         showDevelopmentButton = findViewById(R.id.showDevelopmentButton);
         ageTextView = findViewById(R.id.ageMainScreenTextView);
-        statisticTextView = findViewById(R.id.statisticTextView);
+        statisticTextView = findViewById(R.id.devsTextView);
         deleteChildButton = findViewById(R.id.deleteChildButton);
         chartButton = findViewById(R.id.chartButton);
-        settingsButton = findViewById(R.id.settingsParentButton);
         viewDoctorInfoButton = findViewById(R.id.viewDoctorInfoButton);
         doctorInfoRelativeLayout = findViewById(R.id.doctorInfoRelativeView);
         doctorEmailTextView = findViewById(R.id.doctorEmailTextView);
         doctorFullNameTextView = findViewById(R.id.doctorFullNameTextView);
         doctorPhoneNumberTextView = findViewById(R.id.doctorPhoneNumberTextView);
         doctorMedicalIDTextView = findViewById(R.id.doctorMedicalIIDTextView);
-        addNewBabyButton = findViewById(R.id.addNewBabyButton);
         viewVaccinesButton = findViewById(R.id.viewVaccinesButton);
+        bottomNavigationView = findViewById(R.id.bottomNavigationViewMainScreenParents);
+        vaccinationsTextView = findViewById(R.id.vaccinationsTextView);
+        statisticsTextView = findViewById(R.id.statisticsTextView);
+
+        //UI
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        statisticsTextView.setPaintFlags(statisticsTextView.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
 
         //setting list
         listKids= new ArrayList<>();
-
-        userFound = false;
-
 
         //setting visibilities
         noBabyLayout.setVisibility(View.INVISIBLE);
@@ -95,7 +102,6 @@ public class MainScreenParents extends AppCompatActivity {
                     for(DataSnapshot snapshots : snapshot.getChildren()){
                         String UID = snapshots.getKey();
                         if (UID.equals(currentUserUID)) {
-                            userFound = true;
                             GenericTypeIndicator<ArrayList<Baby>> t = new GenericTypeIndicator<ArrayList<Baby>>(){};
                             listKids = snapshots.child("kids").getValue(t);
                         }
@@ -128,31 +134,6 @@ public class MainScreenParents extends AppCompatActivity {
             }
         });
 
-        //setting menu button
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                settingsButton(view);
-            }
-        });
-
-
-        //on selected child change
-        chooseChildSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                findSelectedBabyAge();
-                findSelectedBabyStatistics();
-                findDoctor();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
         //chart button
         chartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,15 +152,6 @@ public class MainScreenParents extends AppCompatActivity {
             }
         });
 
-        //add new baby button
-        addNewBabyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddBaby.class);
-                startActivity(intent);
-            }
-        });
-
         //view vaccines button
         viewVaccinesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,6 +162,34 @@ public class MainScreenParents extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //setting listener for navigation bar
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+
+        //on item click
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        return true;
+                    case R.id.navigation_add:
+                        Intent intent = new Intent(getApplicationContext(), AddBaby.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.navigation_account:
+                        settingsButton();
+                        return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     //view doctor info
@@ -197,10 +197,10 @@ public class MainScreenParents extends AppCompatActivity {
         if(doctor!=null) {
             mainScreenLayout.setVisibility(View.INVISIBLE);
             doctorInfoRelativeLayout.setVisibility(View.VISIBLE);
-            doctorMedicalIDTextView.setText(doctor.getMedicalID());
-            doctorEmailTextView.setText(doctor.getEmail());
-            doctorFullNameTextView.setText(doctor.getName() + " " + doctor.getSurname());
-            doctorPhoneNumberTextView.setText(doctor.getPhoneNumber());
+            doctorMedicalIDTextView.setText("Medical ID: " +doctor.getMedicalID());
+            doctorEmailTextView.setText("Email: " + doctor.getEmail());
+            doctorFullNameTextView.setText("Fullname: "+doctor.getName() + " " + doctor.getSurname());
+            doctorPhoneNumberTextView.setText("Phone number: " +doctor.getPhoneNumber());
         }else{
             Toast.makeText(this, "No doctor yet!!", Toast.LENGTH_SHORT).show();
         }
@@ -215,10 +215,15 @@ public class MainScreenParents extends AppCompatActivity {
                 if(snapshot!=null){
                     for(DataSnapshot snapshots:snapshot.getChildren()){
                         GenericTypeIndicator<Doctor> t = new GenericTypeIndicator<Doctor>() {};
-                        for(int i=0;i<snapshots.getValue(t).getKids().size();i++){
-                            if(snapshots.getValue(t).getKids().get(i).getAmka().equals(chooseChildSpinner.getSelectedItem().toString())){
-                                doctor = snapshots.getValue(t);
+                        try {
+                            for (int i = 0; i < snapshots.getValue(t).getKids().size(); i++) {
+                                if (snapshots.getValue(t).getKids().get(i).getAmka().equals(chooseChildSpinner.getSelectedItem().toString())) {
+                                    doctor = snapshots.getValue(t);
+                                }
                             }
+                        }catch (Exception e)
+                        {
+                            //do nothing
                         }
                     }
                 }
@@ -248,6 +253,8 @@ public class MainScreenParents extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mainScreenLayout.setVisibility(View.VISIBLE);
+        bottomNavigationView.setSelectedItemId(R.id.home);
         reference = database.getReference("parent");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -256,7 +263,6 @@ public class MainScreenParents extends AppCompatActivity {
                     for(DataSnapshot snapshots : snapshot.getChildren()){
                         String UID = snapshots.getKey();
                         if (UID.equals(currentUserUID)) {
-                            userFound = true;
                             GenericTypeIndicator<ArrayList<Baby>> t = new GenericTypeIndicator<ArrayList<Baby>>(){};
                             listKids = snapshots.child("kids").getValue(t);
                         }
@@ -277,14 +283,28 @@ public class MainScreenParents extends AppCompatActivity {
     private void load(){
         if(listKids != null && !listKids.isEmpty()){
             //show panel with babies
-            ArrayAdapter<Baby> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listKids);
-            chooseChildSpinner.setAdapter(adapter);
+            AdapterChildSpinner customAdapter=new AdapterChildSpinner(getApplicationContext(),sexImages,listKids);
+            chooseChildSpinner.setAdapter(customAdapter);
+            chooseChildSpinner.setOnItemSelectedListener(this);
             findSelectedBabyAge();
             findSelectedBabyStatistics();
+            findDoctor();
         }else {
             mainScreenLayout.setVisibility(View.INVISIBLE);
             noBabyLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        findSelectedBabyAge();
+        findSelectedBabyStatistics();
+        findDoctor();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
     //find children statistics
@@ -303,7 +323,7 @@ public class MainScreenParents extends AppCompatActivity {
                         }
                     }
                 }
-                statisticTextView.setText(String.valueOf(developments));
+                statisticTextView.setText("Measurements made: " + String.valueOf(developments));
 
             }
 
@@ -312,6 +332,29 @@ public class MainScreenParents extends AppCompatActivity {
 
             }
         });
+
+        reference1 = database.getReference("baby").child(babyAmka).child("vaccinations");
+        reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot!=null){
+                    vaccinations=0;
+                    for(DataSnapshot snapshots: snapshot.getChildren()){
+                        GenericTypeIndicator<Vaccination> t = new GenericTypeIndicator<Vaccination>() {};
+                        if(snapshots.getValue(t).getDoctorName() != null){
+                            vaccinations++;
+                        }
+                    }
+                }
+                vaccinationsTextView.setText("Vaccinations done: " + String.valueOf(vaccinations));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     //calculate child age
@@ -365,12 +408,11 @@ public class MainScreenParents extends AppCompatActivity {
             ageType = "months";
             age = String.valueOf(monthsD);
         }
-        ageTextView.setText(age +" " + ageType);
+        ageTextView.setText("Child age: " + age +" " + ageType);
         noBabyLayout.setVisibility(View.INVISIBLE);
         mainScreenLayout.setVisibility(View.VISIBLE);
 
     }
-
 
     //go to show development page
     public void showDevelopment(View view){
@@ -380,7 +422,7 @@ public class MainScreenParents extends AppCompatActivity {
     }
 
     //go to settings page
-    private void settingsButton(View view){
+    private void settingsButton(){
         Intent intent = new Intent(MainScreenParents.this, UserAccount.class);
         intent.putExtra("user", "parent");
         startActivity(intent);

@@ -33,7 +33,6 @@ public class viewParentInfo extends AppCompatActivity {
             dateOfBirthTextView, amkaParentOneTextView, amkaParentTwoTextView, parentInfoTextView;
     private RelativeLayout parentsRelativeLayout, parentInfoRelativeLayout;
     private String babyAmka;
-    protected Menu the_menu;
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private Parent parent1, parent2;
@@ -143,43 +142,6 @@ public class viewParentInfo extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("RestrictedApi")
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        MenuBuilder m = (MenuBuilder) menu;
-        m.setOptionalIconsVisible(true);
-
-        //get the menu
-        the_menu = menu;
-
-        //Called when a menu item with is collapsed.
-        MenuItem.OnActionExpandListener actionExpandListener = new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                return true;
-            }
-        };
-
-
-        return true;
-
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     //go to settings
     private void settingsButton(){
@@ -192,12 +154,12 @@ public class viewParentInfo extends AppCompatActivity {
     private void viewParentInformation(Parent parent){
         parentsRelativeLayout.setVisibility(View.INVISIBLE);
         parentInfoRelativeLayout.setVisibility(View.VISIBLE);
-        nameTextView.setText("Fullname: "+parent.getName());
-        amkaTextView.setText("Amka: " +parent.getAmka());
-        emailTextView.setText("Email: "+parent.getEmail());
-        phoneNumberTextView.setText("Phone number: "+parent.getPhoneNumber());
-        bloodTypeTextView.setText("Blood type: "+parent.getBloodType());
-        dateOfBirthTextView.setText("Birth date: "+parent.getDateOfBirth());
+        nameTextView.setText(parent.getName());
+        amkaTextView.setText(parent.getAmka());
+        emailTextView.setText(parent.getEmail());
+        phoneNumberTextView.setText(parent.getPhoneNumber());
+        bloodTypeTextView.setText(parent.getBloodType());
+        dateOfBirthTextView.setText(parent.getDateOfBirth());
     }
 
     //go to add child page
@@ -224,9 +186,13 @@ public class viewParentInfo extends AppCompatActivity {
                         }
                     }
                     amkaParentOneTextView.setText("Parent amka: " +parent1.getAmka());
-                    if(!parent2.getAmka().equals("00000000000")){
-                        amkaParentTwoTextView.setText("Co-parent amka: " + parent2.getAmka());
-                    }else{
+                    try {
+                        if (!parent2.getAmka().equals("00000000000")) {
+                            amkaParentTwoTextView.setText("Co-parent amka: " + parent2.getAmka());
+                        } else {
+                            amkaParentTwoTextView.setVisibility(View.INVISIBLE);
+                        }
+                    }catch (Exception e){
                         amkaParentTwoTextView.setVisibility(View.INVISIBLE);
                     }
                 }

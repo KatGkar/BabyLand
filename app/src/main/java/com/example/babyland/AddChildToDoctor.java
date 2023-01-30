@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,7 +45,6 @@ public class AddChildToDoctor extends AppCompatActivity {
     private TextView nameAddChildTextView, amkaAddChildTextView, ageAddChildTextView, verificationTextView;
     private RecyclerView availableChildrenRecyclerView;
     private FirebaseDatabase database;
-    protected Menu the_menu;
     private DatabaseReference reference;
     private ArrayList<Baby> availableChildren, doctorsChildren = null;
     private ImageView sexAddChildImageView, searchButton;
@@ -135,12 +136,50 @@ public class AddChildToDoctor extends AppCompatActivity {
             }
         });
 
+        verificationEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    verificationEditText.setError("Only numbers please!!");
+                }
+            }
+        });
+
+        searchAmkaEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    verificationEditText.setError("Only numbers please!!");
+                }
+            }
+        });
+
     }
 
 
     //on resume page
-
-
     @Override
     protected void onResume() {
         bottomNavigationView.setSelectedItemId(R.id.navigation_add);
@@ -267,44 +306,6 @@ public class AddChildToDoctor extends AppCompatActivity {
             }
         };
     }
-    @SuppressLint("RestrictedApi")
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        MenuBuilder m = (MenuBuilder) menu;
-        m.setOptionalIconsVisible(true);
-
-        //get the menu
-        the_menu = menu;
-
-        //Called when a menu item with is collapsed.
-        MenuItem.OnActionExpandListener actionExpandListener = new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                return true;
-            }
-        };
-
-
-        return true;
-
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
 
     //getting children from doctor list
     private void getDoctorsChildren(){

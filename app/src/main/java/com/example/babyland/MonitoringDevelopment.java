@@ -13,7 +13,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -61,9 +63,8 @@ public class MonitoringDevelopment extends AppCompatActivity {
     private DatabaseReference reference;
     private String babyAmka, ageType, age, currentUserUID;
     private int monitoringDevNumber;
-    private Menu the_menu;
+    private Boolean error=true;
     private BottomNavigationView bottomNavigationView;
-    private Boolean flagBack=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,9 +140,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
         sustenance.clear();
         developmentalMonitoring.clear();
 
-        //setting flags
-        flagBack = false;
-
         //setting visibilities
         generalLayout.setVisibility(View.VISIBLE);
         calendarView.setVisibility(View.INVISIBLE);
@@ -172,7 +170,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
             m = "0" + m;
         }
         dateText.setText(new StringBuilder()
-                .append("Date: ")
                 .append(d).append("/").append(m).append("/")
                 .append(yy));
 
@@ -331,6 +328,68 @@ public class MonitoringDevelopment extends AppCompatActivity {
                 saveDevelopment(view);
             }
         });
+
+        //checking textviews input ype
+        weightText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    error=true;
+                    weightText.setError("Only numbers please!!");
+                }
+            }
+        });
+        lengthText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    error=true;
+                    lengthText.setError("Only numbers please!!");
+                }
+            }
+        });
+        headCircumferenceText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    error=true;
+                    headCircumferenceText.setError("Only numbers please!!");
+                }
+            }
+        });
     }
 
 
@@ -340,41 +399,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
         super.onResume();
         bottomNavigationView.setSelectedItemId(R.id.home);
     }
-
-    @SuppressLint("RestrictedApi")
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        MenuBuilder m = (MenuBuilder) menu;
-        m.setOptionalIconsVisible(true);
-
-        //get the menu
-        the_menu = menu;
-
-        //Called when a menu item with is collapsed.
-        MenuItem.OnActionExpandListener actionExpandListener = new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                return true;
-            }
-        };
-
-
-        return true;
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
-        return super.onOptionsItemSelected(item);
-    }
-
 
     //go to settings
     private void settingsButton(){
@@ -448,31 +472,8 @@ public class MonitoringDevelopment extends AppCompatActivity {
         } else if(calendarView.getVisibility() == View.VISIBLE){
             calendarView.setVisibility(View.INVISIBLE);
             generalLayout.setVisibility(View.VISIBLE);
-        }else {
-            if (!flagBack) {
-                DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                //Yes button clicked
-                                //add parent to database
-                                flagBack = true;
-                                onBackPressed();
-                                finish();
-
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //No button clicked
-                                //Do nothing
-                        }
-                    }
-                };
-                android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Are you sure you want to go back? All changes you made will be lost").setPositiveButton("Yes", dialogClickListener2)
-                        .setNegativeButton("No", dialogClickListener2).show();
-            } else {
-                super.onBackPressed();
-            }
+        }else if(generalLayout.getVisibility() == View.VISIBLE){
+            super.onBackPressed();
         }
     }
 
@@ -570,7 +571,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
 
     //save function
     private void saveDevelopment(View view){
-        Boolean error = false;
+        error = false;
         int examinationError = 0, developmentalError = 0, sustenanceError=0;
         if (TextUtils.isEmpty(lengthText.getText())) {
             error = true;
@@ -613,7 +614,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
                     headCircumferenceText.getText().toString(), dateText.getText().toString(), age,
                     ageType, sustenance, examination, developmentalMonitoring, hearingSwitch.isChecked(), observationText.getText().toString(),
                     doctorText.getText().toString());
-            System.out.println(monitoringDevNumber);
             reference = database.getReference("monitoringDevelopment");
             reference.child(String.valueOf(monitoringDevNumber +1)).setValue(dev);
             onBackPressed();

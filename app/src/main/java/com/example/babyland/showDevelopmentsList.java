@@ -3,19 +3,29 @@ package com.example.babyland;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,8 +43,10 @@ public class showDevelopmentsList extends AppCompatActivity {
     private DatabaseReference reference;
     private RecyclerView developmentsRecyclerView, developmentalMonitoringRecyclerView, examinationRecyclerView, sustenanceRecyclerView;
     private recyclerAdapter.recyclerVewOnClickListener listener;
-    private TextView ageText,weightText, lengthText, dateText, headCircumferenceText, doctorTextView, observationsTextView, noDevelopmentTextView;
-    private RelativeLayout developmentLayout;
+    private TextView ageText,weightText, lengthText, dateText, headCircumferenceText, doctorTextView, observationsTextView,
+                noDevelopmentTextView, textViewDevs;
+    private BottomNavigationView bottomNavigationView;
+    private ScrollView scrollViewDevs;
     private Switch hearingSwitch;
 
 
@@ -48,8 +60,8 @@ public class showDevelopmentsList extends AppCompatActivity {
         babyAmka = extras.getString("babyAmka");
 
         //getting views from xml file
+        bottomNavigationView = findViewById(R.id.bottomNavigationViewShowDevelopments);
         developmentsRecyclerView = findViewById(R.id.developmentsRecyclerView);
-        developmentLayout = findViewById(R.id.developmentLayout);
         ageText = findViewById(R.id.ageTextViewShow);
         lengthText = findViewById(R.id.lengthTextViewShow);
         weightText = findViewById(R.id.weightTextViewShow);
@@ -62,13 +74,20 @@ public class showDevelopmentsList extends AppCompatActivity {
         sustenanceRecyclerView = findViewById(R.id.sustenanceRecyclerView);
         observationsTextView = findViewById(R.id.observationsShowDevelopmentsTextView);
         noDevelopmentTextView = findViewById(R.id.noDevelopmentTextView);
+        textViewDevs = findViewById(R.id.textViewDevelopments);
+        scrollViewDevs = findViewById(R.id.scrollViewShowDevs);
+
+        //UI
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
         //setting lists
         developments = new ArrayList<>();
 
         //setting visibilities
-        developmentLayout.setVisibility(View.INVISIBLE);
+        doctorTextView.setVisibility(View.INVISIBLE);
         developmentsRecyclerView.setVisibility(View.VISIBLE);
+        textViewDevs.setVisibility(View.VISIBLE);
+        scrollViewDevs.setVisibility(View.INVISIBLE);
         noDevelopmentTextView.setVisibility(View.INVISIBLE);
 
         //setting database
@@ -77,6 +96,32 @@ public class showDevelopmentsList extends AppCompatActivity {
         //getting data from database
         getDevelopments();
 
+        //setting listener for navigation bar
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+
+
+        //on item click
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        return true;
+                    case R.id.navigation_add:
+                        addChild();
+                        return true;
+                    case R.id.navigation_account:
+                        settingsButton();
+                        return true;
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -95,6 +140,7 @@ public class showDevelopmentsList extends AppCompatActivity {
                     }
                     if(developments.isEmpty()){
                         noDevelopmentTextView.setVisibility(View.VISIBLE);
+                        textViewDevs.setVisibility(View.INVISIBLE);
                         noDevelopmentTextView.setText("No development for choosen child has been found!");
                     }else{
                         setAdapter();
@@ -125,12 +171,34 @@ public class showDevelopmentsList extends AppCompatActivity {
     //on back button pressed
     @Override
     public void onBackPressed() {
-        if(developmentLayout.getVisibility() == View.VISIBLE){
-            developmentLayout.setVisibility(View.INVISIBLE);
+        if(scrollViewDevs.getVisibility() == View.VISIBLE){
+            doctorTextView.setVisibility(View.INVISIBLE);
+            scrollViewDevs.setVisibility(View.INVISIBLE);
             developmentsRecyclerView.setVisibility(View.VISIBLE);
+            textViewDevs.setVisibility(View.VISIBLE);
         }else {
             super.onBackPressed();
         }
+    }
+
+    //go to settings
+    private void settingsButton(){
+        Intent intent = new Intent(showDevelopmentsList.this, UserAccount.class);
+        intent.putExtra("user", "doctor");
+        startActivity(intent);
+    }
+
+    //on page resume
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+    }
+
+    //go to add child page
+    private void addChild(){
+        Intent intent = new Intent(showDevelopmentsList.this, AddChildToDoctor.class);
+        startActivity(intent);
     }
 
     //click listener to show developments details
@@ -139,16 +207,23 @@ public class showDevelopmentsList extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 developmentsRecyclerView.setVisibility(View.INVISIBLE);
-                developmentLayout.setVisibility(View.VISIBLE);
+                textViewDevs.setVisibility(View.INVISIBLE);
+                doctorTextView.setVisibility(View.VISIBLE);
+                scrollViewDevs.setVisibility(View.VISIBLE);
                 Development dev = developments.get(position);
                 ageText.setText("Age: " + dev.getAge() + " " + dev.getAgeType());
-                lengthText.setText("Length: " + dev.getLength());
+                lengthText.setText("Length: " + dev.getLength() + "cm");
                 dateText.setText("Measurement Date: " +dev.getMeasurementDate());
-                weightText.setText("Weight: " + dev.getWeight());
-                headCircumferenceText.setText("Head Circumference: " + dev.getHeadCircumference());
+                weightText.setText("Weight: " + dev.getWeight()+ "cm");
+                headCircumferenceText.setText("Head Circumference: " + dev.getHeadCircumference()+ "cm");
                 hearingSwitch.setChecked(dev.getHearing());
                 doctorTextView.setText(dev.getDoctor());
-                observationsTextView.setText(dev.getObservations());
+                doctorTextView.setPaintFlags(doctorTextView.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+                if(dev.getObservations() == null || dev.getObservations().equals("") || TextUtils.isEmpty(dev.getObservations())){
+                    observationsTextView.setText("No observations!");
+                }else{
+                    observationsTextView.setText(dev.getObservations());
+                }
                 //developmental monitoring info
                 recyclerAdapter adapter = new recyclerAdapter(listener, dev.getDevelopmentalMonitoring(), "developmentalMonitoring","none");
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());

@@ -2,12 +2,20 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,10 +26,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class showHistoric extends AppCompatActivity {
+
     private RecyclerView familyHistoricRecyclerView;
     private String babyAmka;
     private FirebaseDatabase database;
     private DatabaseReference reference;
+    private BottomNavigationView bottomNavigationView;
     private ArrayList<FamilyHistoryIllnesses> familyHistoric;
     private recyclerAdapter.recyclerVewOnClickListener listener;
 
@@ -35,7 +45,11 @@ public class showHistoric extends AppCompatActivity {
         babyAmka = extras.getString("babyAmka");
 
         //getting view from xml file
+        bottomNavigationView = findViewById(R.id.bottomNavigationViewShowHistoric);
         familyHistoricRecyclerView = findViewById(R.id.familyHistoricRecyclerView);
+
+        //UI
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
         //setting database
         database = FirebaseDatabase.getInstance();
@@ -62,6 +76,34 @@ public class showHistoric extends AppCompatActivity {
 
             }
         });
+
+        //setting listener for navigation bar
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+
+
+        //on item click
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        return true;
+                    case R.id.navigation_add:
+                        addChild();
+                        return true;
+                    case R.id.navigation_account:
+                        settingsButton();
+                        return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     //setting adapter for recyclerView
@@ -71,5 +113,27 @@ public class showHistoric extends AppCompatActivity {
         familyHistoricRecyclerView.setLayoutManager(layoutManager);
         familyHistoricRecyclerView.setItemAnimator(new DefaultItemAnimator());
         familyHistoricRecyclerView.setAdapter(adapter);
+    }
+
+
+    //go to settings
+    private void settingsButton(){
+        Intent intent = new Intent(showHistoric.this, UserAccount.class);
+        intent.putExtra("user", "doctor");
+        startActivity(intent);
+    }
+
+
+    //on page resume
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+    }
+
+    //go to add child page
+    private void addChild(){
+        Intent intent = new Intent(showHistoric.this, AddChildToDoctor.class);
+        startActivity(intent);
     }
 }

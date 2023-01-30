@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -23,6 +25,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,10 +47,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class UserAccount extends AppCompatActivity {
+public class UserAccount extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private TextView userFullnameTextView, userEmailTextView, userPhoneNumberTextView, userKidsTextView, userBirthDateTextView,
-                    userBloodTypeTextView, userAmkaTextView, userPartnerAmkaTextView, coParentFullNameTextView,
+                    userBloodTypeTextView, userAmkaTextView, coParentFullNameTextView,
                     coParentEmailTextView, coParentPhoneNumberTextView, coParentAmkaTextView, coParentBirthDateTextView,
                     coParentBloodTypeTextView;
     private EditText nameEditText, surnameEditText, amkaEditText, phoneNumberEditText, birthDateEditText, emailEditText,
@@ -54,6 +58,10 @@ public class UserAccount extends AppCompatActivity {
                 coParentAmkaEditText, coParentEmailEditText, coParentPhoneNumberEditText, coParentBirthDateEditText;
     private String[] bloodType = { "A RhD positive (A+)", "A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
+    private int[] bloodImages = {R.drawable.a_plus, R.drawable.a_minus,
+            R.drawable.b_minus, R.drawable.b_plus, R.drawable.o_plus, R.drawable.o_minus,
+            R.drawable.ab_minus, R.drawable.ab_minus};
+    private BottomNavigationView bottomNavigationView;
     private String currentUserUID, userType,userUID = "", provider=null;
     private Switch userPartnerSwitch;
     private FirebaseDatabase database;
@@ -64,7 +72,8 @@ public class UserAccount extends AppCompatActivity {
             showPasswordButton, changePasswordButton, coParentButton, coParentAddButton, coParentDeleteButton,
             coParentSaveButton, calendarCoParentButton;
     private RelativeLayout viewUserInfoRelativeLayout, updateUserInfoRelativeLayout, changeEmailRelativeLayout,
-                            changePasswordRelativeLayout, coParentRelativeLayout, coParentAddRelativeLayout;
+                            changePasswordRelativeLayout, coParentRelativeLayout, coParentAddRelativeLayout,
+                            coParentExistsRelativeLayout, noCoParentRelativeLayout;
     private CalendarView updateUserInfoCalendarView;
     private Spinner bloodTypeSpinner, coParentBloodTypeSpinner;
     private int position=0;
@@ -87,13 +96,12 @@ public class UserAccount extends AppCompatActivity {
         userBirthDateTextView = findViewById(R.id.userBirthDateTextView);
         userBloodTypeTextView = findViewById(R.id.userBloodTypeTextView);
         userAmkaTextView = findViewById(R.id.userAmkaTextView);
-        userPartnerAmkaTextView = findViewById(R.id.userPatnerAmkaTextView);
         userPartnerSwitch = findViewById(R.id.userPartnerSwitch);
         updateUserInfoButton = findViewById(R.id.updateUserInfoButton);
         viewUserInfoRelativeLayout = findViewById(R.id.viewUserInfoRelativeLayout);
         updateUserInfoRelativeLayout = findViewById(R.id.updateUserInfoRelativeLayout);
         updateUserInfoCalendarView = findViewById(R.id.updateUserInfoCalendarView);
-        nameEditText = findViewById(R.id.nameUserUpdatenfoEditTextView);
+        nameEditText = findViewById(R.id.nameUserUpdateInfoEditTextView);
         surnameEditText = findViewById(R.id.surnameUserUpdateInfoEditTextView);
         amkaEditText = findViewById(R.id.amkaUserUpdateInfoTextView);
         phoneNumberEditText = findViewById(R.id.phoneNumberUserUpdateInfoEditTextView);
@@ -109,7 +117,7 @@ public class UserAccount extends AppCompatActivity {
         changePasswordButton = findViewById(R.id.passwordChangeButton);
         showPasswordButton = findViewById(R.id.showPasswordButton);
         changePasswordRelativeLayout = findViewById(R.id.passwordChangeRelativeLayout);
-        newPasswordEditText = findViewById(R.id.newPasswrodEditText);
+        newPasswordEditText = findViewById(R.id.newPasswordEditText);
         newPasswordVerificationEditText = findViewById(R.id.newPasswordVerificaitonEditText);
         coParentButton = findViewById(R.id.coParentButton);
         coParentRelativeLayout = findViewById(R.id.coParentRelativeLayout);
@@ -131,6 +139,12 @@ public class UserAccount extends AppCompatActivity {
         coParentAddRelativeLayout = findViewById(R.id.coParentAddRelativeLayout);
         coParentSaveButton = findViewById(R.id.coParentSaveButton);
         calendarCoParentButton = findViewById(R.id.calendarCoParentButton);
+        bottomNavigationView = findViewById(R.id.bottomNavigationViewUserAccount);
+        coParentExistsRelativeLayout = findViewById(R.id.coParentExistsRelativeLayout);
+        noCoParentRelativeLayout = findViewById(R.id.noCoParentRelativeLayout);
+
+        //UI
+        bottomNavigationView.setSelectedItemId(R.id.navigation_account);
 
 
         //getting current user UID
@@ -141,7 +155,6 @@ public class UserAccount extends AppCompatActivity {
 
         //setting visibilities
         userPartnerSwitch.setVisibility(View.VISIBLE);
-        userPartnerAmkaTextView.setVisibility(View.VISIBLE);
         userAmkaTextView.setVisibility(View.VISIBLE);
         userBloodTypeTextView.setVisibility(View.VISIBLE);
         userPartnerSwitch.setClickable(false);
@@ -169,10 +182,14 @@ public class UserAccount extends AppCompatActivity {
         getUser();
         viewProvider();
 
-        //setting blood types in list
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, bloodType);
-        bloodTypeSpinner.setAdapter(adapter);
-        coParentBloodTypeSpinner.setAdapter(adapter);
+        //setting blood types in lists
+        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),bloodImages,bloodType);
+        bloodTypeSpinner.setAdapter(customAdapter);
+        bloodTypeSpinner.setOnItemSelectedListener(this);
+
+        CustomAdapter customAdapter1=new CustomAdapter(getApplicationContext(),bloodImages,bloodType);
+        coParentBloodTypeSpinner.setAdapter(customAdapter1);
+        coParentBloodTypeSpinner.setOnItemSelectedListener(this);
 
         //update user button
         updateUserInfoButton.setOnClickListener(new View.OnClickListener() {
@@ -415,6 +432,206 @@ public class UserAccount extends AppCompatActivity {
                 coParentDelete(view);
             }
         });
+
+        //setting listener for navigation bar
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+
+        //on item click
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        if(userType.equals("doctor")){
+                            Intent intent = new Intent(getApplicationContext(), MainScreenDoctor.class);
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
+                            startActivity(intent);
+                        }
+                        return true;
+                    case R.id.navigation_add:
+                        if(userType.equals("doctor")){
+                            Intent intent = new Intent(getApplicationContext(), AddChildToDoctor.class);
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(getApplicationContext(), AddBaby.class);
+                            startActivity(intent);
+                        }
+                        return true;
+                    case R.id.navigation_account:
+                        return true;
+                }
+                return false;
+            }
+        });
+
+        //checking textviews input type
+        nameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
+                    next = false;
+                    nameEditText.setError("Only letters please!!");
+                }
+            }
+        });
+        surnameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
+                    next = false;
+                    surnameEditText.setError("Only letters please!!");
+                }
+            }
+        });
+        amkaEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    next = false;
+                    amkaEditText.setError("Only numbers please!!");
+                }
+            }
+        });
+        phoneNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    next = false;
+                    phoneNumberEditText.setError("Only numbers please!!");
+                }
+            }
+        });
+        coParentNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
+                    flagNext = false;
+                    coParentNameEditText.setError("Only letters please!!");
+                }
+            }
+        });
+        coParentSurnameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
+                    flagNext = false;
+                    coParentSurnameEditText.setError("Only letters please!!");
+                }
+            }
+        });
+        coParentAmkaEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    flagNext = false;
+                    coParentAmkaEditText.setError("Only numbers please!!");
+                }
+            }
+        });
+        coParentPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text=editable.toString();
+                if (!text.matches("^[0-9]+$")) {
+                    flagNext = false;
+                    coParentPhoneNumberEditText.setError("Only numbers please!!");
+                }
+            }
+        });
     }
 
     //co parent delete button
@@ -594,7 +811,7 @@ public class UserAccount extends AppCompatActivity {
             flagNext = false;
         }
         if (coParentBloodTypeSpinner.getSelectedItem().equals("Blood Type")) {
-            ((TextView) coParentBloodTypeSpinner.getSelectedView()).setError("Please choose a blood type!");
+            Toast.makeText(this, "Please choose a blood type!", Toast.LENGTH_SHORT).show();
             flagNext = false;
         }
 
@@ -624,7 +841,6 @@ public class UserAccount extends AppCompatActivity {
             }
         });
     }
-
 
     //check restrictions and save co-parent
     private void check() {
@@ -696,11 +912,8 @@ public class UserAccount extends AppCompatActivity {
     private void coParent(){
         viewUserInfoRelativeLayout.setVisibility(View.INVISIBLE);
         coParentRelativeLayout.setVisibility(View.VISIBLE);
-        coParentEmailTextView.setVisibility(View.VISIBLE);
-        coParentAmkaTextView.setVisibility(View.VISIBLE);
-        coParentBloodTypeTextView.setVisibility(View.VISIBLE);
-        coParentBirthDateTextView.setVisibility(View.VISIBLE);
-        coParentPhoneNumberTextView.setVisibility(View.VISIBLE);
+        noCoParentRelativeLayout.setVisibility(View.INVISIBLE);
+        coParentExistsRelativeLayout.setVisibility(View.VISIBLE);
         if(parent.getPartner()){
             //if there is a partner
             //find co-parent info
@@ -720,6 +933,7 @@ public class UserAccount extends AppCompatActivity {
                     coParentFullNameTextView.setText(coParent.getName() + " " + coParent.getSurname());
                     coParentEmailTextView.setText(coParent.getEmail());
                     coParentBirthDateTextView.setText(coParent.getDateOfBirth());
+                    coParentPhoneNumberTextView.setText(coParent.getPhoneNumber());
                     coParentBloodTypeTextView.setText(coParent.getBloodType());
                 }
 
@@ -730,12 +944,8 @@ public class UserAccount extends AppCompatActivity {
             });
         }else {
             //if there is not a partner
-            coParentEmailTextView.setVisibility(View.INVISIBLE);
-            coParentAmkaTextView.setVisibility(View.INVISIBLE);
-            coParentBloodTypeTextView.setVisibility(View.INVISIBLE);
-            coParentBirthDateTextView.setVisibility(View.INVISIBLE);
-            coParentPhoneNumberTextView.setVisibility(View.INVISIBLE);
-            coParentFullNameTextView.setText("There is no co-parent!");
+            noCoParentRelativeLayout.setVisibility(View.VISIBLE);
+            coParentExistsRelativeLayout.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -747,7 +957,6 @@ public class UserAccount extends AppCompatActivity {
             changePasswordButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (newPasswordEditText.getText().toString().equals(newPasswordVerificationEditText.getText().toString())) {
                         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -776,7 +985,7 @@ public class UserAccount extends AppCompatActivity {
                         };
                         try {
                             AlertDialog.Builder builder = new AlertDialog.Builder(UserAccount.this);
-                            builder.setMessage("Are you sure you want to change email??").setPositiveButton("Yes", dialogClickListener)
+                            builder.setMessage("Are you sure you want to update password??").setPositiveButton("Yes", dialogClickListener)
                                     .setNegativeButton("No", dialogClickListener).show();
                         } catch (Exception e) {
                             System.out.println(e.getLocalizedMessage());
@@ -788,7 +997,7 @@ public class UserAccount extends AppCompatActivity {
                 }
             });
         }else {
-            Toast.makeText(this, "You cannot change password!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You cannot change the password!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -861,7 +1070,7 @@ public class UserAccount extends AppCompatActivity {
                     };
                     try {
                         AlertDialog.Builder builder = new AlertDialog.Builder(UserAccount.this);
-                        builder.setMessage("Are you sure you want to change email??").setPositiveButton("Yes", dialogClickListener)
+                        builder.setMessage("Are you sure you want to update the email address??").setPositiveButton("Yes", dialogClickListener)
                                 .setNegativeButton("No", dialogClickListener).show();
                     } catch (Exception e) {
                         System.out.println(e.getLocalizedMessage());
@@ -869,7 +1078,7 @@ public class UserAccount extends AppCompatActivity {
                 }
             });
         }else{
-            Toast.makeText(this, "You cant change the email because you are connected via " + provider, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You can't change the email address because you are connected via " + provider, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -947,16 +1156,21 @@ public class UserAccount extends AppCompatActivity {
             userFullnameTextView.setText(parent.getName() + " " + parent.getSurname());
             userEmailTextView.setText(parent.getEmail());
             userPhoneNumberTextView.setText(parent.getPhoneNumber());
-            userKidsTextView.setText(String.valueOf(parent.getKids().size()));
+            try {
+                userKidsTextView.setText(String.valueOf(parent.getKids().size()));
+            }catch (Exception e){
+                System.out.println(e.getLocalizedMessage());
+                userKidsTextView.setText("0");
+            }
             userBirthDateTextView.setText(parent.getDateOfBirth());
             userBloodTypeTextView.setText(parent.getBloodType());
             userAmkaTextView.setText(parent.getAmka());
             userPartnerSwitch.setChecked(parent.getPartner());
             coParentButton.setVisibility(View.VISIBLE);
             if(parent.getPartner()){
-                userPartnerAmkaTextView.setText(parent.getPartnersAmka());
+                userPartnerSwitch.setText(parent.getPartnersAmka());
             }else{
-                userPartnerAmkaTextView.setVisibility(View.INVISIBLE);
+                userPartnerSwitch.setText("No partner");
             }
         }else{
             coParentButton.setVisibility(View.INVISIBLE);
@@ -968,11 +1182,10 @@ public class UserAccount extends AppCompatActivity {
             }catch (Exception e){
                 userKidsTextView.setText("0");
             }
-            userBirthDateTextView.setText(doctor.getMedicalID());
+            userAmkaTextView.setText(doctor.getMedicalID());
             userBloodTypeTextView.setVisibility(View.GONE);
-            userAmkaTextView.setVisibility(View.GONE);
+            userBirthDateTextView.setVisibility(View.GONE);
             userPartnerSwitch.setVisibility(View.GONE);
-            userPartnerAmkaTextView.setVisibility(View.GONE);
         }
     }
 
@@ -1020,7 +1233,7 @@ public class UserAccount extends AppCompatActivity {
             next = false;
         }
         if (TextUtils.isEmpty(phoneNumberEditText.getText()) || (phoneNumberEditText.getText().length() != 10)) {
-            phoneNumberEditText.setError("Phone number should have length 11 numbers!");
+            phoneNumberEditText.setError("Phone number should have length 10 numbers!");
             next = false;
         }
         if (bloodTypeSpinner.getSelectedItem().equals("Blood Type")) {
@@ -1198,11 +1411,9 @@ public class UserAccount extends AppCompatActivity {
                     for(DataSnapshot dataSnapshot:snapshots.getChildren()){
                         GenericTypeIndicator<Development> t = new GenericTypeIndicator<Development>(){};
                         Development dev = dataSnapshot.getValue(t);
-                        System.out.println(dev.getAmka() +"___________________________________" + babyAmka);
                         if(dev.getAmka().equals(babyAmka)){
                             reference2 = dataSnapshot.getRef();
                             reference2.removeValue();
-                            //reference.child(dataSnapshot.getKey()).removeValue();
                         }
                     }
                 }
@@ -1231,7 +1442,7 @@ public class UserAccount extends AppCompatActivity {
             next = false;
         }
         if (TextUtils.isEmpty(phoneNumberEditText.getText()) || (phoneNumberEditText.getText().length() != 10)) {
-            phoneNumberEditText.setError("Phone number should have length 11 numbers!");
+            phoneNumberEditText.setError("Phone number should have length 10 numbers!");
             next = false;
         }
 
@@ -1274,6 +1485,14 @@ public class UserAccount extends AppCompatActivity {
         });
     }
 
+    //on resume page
+    @Override
+    protected void onResume() {
+        bottomNavigationView.setSelectedItemId(R.id.navigation_account);
+        getUser();
+        super.onResume();
+    }
+
     //on back button pressed
     @Override
     public void onBackPressed() {
@@ -1288,7 +1507,7 @@ public class UserAccount extends AppCompatActivity {
             super.onBackPressed();
         }else if(changeEmailRelativeLayout.getVisibility() == View.VISIBLE){
             changeEmailRelativeLayout.setVisibility(View.INVISIBLE);
-            viewUserInfoRelativeLayout.setVisibility(View.INVISIBLE);
+            viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
         }else if(changePasswordRelativeLayout.getVisibility() == View.VISIBLE){
             changePasswordRelativeLayout.setVisibility(View.INVISIBLE);
             viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
@@ -1341,6 +1560,16 @@ public class UserAccount extends AppCompatActivity {
         }catch (Exception e){
             System.out.println(e.getLocalizedMessage());
         }
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 

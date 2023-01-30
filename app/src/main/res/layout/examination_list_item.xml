@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <!-- tools:context=".examinationListItem"> -->
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewExamination"
@@ -16,6 +15,7 @@
         app:cardMaxElevation="10dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -28,12 +28,12 @@
                 android:id="@+id/examinationListItemText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
-                android:fontFamily="@font/bai_jamjuree"
                 android:gravity="center_horizontal"
                 android:text="Hello"
+                android:fontFamily="@font/bai_jamjuree"
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="18sp"
@@ -64,15 +64,15 @@
                 <RadioButton
                     android:id="@+id/radioButton2"
                     android:layout_width="100dp"
-                    android:buttonTint="@color/blueDark"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/blueDark"
                     android:text="Monitoring" />
 
                 <RadioButton
                     android:id="@+id/radioButton3"
                     android:layout_width="100dp"
-                    android:buttonTint="@color/blueDark"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/blueDark"
                     android:text="Reference" />
 
             </RadioGroup>

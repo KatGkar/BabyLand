@@ -3,8 +3,6 @@ package com.example.babyland;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,14 +40,13 @@ public class MainScreenDoctor extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private String currentUserUID;
-    private Menu the_menu;
     private BottomNavigationView bottomNavigationView;
     private ArrayList<Baby> doctorsChildren;
-    private RelativeLayout doctorsChildrenLayout, showChildRelativeLayout, deleteChildVerificationRelativeLayout;
+    private RelativeLayout doctorsChildrenLayout, showChildRelativeLayout, deleteChildVerificationRelativeLayout, noChildRelativeLayout;
     private RecyclerView doctorsChildrenRecyclerView;
     private recyclerAdapter.recyclerVewOnClickListener listener;
     private Button addDevelopmentsButton, viewParentsButton, showDevelopmentsButton, viewFamilyHistoricButton, vaccinationsButton,
-            deleteChildButton, deleteChildVerificationButton;
+            deleteChildButton, deleteChildVerificationButton, noChildButton;
     private TextView nameTextView, amkaTextView, dateOfBirthTextView;
     private EditText deleteChildVerificationEditText;
     private ImageView sexImageView;
@@ -61,7 +58,7 @@ public class MainScreenDoctor extends AppCompatActivity {
         setContentView(R.layout.activity_main_screen_doctor);
 
         //getting views from xml file
-        bottomNavigationView = findViewById(R.id.bottomNavigationViewMainScreenDoctor);
+        bottomNavigationView = findViewById(R.id.bottomNavigationViewAddBaby);
         doctorsChildrenLayout = findViewById(R.id.doctorsChildrenLayout);
         doctorsChildrenRecyclerView = findViewById(R.id.doctorsChildrenRecyclerView);
         showChildRelativeLayout = findViewById(R.id.showChildRelativeLayout);
@@ -78,6 +75,8 @@ public class MainScreenDoctor extends AppCompatActivity {
         deleteChildVerificationButton = findViewById(R.id.deleteChildVerificationButton);
         deleteChildVerificationEditText = findViewById(R.id.deleteChildVerificationEditText);
         deleteChildVerificationRelativeLayout = findViewById(R.id.deleteChildRelativeLayout);
+        noChildButton = findViewById(R.id.noChildButton);
+        noChildRelativeLayout = findViewById(R.id.noChildRelativeLayout);
 
         //UI
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
@@ -89,6 +88,7 @@ public class MainScreenDoctor extends AppCompatActivity {
         showChildRelativeLayout.setVisibility(View.INVISIBLE);
         doctorsChildrenLayout.setVisibility(View.VISIBLE);
         deleteChildVerificationRelativeLayout.setVisibility(View.INVISIBLE);
+        noChildRelativeLayout.setVisibility(View.INVISIBLE);
 
         //getting user UID
         currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -106,7 +106,6 @@ public class MainScreenDoctor extends AppCompatActivity {
                 return false;
             }
         });
-
 
         //on item click
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -126,46 +125,15 @@ public class MainScreenDoctor extends AppCompatActivity {
             }
         });
 
-
-    }
-
-    @SuppressLint("RestrictedApi")
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        MenuBuilder m = (MenuBuilder) menu;
-        m.setOptionalIconsVisible(true);
-
-        //get the menu
-        the_menu = menu;
-
-        //Called when a menu item with is collapsed.
-        MenuItem.OnActionExpandListener actionExpandListener = new MenuItem.OnActionExpandListener() {
+        //add child
+        noChildButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                return true;
+            public void onClick(View view) {
+                addChild();
             }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                return true;
-            }
-        };
-
-
-        return true;
+        });
 
     }
-
-
-    @Override
-    public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     //go to settings
     private void settingsButton(){
@@ -174,10 +142,13 @@ public class MainScreenDoctor extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     //on page resume
     @Override
     protected void onResume() {
+        showChildRelativeLayout.setVisibility(View.INVISIBLE);
+        doctorsChildrenLayout.setVisibility(View.VISIBLE);
+        deleteChildVerificationRelativeLayout.setVisibility(View.INVISIBLE);
+        noChildRelativeLayout.setVisibility(View.INVISIBLE);
         super.onResume();
         getChildren();
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
@@ -212,6 +183,15 @@ public class MainScreenDoctor extends AppCompatActivity {
                             GenericTypeIndicator<ArrayList<Baby>> t = new GenericTypeIndicator<ArrayList<Baby>>(){};
                             doctorsChildren = snapshots.child("kids").getValue(t);
                         }
+                    }
+                    try{
+                        noChildRelativeLayout.setVisibility(View.INVISIBLE);
+                        doctorsChildrenLayout.setVisibility(View.VISIBLE);
+                        doctorsChildren.size();
+                    }catch (Exception e){
+                        doctorsChildren = new ArrayList<>();
+                        doctorsChildrenLayout.setVisibility(View.INVISIBLE);
+                        noChildRelativeLayout.setVisibility(View.VISIBLE);
                     }
                     setAdapter();
                 }
@@ -408,9 +388,8 @@ public class MainScreenDoctor extends AppCompatActivity {
         });
     }
 
-
     //go to add child page
-    private void addChild(){
+    public void addChild(){
         Intent intent = new Intent(MainScreenDoctor.this, AddChildToDoctor.class);
         startActivity(intent);
     }

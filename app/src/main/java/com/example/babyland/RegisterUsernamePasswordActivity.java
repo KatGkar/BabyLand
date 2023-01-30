@@ -58,7 +58,7 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity {
     }
 
     //register user button
-    private void createUser(View view) {
+    public void createUser(View view) {
         email = emailTextView.getText().toString();
         password = passwordTextView.getText().toString();
         passwordValid = passwordValidTextView.getText().toString();
@@ -94,6 +94,7 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         // If sign in fails, display a message to the user.
+                        Toast.makeText(RegisterUsernamePasswordActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         System.out.println(task.getException().getMessage());
                     }
                 }

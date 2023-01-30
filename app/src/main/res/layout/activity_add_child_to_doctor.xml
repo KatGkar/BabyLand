@@ -12,7 +12,7 @@
         android:id="@+id/verificationRelativeLayout"
         android:layout_width="336dp"
         android:layout_height="371dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,12 +24,21 @@
 
             <EditText
                 android:id="@+id/verificationEditTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="230dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="40dp"
+                android:background="@drawable/edit_texts"
+                android:elevation="20dp"
                 android:ems="10"
+                android:gravity="center"
                 android:hint="12345678912"
                 android:inputType="textPersonName"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:shadowDx="2"
+                android:shadowDy="4"
+                android:shadowRadius="2"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/verificationTextView" />
@@ -44,18 +53,19 @@
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.446"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:background="@drawable/facebook_google_buttons"
                 android:id="@+id/verificationButton"
                 android:layout_width="wrap_content"
-                android:text="Verify"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
+                android:background="@drawable/facebook_google_buttons"
+                android:text="Verify"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/verificationEditTextView" />
@@ -147,7 +157,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/_02_parents" />
+                app:srcCompat="@drawable/parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
@@ -156,7 +166,7 @@
         android:layout_width="322dp"
         android:layout_height="605dp"
         android:background="@color/fui_transparent"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddChildToDoctor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"

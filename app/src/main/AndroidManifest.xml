@@ -16,8 +16,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BabyLand"
-        android:windowSoftInputMode="adjustResize">
+        android:windowSoftInputMode="adjustPan"
+        android:theme="@style/Theme.BabyLand">
         <activity
             android:name=".UserAccount"
             android:exported="false">
@@ -52,7 +52,7 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity> <!-- android:windowSoftInputMode="stateVisible|adjustResize"> -->
+        </activity>
         <activity
             android:name=".AddChildToDoctor"
             android:exported="false">
@@ -111,9 +111,7 @@
             android:exported="false" />
         <activity
             android:name=".createNewParent"
-            android:exported="false"
-            android:fitsSystemWindows="true"
-            android:windowSoftInputMode="adjustResize" />
+            android:exported="false" />
         <activity
             android:name=".FamilyHistoryInput"
             android:exported="false" />
