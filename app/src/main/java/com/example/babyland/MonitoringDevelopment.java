@@ -300,10 +300,13 @@ public class MonitoringDevelopment extends AppCompatActivity {
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_add:
-                        addChild();
+                        Intent intent = new Intent(MonitoringDevelopment.this, AddChildToDoctor.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_account:
-                        settingsButton();
+                        Intent intent1 = new Intent(MonitoringDevelopment.this, UserAccount.class);
+                        intent1.putExtra("user", "doctor");
+                        startActivity(intent1);
                         return true;
                 }
                 return false;
@@ -329,7 +332,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
             }
         });
 
-        //checking textviews input ype
+        //checking textviews input type
         weightText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -397,20 +400,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        bottomNavigationView.setSelectedItemId(R.id.home);
-    }
-
-    //go to settings
-    private void settingsButton(){
-        Intent intent = new Intent(MonitoringDevelopment.this, UserAccount.class);
-        intent.putExtra("user", "doctor");
-        startActivity(intent);
-    }
-
-    //go to add child page
-    private void addChild(){
-        Intent intent = new Intent(MonitoringDevelopment.this, AddChildToDoctor.class);
-        startActivity(intent);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
     }
 
     //loads data from list into recyclerView
@@ -570,7 +560,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
     }
 
     //save function
-    private void saveDevelopment(View view){
+    public void saveDevelopment(View view){
         error = false;
         int examinationError = 0, developmentalError = 0, sustenanceError=0;
         if (TextUtils.isEmpty(lengthText.getText())) {
@@ -621,7 +611,6 @@ public class MonitoringDevelopment extends AppCompatActivity {
             Toast.makeText(this, "Something is wrong.Please check all fields!!", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     //getting number of babies on database
     private int getDevNumber() {

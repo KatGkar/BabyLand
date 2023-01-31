@@ -1,8 +1,3 @@
-##in register page add facebook and goggle buttons 
-google facebook login register
-
-view chart on doctor side
-
 #ffe4e1
 #ca9ab6
 #b9d5ea
@@ -13,19 +8,19 @@ view chart on doctor side
 multilingua 	
 
 
+sto telos ola ta visibilities visible sta xml
+
+
+check if custom tab activity is needed
+check messages shown
+check visibilities
+app icon
+
 Check dates and calendars
 FrontEnd
 Facebook google sign in
-check code ( comments)
-back button
-set database
 
-variables, comments, name on all .java files
---LoginRegister
-
-check messages shown
-check if custom tab activity is needed
-
+	set database
 createNewUser, nextParent, addBaby, monitoringDevelopemnt --> date on month, watch out for calendars
 
 

@@ -12,13 +12,13 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/imgLanguage"
+            android:id="@+id/imageSex"
             android:layout_width="30dp"
             android:layout_height="30dp"
             app:srcCompat="@drawable/doctor"></ImageView>
 
         <TextView
-            android:id="@+id/tvLanguage"
+            android:id="@+id/textAmka"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

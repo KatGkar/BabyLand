@@ -1,5 +1,7 @@
 package com.example.babyland;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,24 +24,47 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginBehavior;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.firebase.ui.auth.data.remote.FacebookSignInHandler;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.identity.SignInCredential;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthCredential;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.squareup.picasso.Picasso;
+
+import java.util.Arrays;
+import java.util.Locale;
 
 public class LoginRegister extends AppCompatActivity { //implements GoogleApiClient.OnConnectionFailedListener {
 
     private ImageView facebookButton, googleButton, image, loadingFrame;
     private CallbackManager callbackManager;
-    private FirebaseAuth mfirebaseAuth;
+    private FirebaseAuth myFirebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
-    private GoogleApiClient mGoogleApiClient;
-    private final static int RC_SIGN_IN = 123;
     private EditText email, password;
     private long delay = 1000;
     private long lastEditText = 0;
@@ -46,7 +72,6 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
     private TextView createUser;
     private androidx.appcompat.app.AlertDialog.Builder builder;
     private long pressedTime;
-    private ConstraintLayout constraintLayout;
     private RelativeLayout loginRelativeLayout;
 
 
@@ -59,21 +84,19 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         loadingFrame = findViewById(R.id.loadingFrame);
-        mfirebaseAuth = FirebaseAuth.getInstance();
+        myFirebaseAuth = FirebaseAuth.getInstance();
         createUser = findViewById(R.id.createNewUser);
         image = findViewById(R.id.image);
-        constraintLayout = findViewById(R.id.constrainLayoutLoginRegister);
         loginRelativeLayout = findViewById(R.id.loginRelativeLayout);
+        googleButton = findViewById(R.id.googleButton);
+        facebookButton = findViewById(R.id.facebookButton);
 
         //UI
-        constraintLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.gradient));
-        createUser.setPaintFlags(createUser.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+        createUser.setPaintFlags(createUser.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        Picasso.get().load(R.drawable.babylandlogo).into(image);
 
         //builder to show messages
         builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-
-        //setting image
-        Picasso.get().load(R.drawable.babylandlogo).into(image);
 
         //setting visibilities
         loadingFrame.setVisibility(View.INVISIBLE);
@@ -124,27 +147,9 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
             }
         });
 
-
-
-        /*name = findViewById(R.id.textView2);
-        photo = findViewById(R.id.imageView5);
-        logout = findViewById(R.id.logout);
-        googleButton = findViewById(R.id.googleButton);
-        facebookButton = findViewById(R.id.facebookButton);
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        //used for user login
+        myFirebaseAuth = FirebaseAuth.getInstance();
         FacebookSdk.sdkInitialize(getApplicationContext());
-
-
-        //facebook logout button
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                mGoogleSignInClient.signOut();
-                LoginManager.getInstance().logOut();
-                finish();
-            }
-        });
 
         //login callback manager for facebook login
         callbackManager = CallbackManager.Factory.create();
@@ -163,12 +168,12 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
 
                     @Override
                     public void onError(FacebookException exception) {
-                        showMessage("Warning!", "Facebook is not responding. Please try again later!!");
+                        Toast.makeText(LoginRegister.this, "Facebook is not responding. Please try again later!!", Toast.LENGTH_SHORT).show();
                     }
                 });
 
 
-        //facebook login button
+        //facebook sign in button
         facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,37 +182,33 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
             }
         });
 
+        //google sign in
+        GoogleSignInOptions googleSignInOptions=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN
+        ).requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+       //google sign in
+        mGoogleSignInClient= GoogleSignIn.getClient(LoginRegister.this
+                ,googleSignInOptions);
 
         //google sign in button
         googleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_IN);
+                Intent intent=mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(intent,100);
             }
         });
 
-
-        //configure google sign in
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-         */
     }
 
 
-    //on resume
+    //on resume page not saving email and password
     @Override
     protected void onResume() {
         super.onResume();
-        loadingFrame.setVisibility(View.INVISIBLE   );
+        loadingFrame.setVisibility(View.INVISIBLE);
         loginRelativeLayout.setVisibility(View.VISIBLE);
         email.setText("");
         email.setHint("Email");
@@ -216,7 +217,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
 
     }
 
-    //on back button pressed
+    //on back button pressed checking if user wants to exit application
     @Override
     public void onBackPressed() {
         if (pressedTime + 2000 > System.currentTimeMillis()) {
@@ -230,7 +231,6 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            //  Action for 'NO' Button
                             dialog.cancel();
 
                         }
@@ -245,11 +245,11 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         pressedTime = System.currentTimeMillis();
     }
 
-    public void createUser(View view){
+    //create user button
+    public void createUser(View view) {
         Intent intent = new Intent(this, RegisterUsernamePasswordActivity.class);
         startActivity(intent);
     }
-
 
 
     //runnable to check if user has stopped writing
@@ -268,23 +268,19 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
 
     //checking users' credentials (email and password)
     public void checkLogin() {
-        mfirebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+        myFirebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         loadingFrame.setVisibility(View.VISIBLE);
-                        //loadingFrame.setVisibility(View.INVISIBLE);
-                        //loginRelativeLayout.setVisibility(View.VISIBLE);
-                        //continue to next page
-                        FirebaseUser user = mfirebaseAuth.getCurrentUser();
-                       /* if(!user.isEmailVerified()){
+                        //checking if user has completed email validation
+                        FirebaseUser user = myFirebaseAuth.getCurrentUser();
+                        if(!user.isEmailVerified()){
                             user.sendEmailVerification();
                             Toast.makeText(LoginRegister.this, "Please check your email ", Toast.LENGTH_SHORT).show();
-                        }else{*/
-                           //Intent intent = new Intent(LoginRegister.this, MainScreenParents.class);
-                            //Intent intent = new Intent(LoginRegister.this, MainScreenDoctor.class);
+                        }else{
                         Intent intent = new Intent(LoginRegister.this, DoctorParentChoose.class);
                         startActivity(intent);
-                        //}
+                        }
                     }
                 })
 
@@ -293,56 +289,25 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                     public void onFailure(@NonNull Exception e) {
                         loadingFrame.setVisibility(View.INVISIBLE);
                         loginRelativeLayout.setVisibility(View.VISIBLE);
-                        showMessage("Error! Wrong credentials!", e.getMessage());
+                        Toast.makeText(LoginRegister.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-
-    //showing messages to users
-    public void showMessage(String title, String message) {
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
-    }
-
-
-    /*@Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            try {
-                //String url = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
-                String name2 = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-                name.setText(name2);
-                showMessage("in", name2);
-               // Picasso.get().load(url).into(photo);
-            }catch (Exception e){
-                showMessage("Error", e.getMessage());
-            }
-        }
-    }*/
-}
-
-    /*
-
     //facebook
     private void handleFacebookToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential((token.getToken()));
-        mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        myFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                    showResults("facebook");
+                    Intent intent = new Intent(LoginRegister.this, DoctorParentChoose.class);
+                    startActivity(intent);
                 } else {
-                    showMessage("Warning!", task.getException().getMessage());
+                    Toast.makeText(LoginRegister.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    public void showMessage(String title, String message) {
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 
     //facebook and google
@@ -350,72 +315,58 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RC_SIGN_IN){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
-                GoogleSignInAccount account = task.getResult();
-                firebaseAuthWithGoogle(account);
-            }catch (Exception e){
-                showMessage("Error", "Google Error. Please try again later!");
-
+        if (requestCode == 100) {
+            Task<GoogleSignInAccount> signInAccountTask = GoogleSignIn
+                    .getSignedInAccountFromIntent(data);
+            if (signInAccountTask.isSuccessful()) {
+                try {
+                    GoogleSignInAccount googleSignInAccount = signInAccountTask.getResult(ApiException.class);
+                    if (googleSignInAccount != null) {
+                        String em = googleSignInAccount.getEmail();
+                        checkUserRegistered(googleSignInAccount, em);
+                    }
+                } catch (ApiException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    //google sign in
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account){
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                            showResults("google");
-                        }else{
-                            showMessage("Warning!", task.getException().getMessage());
-                        }
-                    }
-                });
-*/
-//    }
+    //checking if email address is being used
+    private void checkUserRegistered(GoogleSignInAccount googleSignInAccount, String emailUsed) {
+        myFirebaseAuth.fetchSignInMethodsForEmail(emailUsed).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+            @Override
+            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                if (task.getResult().getSignInMethods().size() == 0){
+                    // email not existed
+                    Toast.makeText(LoginRegister.this, "There is no user. Please register!!", Toast.LENGTH_SHORT).show();
 
+                }else {
+                    // email existed
+                    AuthCredential authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null);
+                    myFirebaseAuth.signInWithCredential(authCredential)
+                            .addOnCompleteListener(LoginRegister.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // When task is successful
+                                        Intent intent = new Intent(LoginRegister.this, DoctorParentChoose.class);
+                                        startActivity(intent);
+                                    } else {
+                                        // When task is unsuccessful
+                                        Toast.makeText(LoginRegister.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
-/*
-    //take user info
-    public void showResults(String type){
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        if(type.equals("facebook")) {
-            GraphRequest request = GraphRequest.newMeRequest(
-                    accessToken,
-                    new GraphRequest.GraphJSONObjectCallback() {
-                        @Override
-                        public void onCompleted(JSONObject object, GraphResponse response) {
-                            //code here
-                            try {
-                                String fullname = object.getString("name");
-                                String url = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                                name.setText(fullname);
-                                Picasso.get().load(url).into(photo);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-            );
-            Bundle parameters = new Bundle();
-            parameters.putString("fields", "id, name, picture.type(large)");
-            request.setParameters(parameters);
-            request.executeAsync();
-        }else{
-            GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
-            if(signInAccount != null){
-                name.setText(signInAccount.getDisplayName());
-                Picasso.get().load(signInAccount.getPhotoUrl()).placeholder(R.mipmap.ic_launcher_round).into(photo);
+                                    }
+                                }
+                            });
+                }
             }
-        }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }*/
+}

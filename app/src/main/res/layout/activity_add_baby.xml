@@ -87,6 +87,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/edit_texts"
                 android:ems="10"
+                android:gravity="center"
                 android:hint="BirthDate"
                 android:inputType="date"
                 android:paddingLeft="20dp"

@@ -27,8 +27,8 @@ import java.util.Calendar;
 import java.util.List;
 
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
-    ArrayList list;
-    String id, userType;
+    private ArrayList list;
+    private String id, userType;
     private recyclerVewOnClickListener listener;
     private radioButtonChange radioButtonChange;
     private textChange textChange;

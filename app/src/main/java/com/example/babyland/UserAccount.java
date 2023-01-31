@@ -146,7 +146,6 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
         //UI
         bottomNavigationView.setSelectedItemId(R.id.navigation_account);
 
-
         //getting current user UID
         currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -635,7 +634,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
     }
 
     //co parent delete button
-    private void coParentDelete(View view){
+    public void coParentDelete(View view){
         if(parent.getPartner()){
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
@@ -671,7 +670,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
     }
 
     //co parent add button
-    private void coParentAdd(View view){
+    public void coParentAdd(View view){
         if(parent.getPartner()){
             //if there is parent number 2
             Toast.makeText(this, "You cant add another parent!", Toast.LENGTH_SHORT).show();
@@ -788,7 +787,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
     }
 
     //co parent save button
-    private void coParentSave(View view) {
+    public void coParentSave(View view) {
         flagNext = true;
         if (TextUtils.isEmpty(coParentNameEditText.getText())) {
             coParentNameEditText.setError("Please enter a name!");
@@ -950,7 +949,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
     }
 
     //show password button
-    private void showPassword(View view){
+    public void showPassword(View view){
         if(provider.equals("email")) {
             viewUserInfoRelativeLayout.setVisibility(View.INVISIBLE);
             changePasswordRelativeLayout.setVisibility(View.VISIBLE);
@@ -1002,7 +1001,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
     }
 
     //show email button
-    private void showEmail(View view){
+    public void showEmail(View view){
         if(provider.equals("email")) {
             viewUserInfoRelativeLayout.setVisibility(View.INVISIBLE);
             changeEmailRelativeLayout.setVisibility(View.VISIBLE);
@@ -1522,7 +1521,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
     }
 
     //delete user button
-    private void deleteUser(View view){
+    public void deleteUser(View view){
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

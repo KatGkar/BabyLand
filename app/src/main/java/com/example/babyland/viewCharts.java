@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.firebase.ui.auth.data.model.User;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -36,7 +37,7 @@ public class viewCharts extends AppCompatActivity {
     private ArrayList<Development> devs;
     private ArrayList<Entry> dataValues, dataValues2, dataValues3, dataValues4, dataValues5, dataValuesChild;
     private ArrayList<ILineDataSet> dataSets;
-    private String babyAmka, babySex;
+    private String babyAmka, babySex, userType;
     private BottomNavigationView bottomNavigationView;
     private FirebaseDatabase database;
     private DatabaseReference reference, reference2, reference3;
@@ -52,6 +53,7 @@ public class viewCharts extends AppCompatActivity {
         //getting extras
         Bundle extras = getIntent().getExtras();
         babyAmka = extras.getString("babyAmka");
+        userType = extras.getString("userType");
 
         //getting views from xml file
         lineChart = findViewById(R.id.chart);
@@ -95,7 +97,6 @@ public class viewCharts extends AppCompatActivity {
                             devs.add(snapshots.getValue(t));
                         }
                     }
-                    System.out.println(devs.size()+"{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{");
                 }
 
             }
@@ -148,23 +149,29 @@ public class viewCharts extends AppCompatActivity {
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_add:
-                        Intent intent = new Intent(getApplicationContext(), AddBaby.class);
-                        startActivity(intent);
+                        if(userType.equals("doctor")){
+                            Intent intent = new Intent(viewCharts.this, AddChildToDoctor.class);
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(getApplicationContext(), AddBaby.class);
+                            startActivity(intent);
+                        }
                         return true;
                     case R.id.navigation_account:
-                        settingsButton();
+                        if(userType.equals("doctor")){
+                            Intent intent = new Intent(viewCharts.this, UserAccount.class);
+                            intent.putExtra("user", "doctor");
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(viewCharts.this, UserAccount.class);
+                            intent.putExtra("user", "parent");
+                            startActivity(intent);
+                        }
                         return true;
                 }
                 return false;
             }
         });
-    }
-
-    //go to settings page
-    private void settingsButton(){
-        Intent intent = new Intent(viewCharts.this, UserAccount.class);
-        intent.putExtra("user", "parent");
-        startActivity(intent);
     }
 
     //showing line chart

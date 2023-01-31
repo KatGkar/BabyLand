@@ -127,27 +127,20 @@ public class viewParentInfo extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        Intent intent = new Intent(viewParentInfo.this, MainScreenDoctor.class);
-                        startActivity(intent);
                         return true;
                     case R.id.navigation_add:
-                        addChild();
+                        Intent intent = new Intent(viewParentInfo.this, AddChildToDoctor.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_account:
-                        settingsButton();
+                        Intent intent1 = new Intent(viewParentInfo.this, UserAccount.class);
+                        intent1.putExtra("user", "doctor");
+                        startActivity(intent1);
                         return true;
                 }
                 return false;
             }
         });
-    }
-
-
-    //go to settings
-    private void settingsButton(){
-        Intent intent = new Intent(viewParentInfo.this, UserAccount.class);
-        intent.putExtra("user", "doctor");
-        startActivity(intent);
     }
 
     //view parents info
@@ -160,12 +153,6 @@ public class viewParentInfo extends AppCompatActivity {
         phoneNumberTextView.setText(parent.getPhoneNumber());
         bloodTypeTextView.setText(parent.getBloodType());
         dateOfBirthTextView.setText(parent.getDateOfBirth());
-    }
-
-    //go to add child page
-    private void addChild(){
-        Intent intent = new Intent(viewParentInfo.this, AddChildToDoctor.class);
-        startActivity(intent);
     }
 
     //finding parents from database
@@ -214,6 +201,12 @@ public class viewParentInfo extends AppCompatActivity {
         }else{
             super.onBackPressed();
         }
+    }
 
+    //on resume page
+    @Override
+    protected void onResume() {
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        super.onResume();
     }
 }

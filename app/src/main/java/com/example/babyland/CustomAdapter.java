@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 public class CustomAdapter extends BaseAdapter {
 
-    Context context;
-    int images[];
-    String[] bloodType;
-    LayoutInflater inflater;
+    private Context context;
+    private int images[];
+    private String[] bloodType;
+    private LayoutInflater inflater;
 
     public CustomAdapter(Context applicationContext, int[] images, String[] bloodType) {
         this.context = applicationContext;
@@ -25,8 +25,8 @@ public class CustomAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.spinner_items, null);
-        ImageView icon = (ImageView) view.findViewById(R.id.imgLanguage);
-        TextView names = (TextView) view.findViewById(R.id.tvLanguage);
+        ImageView icon = (ImageView) view.findViewById(R.id.imageSex);
+        TextView names = (TextView) view.findViewById(R.id.textAmka);
         icon.setImageResource(images[i]);
         names.setText(bloodType[i]);
         return view;

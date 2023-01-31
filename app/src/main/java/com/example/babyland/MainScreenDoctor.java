@@ -46,7 +46,7 @@ public class MainScreenDoctor extends AppCompatActivity {
     private RecyclerView doctorsChildrenRecyclerView;
     private recyclerAdapter.recyclerVewOnClickListener listener;
     private Button addDevelopmentsButton, viewParentsButton, showDevelopmentsButton, viewFamilyHistoricButton, vaccinationsButton,
-            deleteChildButton, deleteChildVerificationButton, noChildButton;
+            deleteChildButton, deleteChildVerificationButton, noChildButton, viewChartButton;
     private TextView nameTextView, amkaTextView, dateOfBirthTextView;
     private EditText deleteChildVerificationEditText;
     private ImageView sexImageView;
@@ -77,6 +77,7 @@ public class MainScreenDoctor extends AppCompatActivity {
         deleteChildVerificationRelativeLayout = findViewById(R.id.deleteChildRelativeLayout);
         noChildButton = findViewById(R.id.noChildButton);
         noChildRelativeLayout = findViewById(R.id.noChildRelativeLayout);
+        viewChartButton = findViewById(R.id.viewChartButton);
 
         //UI
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
@@ -115,10 +116,13 @@ public class MainScreenDoctor extends AppCompatActivity {
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_add:
-                        addChild();
+                        Intent intent = new Intent(MainScreenDoctor.this, AddChildToDoctor.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_account:
-                        settingsButton();
+                        Intent intent1 = new Intent(MainScreenDoctor.this, UserAccount.class);
+                        intent1.putExtra("user", "doctor");
+                        startActivity(intent1);
                         return true;
                 }
                 return false;
@@ -129,18 +133,13 @@ public class MainScreenDoctor extends AppCompatActivity {
         noChildButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addChild();
+                Intent intent = new Intent(MainScreenDoctor.this, AddChildToDoctor.class);
+                startActivity(intent);
             }
         });
 
     }
 
-    //go to settings
-    private void settingsButton(){
-        Intent intent = new Intent(MainScreenDoctor.this, UserAccount.class);
-        intent.putExtra("user", "doctor");
-        startActivity(intent);
-    }
 
     //on page resume
     @Override
@@ -234,6 +233,12 @@ public class MainScreenDoctor extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         addDevelopments(doctorsChildren.get(position).getAmka(), doctorsChildren.get(position).getDateOfBirth());
+                    }
+                });
+                viewChartButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        viewChart(doctorsChildren.get(position).getAmka());
                     }
                 });
                 viewParentsButton.setOnClickListener(new View.OnClickListener() {
@@ -388,11 +393,14 @@ public class MainScreenDoctor extends AppCompatActivity {
         });
     }
 
-    //go to add child page
-    public void addChild(){
-        Intent intent = new Intent(MainScreenDoctor.this, AddChildToDoctor.class);
+    //view chart button
+    private void viewChart(String babyAmka){
+        Intent intent = new Intent(MainScreenDoctor.this, viewCharts.class);
+        intent.putExtra("babyAmka", babyAmka);
+        intent.putExtra("userType", "doctor");
         startActivity(intent);
     }
+
 
 
 

@@ -108,7 +108,9 @@ public class deleteChildActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.navigation_account:
-                        settingsButton();
+                        Intent intent1 = new Intent(deleteChildActivity.this, UserAccount.class);
+                        intent1.putExtra("user", "parent");
+                        startActivity(intent1);
                         return true;
                 }
                 return false;
@@ -119,16 +121,10 @@ public class deleteChildActivity extends AppCompatActivity {
     //on resume page
     @Override
     protected void onResume() {
-        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         super.onResume();
     }
 
-    //go to settings page
-    private void settingsButton(){
-        Intent intent = new Intent(deleteChildActivity.this, UserAccount.class);
-        intent.putExtra("user", "parent");
-        startActivity(intent);
-    }
 
     //setting adapter for recyclerView
     private void setAdapter(){

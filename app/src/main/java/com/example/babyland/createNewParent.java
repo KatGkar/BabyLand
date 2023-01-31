@@ -42,7 +42,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
     private int[] bloodImages = {R.drawable.blood_type, R.drawable.a_plus, R.drawable.a_minus,
             R.drawable.b_minus, R.drawable.b_plus, R.drawable.o_plus, R.drawable.o_minus,
             R.drawable.ab_minus, R.drawable.ab_minus};
-    private Spinner blood;
+    private Spinner bloodSpinner;
     private CalendarView calendar;
     private Button calendarButton, nextParentButton;
     private RelativeLayout infoRelativeLayout;
@@ -52,7 +52,6 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
     private Boolean flagNext;
     private String emailParentOne, currentUserUID;
     private  Parent parent;
-    private ConstraintLayout constraintLayout;
 
 
     @Override
@@ -69,27 +68,20 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
         calendarButton = findViewById(R.id.calendarButtonOnParentOne);
         infoRelativeLayout = findViewById(R.id.relativeLayoutParentOne);
         dateOfBirthParentOne = findViewById(R.id.birthDateParentOne);
-        blood = findViewById(R.id.bloodTypeParentOne);
-        constraintLayout = findViewById(R.id.constraintLayoutCreateNewParent);
+        bloodSpinner = findViewById(R.id.bloodTypeParentOne);
         nextParentButton = findViewById(R.id.nextParentButton);
-
-        //UI
-        constraintLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.gradient));
 
         //setting database
         database = FirebaseDatabase.getInstance();
 
-        //getting user's email
+        //getting user information
         emailParentOne = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-
-        //getting user UID
         currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
 
         //setting blood types in list
         CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),bloodImages,bloodType);
-        blood.setAdapter(customAdapter);
-        blood.setOnItemSelectedListener(this);
+        bloodSpinner.setAdapter(customAdapter);
+        bloodSpinner.setOnItemSelectedListener(this);
 
         //getting current date
         Calendar cal = Calendar.getInstance();
@@ -308,7 +300,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
             }
         });
 
-        //texviews correct input type
+        //checking texviews correct input type
         nameParentOne.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -381,7 +373,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
 
 
     //check textViews and amka number
-    private void nextParent(View view) {
+    public void nextParent(View view) {
         flagNext = true;
         if (TextUtils.isEmpty(nameParentOne.getText())) {
             nameParentOne.setError("Please enter a name!");
@@ -399,13 +391,13 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
             flagNext = false;
         }
         if (TextUtils.isEmpty(phoneNumberParentOne.getText()) || (phoneNumberParentOne.getText().length() != 10)) {
-            phoneNumberParentOne.setError("Phone number should have length 11 numbers!");
+            phoneNumberParentOne.setError("Phone number should have length 10 numbers!");
             phoneNumberParentOne.requestFocus();
             flagNext = false;
         }
-        if (blood.getSelectedItem().equals("Blood Type")) {
+        if (bloodSpinner.getSelectedItem().equals("Blood Type")) {
             Toast.makeText(this, "Please a choose a blood type!", Toast.LENGTH_SHORT).show();
-            blood.requestFocus();
+            bloodSpinner.requestFocus();
             flagNext = false;
         }
 
@@ -452,7 +444,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
             myIntent.putExtra("phoneNumber", phoneNumberParentOne.getText().toString());
             myIntent.putExtra("email", emailParentOne);
             myIntent.putExtra("birthDate", dateOfBirthParentOne.getText().toString());
-            myIntent.putExtra("bloodType", blood.getSelectedItem().toString());
+            myIntent.putExtra("bloodType", bloodSpinner.getSelectedItem().toString());
             this.startActivity(myIntent);
         } else if (flagUnique == 2) {
             //there is another user with this amka

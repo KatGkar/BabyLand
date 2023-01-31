@@ -140,6 +140,7 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
             public void onClick(View view) {
                 Intent intent = new Intent(MainScreenParents.this, viewCharts.class);
                 intent.putExtra("babyAmka", chooseChildSpinner.getSelectedItem().toString());
+                intent.putExtra("userType", "parent");
                 startActivity(intent);
             }
         });
@@ -183,7 +184,9 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
                         startActivity(intent);
                         return true;
                     case R.id.navigation_account:
-                        settingsButton();
+                        Intent intent1 = new Intent(MainScreenParents.this, UserAccount.class);
+                        intent1.putExtra("user", "parent");
+                        startActivity(intent1);
                         return true;
                 }
                 return false;
@@ -245,7 +248,6 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
         }else{
             Intent intent = new Intent(MainScreenParents.this, LoginRegister.class);
             startActivity(intent);
-
         }
     }
 
@@ -254,7 +256,7 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
     protected void onResume() {
         super.onResume();
         mainScreenLayout.setVisibility(View.VISIBLE);
-        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         reference = database.getReference("parent");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -276,7 +278,6 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
 
             }
         });
-
     }
 
     //check if user has children
@@ -421,10 +422,4 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
         startActivity(intent);
     }
 
-    //go to settings page
-    private void settingsButton(){
-        Intent intent = new Intent(MainScreenParents.this, UserAccount.class);
-        intent.putExtra("user", "parent");
-        startActivity(intent);
-    }
 }

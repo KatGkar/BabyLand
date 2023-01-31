@@ -32,7 +32,6 @@ public class createNewDoctor extends AppCompatActivity {
     private String currentUserUID, currentUserEmail;
     private FirebaseDatabase database;
     private DatabaseReference reference;
-    private ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +44,6 @@ public class createNewDoctor extends AppCompatActivity {
         medicalIDEditText = findViewById(R.id.doctorMedicalIDEditTextView);
         phoneNumberEditText = findViewById(R.id.doctorPhoneNumberEditTextView);
         saveButton = findViewById(R.id.saveDoctorInfoButton);
-        constraintLayout = findViewById(R.id.constrainLayoutCreateNewDoctor);
-
-        //UI
-        constraintLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.gradient));
 
         //getting user from database
         currentUserEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -57,7 +52,7 @@ public class createNewDoctor extends AppCompatActivity {
         //setting database
         database = FirebaseDatabase.getInstance();
 
-
+        //save button
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,7 +143,7 @@ public class createNewDoctor extends AppCompatActivity {
     }
 
     //check textViews and if medical id is unique
-    private void saveInfo(View view){
+    public void saveInfo(View view){
         flagNext = true;
         if (TextUtils.isEmpty(nameEditText.getText())) {
             nameEditText.setError("Please enter a name!");
@@ -166,7 +161,7 @@ public class createNewDoctor extends AppCompatActivity {
             flagNext = false;
         }
         if (TextUtils.isEmpty(phoneNumberEditText.getText()) || (phoneNumberEditText.getText().length() != 10)) {
-            phoneNumberEditText.setError("Phone number should have length 11 numbers!");
+            phoneNumberEditText.setError("Phone number should have length 10 numbers!");
             phoneNumberEditText.requestFocus();
             flagNext = false;
         }

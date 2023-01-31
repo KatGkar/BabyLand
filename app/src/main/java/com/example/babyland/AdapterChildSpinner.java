@@ -11,10 +11,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class AdapterChildSpinner extends BaseAdapter {
-    Context context;
-    int images[];
-    ArrayList<Baby> listKids;
-    LayoutInflater inflater;
+    private Context context;
+    private int images[];
+    private ArrayList<Baby> listKids;
+    private LayoutInflater inflater;
 
         public AdapterChildSpinner(Context applicationContext, int[] images, ArrayList<Baby>listKids) {
         this.context = applicationContext;
@@ -26,8 +26,8 @@ public class AdapterChildSpinner extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.spinner_items, null);
-        ImageView icon = (ImageView) view.findViewById(R.id.imgLanguage);
-        TextView names = (TextView) view.findViewById(R.id.tvLanguage);
+        ImageView icon = (ImageView) view.findViewById(R.id.imageSex);
+        TextView names = (TextView) view.findViewById(R.id.textAmka);
         if (listKids.get(i).getSex().equals("BOY")) {
             icon.setImageResource(images[0]);
         } else {

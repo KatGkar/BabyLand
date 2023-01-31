@@ -25,7 +25,6 @@ public class DoctorParentChoose extends AppCompatActivity {
     private String currentUserUID;
     private FirebaseDatabase database;
     private DatabaseReference reference;
-    private ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +34,10 @@ public class DoctorParentChoose extends AppCompatActivity {
         //getting views from xml file
         doctorButton = findViewById(R.id.doctorButton);
         parentButton = findViewById(R.id.parentsButton);
-        constraintLayout = findViewById(R.id.constrainLayoutDoctorParentChoose);
         loadingImageView = findViewById(R.id.loadingImageView);
         chooseTypeTextView = findViewById(R.id.chooseTypeTextView);
 
         //UI
-        constraintLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.gradient));
         chooseTypeTextView.setText("Please choose user type...");
 
         //setting visibilities
@@ -127,4 +124,10 @@ public class DoctorParentChoose extends AppCompatActivity {
         parentButton.setVisibility(View.VISIBLE);
     }
 
+    //on back pressed
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(DoctorParentChoose.this, LoginRegister.class);
+        startActivity(intent);
+    }
 }

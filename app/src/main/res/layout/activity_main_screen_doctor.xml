@@ -139,7 +139,7 @@
         android:id="@+id/showChildRelativeLayout"
         android:layout_width="415dp"
         android:layout_height="657dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddBaby"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,11 +154,12 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="65dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/facebook_google_buttons"
                 android:text="View Parents"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/deleteBabyButton"
-                app:layout_constraintTop_toBottomOf="@+id/dateOfBirthShowChildTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/viewChartButton" />
 
             <Button
                 android:id="@+id/showDevelopmentsButton"
@@ -168,6 +169,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/facebook_google_buttons"
                 android:text="show Developments"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/viewFamilyHistoricButton"
                 app:layout_constraintTop_toBottomOf="@+id/vaccinationButton" />
 
@@ -235,6 +237,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/facebook_google_buttons"
                 android:text="Add Development"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/deleteBabyButton" />
 
@@ -246,6 +249,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/facebook_google_buttons"
                 android:text="View family historic"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addDevelopmentsButton" />
 
@@ -257,6 +261,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/facebook_google_buttons"
                 android:text="Vaccinations"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/addDevelopmentsButton"
                 app:layout_constraintTop_toBottomOf="@+id/viewParentsButton" />
 
@@ -265,9 +270,22 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="75dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/facebook_google_buttons"
                 android:text="DELETE BABY"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewChartButton" />
+
+            <Button
+                android:id="@+id/viewChartButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Charts"
+                android:textColor="@color/black"
+                android:background="@drawable/facebook_google_buttons"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dateOfBirthShowChildTextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>

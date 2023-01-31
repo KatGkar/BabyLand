@@ -2,10 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constrainLayoutLoginRegister"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f7effa"
+    android:background="@drawable/gradient"
     tools:context=".LoginRegister">
 
 
@@ -24,11 +23,11 @@
         android:id="@+id/image"
         android:layout_width="350dp"
         android:layout_height="227dp"
+        android:layout_marginTop="30dp"
         android:background="@color/fui_transparent"
         android:foregroundGravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="30dp"
         app:layout_constraintTop_toTopOf="@+id/loginRelativeLayout"
         tools:srcCompat="@drawable/babylandlogo" />
 
@@ -36,7 +35,7 @@
         android:id="@+id/loginRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

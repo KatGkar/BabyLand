@@ -94,10 +94,13 @@ public class showHistoric extends AppCompatActivity {
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_add:
-                        addChild();
+                        Intent intent = new Intent(showHistoric.this, AddChildToDoctor.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_account:
-                        settingsButton();
+                        Intent intent1 = new Intent(showHistoric.this, UserAccount.class);
+                        intent1.putExtra("user", "doctor");
+                        startActivity(intent1);
                         return true;
                 }
                 return false;
@@ -115,15 +118,6 @@ public class showHistoric extends AppCompatActivity {
         familyHistoricRecyclerView.setAdapter(adapter);
     }
 
-
-    //go to settings
-    private void settingsButton(){
-        Intent intent = new Intent(showHistoric.this, UserAccount.class);
-        intent.putExtra("user", "doctor");
-        startActivity(intent);
-    }
-
-
     //on page resume
     @Override
     protected void onResume() {
@@ -131,9 +125,4 @@ public class showHistoric extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
     }
 
-    //go to add child page
-    private void addChild(){
-        Intent intent = new Intent(showHistoric.this, AddChildToDoctor.class);
-        startActivity(intent);
-    }
 }

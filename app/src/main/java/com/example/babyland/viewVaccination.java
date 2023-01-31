@@ -179,37 +179,37 @@ public class viewVaccination extends AppCompatActivity {
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_add:
-                        addChild();
+                        if(userType.equals("doctor")){
+                            Intent intent = new Intent(viewVaccination.this, AddChildToDoctor.class);
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(viewVaccination.this, AddBaby.class);
+                            startActivity(intent);
+                        }
                         return true;
                     case R.id.navigation_account:
-                        settingsButton();
+                        if(userType.equals("doctor")){
+                            Intent intent1 = new Intent(viewVaccination.this, UserAccount.class);
+                            intent1.putExtra("user", "doctor");
+                            startActivity(intent1);
+                        }else{
+                            Intent intent1 = new Intent(viewVaccination.this, UserAccount.class);
+                            intent1.putExtra("user", "parent");
+                            startActivity(intent1);
+
+                        }
                         return true;
                 }
                 return false;
             }
         });
-
     }
-
-    //go to settings
-    private void settingsButton(){
-        Intent intent = new Intent(viewVaccination.this, UserAccount.class);
-        intent.putExtra("user", "doctor");
-        startActivity(intent);
-    }
-
 
     //on page resume
     @Override
     protected void onResume() {
         super.onResume();
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-    }
-
-    //go to add child page
-    private void addChild(){
-        Intent intent = new Intent(viewVaccination.this, AddChildToDoctor.class);
-        startActivity(intent);
     }
 
 

@@ -41,7 +41,7 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
     private RadioButton babyBoy, babyGirl;
     private String[] bloodType = {"Blood Type", "A RhD positive (A+)","A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
-    private int[] bloodImages = {R.drawable.blood_type_black, R.drawable.a_plus, R.drawable.a_minus,
+    private int[] bloodImages = {R.drawable.blood_type, R.drawable.a_plus, R.drawable.a_minus,
             R.drawable.b_minus, R.drawable.b_plus, R.drawable.o_plus, R.drawable.o_minus,
             R.drawable.ab_minus, R.drawable.ab_minus};
     private Spinner babyBloodTypeSpinner;
@@ -136,7 +136,6 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
             }
         });
 
-
         //setting listener to format textView babyBirthDate
         babyBirthDate.addTextChangedListener(new TextWatcher() {
             private String current="";
@@ -216,7 +215,9 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
                     case R.id.navigation_add:
                         return true;
                     case R.id.navigation_account:
-                        settingsButton();
+                        Intent intent1 = new Intent(AddBaby.this, UserAccount.class);
+                        intent1.putExtra("user", "parent");
+                        startActivity(intent1);
                         return true;
                 }
                 return false;
@@ -290,7 +291,7 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
     //on resume page
     @Override
     protected void onResume() {
-        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_add);
         super.onResume();
     }
 
@@ -301,7 +302,8 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
             calendar.setVisibility(View.INVISIBLE);
             infoRelativeLayout.setVisibility(View.VISIBLE);
         }else{
-            super.onBackPressed();
+            Intent intent = new Intent(AddBaby.this, FamilyHistoryInput.class);
+            startActivity(intent);
         }
     }
 
@@ -315,12 +317,7 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
 
     }
 
-    //go to settings page
-    private void settingsButton(){
-        Intent intent = new Intent(AddBaby.this, UserAccount.class);
-        intent.putExtra("user", "parent");
-        startActivity(intent);
-    }
+
     //check restrictions and add new baby or show error messages
     public void addNewBaby(View view){
         flagNext=true;

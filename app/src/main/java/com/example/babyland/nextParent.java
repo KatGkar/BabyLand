@@ -51,7 +51,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
     private RelativeLayout infoRelativeLayout;
     private FirebaseDatabase database;
     private DatabaseReference reference;
-    private Spinner bloodTypeParentTwo;
+    private Spinner bloodTypeParentTwoSpinner;
     private ArrayList<Baby> kids;
     private Boolean flagUnique, flagNext;
     private Parent p1, p2, parent;
@@ -83,7 +83,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
         calendarButton = findViewById(R.id.calendarButtonOnParentTwo);
         infoRelativeLayout = findViewById(R.id.relativeLayoutParentTwo);
         dateOfBirthParentTwo = findViewById(R.id.birthDateParentTwo);
-        bloodTypeParentTwo = findViewById(R.id.bloodTypeParentTwo);
+        bloodTypeParentTwoSpinner = findViewById(R.id.bloodTypeParentTwo);
         saveButton = findViewById(R.id.saveButton);
         skipButton = findViewById(R.id.skipButton);
 
@@ -100,13 +100,13 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
         //getting user UID from database
         currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        //setting design
+        //UI
         userProfile.setPaintFlags(userProfile.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         //setting blood types in list
         CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),bloodImages,bloodType);
-        bloodTypeParentTwo.setAdapter(customAdapter);
-        bloodTypeParentTwo.setOnItemSelectedListener(this);
+        bloodTypeParentTwoSpinner.setAdapter(customAdapter);
+        bloodTypeParentTwoSpinner.setOnItemSelectedListener(this);
 
         //setting hint in babyBirthDate
         //getting current date
@@ -306,7 +306,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        bloodTypeParentTwo.setSelection(i);
+        bloodTypeParentTwoSpinner.setSelection(i);
     }
 
     @Override
@@ -315,7 +315,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
     }
 
     //check textViews and amka number
-    private void next(View view) {
+    public void next(View view) {
         flagNext = true;
         if (TextUtils.isEmpty(nameParentTwo.getText())) {
             nameParentTwo.setError("Please enter a name!");
@@ -342,9 +342,9 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
            emailAddressParentTwo.requestFocus();
             flagNext = false;
         }
-        if(bloodTypeParentTwo.getSelectedItem().equals("Blood Type")){
+        if(bloodTypeParentTwoSpinner.getSelectedItem().equals("Blood Type")){
             Toast.makeText(this, "Please choose a blood type!!", Toast.LENGTH_SHORT).show();
-            bloodTypeParentTwo.requestFocus();
+            bloodTypeParentTwoSpinner.requestFocus();
             flagNext=false;
         }
 
@@ -375,7 +375,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
     }
 
     //skip button
-    private void skip(View view){
+    public void skip(View view){
         DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -406,7 +406,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
     //check restrictions
     private void check() {
        if (!flagUnique) {
-           //if amka number is uniquw
+           //if amka number is unique
            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                @Override
                public void onClick(DialogInterface dialog, int which) {
@@ -414,7 +414,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
                        case DialogInterface.BUTTON_POSITIVE:
                            //Yes button clicked
                            //add parent to database
-                           p1 = new Parent(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, parent.getAmka(), true, kids);//, UID);
+                           p1 = new Parent(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, parent.getAmka(), true, kids);
                            reference = FirebaseDatabase.getInstance().getReference("parent");
                            reference.child(currentUserUID).setValue(p1);
                            Intent in = new Intent(getApplicationContext(), MainScreenParents.class);
@@ -439,14 +439,12 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
                //if there are empty textBoxes show message
                //add parents to database
                p1 = new Parent(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, amkaParentTwo.getText().toString(), true, kids);//, UID);
-               p2 = new Parent(nameParentTwo.getText().toString(), surnameParentTwo.getText().toString(), amkaParentTwo.getText().toString(), phoneNumberParentTwo.getText().toString(), emailAddressParentTwo.getText().toString(), dateOfBirthParentTwo.getText().toString(), bloodTypeParentTwo.getSelectedItem().toString(), amkaParentOne, true, kids);//, null);
+               p2 = new Parent(nameParentTwo.getText().toString(), surnameParentTwo.getText().toString(), amkaParentTwo.getText().toString(), phoneNumberParentTwo.getText().toString(), emailAddressParentTwo.getText().toString(), dateOfBirthParentTwo.getText().toString(), bloodTypeParentTwoSpinner.getSelectedItem().toString(), amkaParentOne, true, kids);//, null);
                //getting number of parents on database
                reference = database.getReference("parent");
                reference.child(currentUserUID).setValue(p1);
                reference.child(amkaParentTwo.getText().toString()).setValue(p2);
-               //go to app main screen
                Toast.makeText(this, "User created successfully!!", Toast.LENGTH_SHORT).show();
-               //go to app main screen
                Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
                startActivity(intent);
            }

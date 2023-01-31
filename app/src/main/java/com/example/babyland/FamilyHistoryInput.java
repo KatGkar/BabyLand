@@ -43,7 +43,7 @@ public class FamilyHistoryInput extends AppCompatActivity{
     private DatabaseReference reference1, reference2;
     private String name, sex, amka, birthPlace, bloodType, parentOneAmka, parentTwoAmka, birthDate, currentUserUID;
     private int babyNumber;
-    private Baby b;
+    private Baby baby;
     private BottomNavigationView bottomNavigationView;
 
     @Override
@@ -116,7 +116,9 @@ public class FamilyHistoryInput extends AppCompatActivity{
                     case R.id.navigation_add:
                         return true;
                     case R.id.navigation_account:
-                        settingsButton();
+                        Intent intent1 = new Intent(FamilyHistoryInput.this, UserAccount.class);
+                        intent1.putExtra("user", "parent");
+                        startActivity(intent1);
                         return true;
                 }
                 return false;
@@ -124,11 +126,9 @@ public class FamilyHistoryInput extends AppCompatActivity{
         });
     }
 
-
-    //go to settings page
-    private void settingsButton(){
-        Intent intent = new Intent(FamilyHistoryInput.this, UserAccount.class);
-        intent.putExtra("user", "parent");
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(FamilyHistoryInput.this, AddBaby.class);
         startActivity(intent);
     }
 
@@ -139,8 +139,6 @@ public class FamilyHistoryInput extends AppCompatActivity{
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL));
     }
 
     //getting vaccines from database
@@ -175,9 +173,9 @@ public class FamilyHistoryInput extends AppCompatActivity{
     //save baby to database
     public void saveBaby(View view) {
         babyNumber = getBabyNumber();
-        b = new Baby(name, birthDate, amka, birthPlace, bloodType, sex, parentOneAmka, parentTwoAmka, illnesses, vaccines);
+        baby = new Baby(name, birthDate, amka, birthPlace, bloodType, sex, parentOneAmka, parentTwoAmka, illnesses, vaccines);
         reference1 = database.getReference("baby");
-        reference1.child(amka).setValue(b);
+        reference1.child(amka).setValue(baby);
         updateParent();
     }
 
@@ -193,10 +191,10 @@ public class FamilyHistoryInput extends AppCompatActivity{
                         ArrayList<Baby> list;
                         try {
                             list = (ArrayList<Baby>) snapshot.child("kids").getValue();
-                            list.add(b);
+                            list.add(baby);
                         } catch (Exception e) {
                             list = new ArrayList<>();
-                            list.add(b);
+                            list.add(baby);
                         }
                         database.getReference("parent").child(currentUserUID).child("kids").setValue(list);
                         if(snapshot.getValue(t).getPartner()){
@@ -213,10 +211,10 @@ public class FamilyHistoryInput extends AppCompatActivity{
                                                 ArrayList<Baby> partList;
                                                 try {
                                                     partList = (ArrayList<Baby>) snapshots.child("kids").getValue();
-                                                    partList.add(b);
+                                                    partList.add(baby);
                                                 } catch (Exception e) {
                                                     partList = new ArrayList<>();
-                                                    partList.add(b);
+                                                    partList.add(baby);
                                                 }
                                                 database.getReference("parent").child(snapshots.getKey()).child("kids").setValue(partList);
                                             }
@@ -263,6 +261,8 @@ public class FamilyHistoryInput extends AppCompatActivity{
         });
         return babyNumber + 1;
     }
+
+
 
     //getting parents amka from database
     private void getParentAmka() {
