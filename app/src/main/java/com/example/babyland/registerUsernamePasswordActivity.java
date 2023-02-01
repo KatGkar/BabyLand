@@ -1,17 +1,10 @@
 package com.example.babyland;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.media.session.MediaSession;
 import android.os.Bundle;
-import android.util.Config;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,36 +19,24 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
-public class RegisterUsernamePasswordActivity extends AppCompatActivity{
+public class registerUsernamePasswordActivity extends AppCompatActivity{
 
     private EditText emailTextView, passwordTextView, passwordValidTextView;
     private String email, password, passwordValid;
@@ -97,7 +78,7 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity{
         facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginManager.getInstance().logInWithReadPermissions(RegisterUsernamePasswordActivity.this, Arrays.asList("public_profile"));
+                LoginManager.getInstance().logInWithReadPermissions(registerUsernamePasswordActivity.this, Arrays.asList("public_profile"));
             }
         });
 
@@ -118,7 +99,7 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity{
 
                     @Override
                     public void onError(FacebookException exception) {
-                        Toast.makeText(RegisterUsernamePasswordActivity.this, "Facebook is not responding. Please try again later!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(registerUsernamePasswordActivity.this, "Facebook is not responding. Please try again later!!", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -129,7 +110,7 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity{
                 .build();
 
         //google sing in
-        mGoogleSignInClient= GoogleSignIn.getClient(RegisterUsernamePasswordActivity.this
+        mGoogleSignInClient= GoogleSignIn.getClient(registerUsernamePasswordActivity.this
                 ,googleSignInOptions);
 
         //google sign in button
@@ -167,7 +148,7 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity{
         }
         if (!password.equals(passwordValid)) {
             flagNext = false;
-            passwordValidTextView.setError("Passwords do not match!!");
+            passwordValidTextView.setError("Passwords do not match! Please try again");
         }
         if (flagNext) {
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -175,12 +156,12 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity{
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        Toast.makeText(RegisterUsernamePasswordActivity.this, "User created successfully!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(RegisterUsernamePasswordActivity.this, DoctorParentChoose.class);
+                        Toast.makeText(registerUsernamePasswordActivity.this, "User created successfully!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(registerUsernamePasswordActivity.this, doctorParentChoose.class);
                         startActivity(intent);
                     } else {
                         // If sign in fails, display a message to the user.
-                        Toast.makeText(RegisterUsernamePasswordActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(registerUsernamePasswordActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         System.out.println(task.getException().getMessage());
                     }
                 }
@@ -197,23 +178,23 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity{
                     // email not existed
                     AuthCredential authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null);
                     firebaseAuth.signInWithCredential(authCredential)
-                            .addOnCompleteListener(RegisterUsernamePasswordActivity.this, new OnCompleteListener<AuthResult>() {
+                            .addOnCompleteListener(registerUsernamePasswordActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // When task is successful
-                                        Intent intent = new Intent(RegisterUsernamePasswordActivity.this, DoctorParentChoose.class);
+                                        Intent intent = new Intent(registerUsernamePasswordActivity.this, doctorParentChoose.class);
                                         startActivity(intent);
                                     } else {
                                         // When task is unsuccessful
-                                        Toast.makeText(RegisterUsernamePasswordActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(registerUsernamePasswordActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                                     }
                                 }
                             });
                 }else {
                     // email existed
-                    Toast.makeText(RegisterUsernamePasswordActivity.this, "The email address is already in use by another account!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(registerUsernamePasswordActivity.this, "The email address is already in use by another account!", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -232,10 +213,10 @@ public class RegisterUsernamePasswordActivity extends AppCompatActivity{
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Intent intent = new Intent(RegisterUsernamePasswordActivity.this, DoctorParentChoose.class);
+                    Intent intent = new Intent(registerUsernamePasswordActivity.this, doctorParentChoose.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(RegisterUsernamePasswordActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(registerUsernamePasswordActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });

@@ -1,12 +1,8 @@
 package com.example.babyland;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +12,6 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,29 +21,24 @@ import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.firebase.ui.auth.data.remote.FacebookSignInHandler;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.identity.BeginSignInRequest;
-import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,9 +47,8 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
-import java.util.Locale;
 
-public class LoginRegister extends AppCompatActivity { //implements GoogleApiClient.OnConnectionFailedListener {
+public class loginRegister extends AppCompatActivity { //implements GoogleApiClient.OnConnectionFailedListener {
 
     private ImageView facebookButton, googleButton, image, loadingFrame;
     private CallbackManager callbackManager;
@@ -168,7 +157,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
 
                     @Override
                     public void onError(FacebookException exception) {
-                        Toast.makeText(LoginRegister.this, "Facebook is not responding. Please try again later!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(loginRegister.this, "Facebook is not responding. Please try again later!!", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -177,7 +166,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
         facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginManager.getInstance().logInWithReadPermissions(LoginRegister.this, Arrays.asList("public_profile"));
+                LoginManager.getInstance().logInWithReadPermissions(loginRegister.this, Arrays.asList("public_profile"));
 
             }
         });
@@ -189,7 +178,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                 .build();
 
        //google sign in
-        mGoogleSignInClient= GoogleSignIn.getClient(LoginRegister.this
+        mGoogleSignInClient= GoogleSignIn.getClient(loginRegister.this
                 ,googleSignInOptions);
 
         //google sign in button
@@ -226,7 +215,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             FirebaseAuth.getInstance().signOut();
-                            LoginRegister.super.onBackPressed();
+                            loginRegister.super.onBackPressed();
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -247,7 +236,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
 
     //create user button
     public void createUser(View view) {
-        Intent intent = new Intent(this, RegisterUsernamePasswordActivity.class);
+        Intent intent = new Intent(this, registerUsernamePasswordActivity.class);
         startActivity(intent);
     }
 
@@ -276,9 +265,11 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                         FirebaseUser user = myFirebaseAuth.getCurrentUser();
                         if(!user.isEmailVerified()){
                             user.sendEmailVerification();
-                            Toast.makeText(LoginRegister.this, "Please check your email ", Toast.LENGTH_SHORT).show();
+                            loadingFrame.setVisibility(View.INVISIBLE);
+                            loginRelativeLayout.setVisibility(View.VISIBLE);
+                            Toast.makeText(loginRegister.this, "Please check your email!", Toast.LENGTH_SHORT).show();
                         }else{
-                        Intent intent = new Intent(LoginRegister.this, DoctorParentChoose.class);
+                        Intent intent = new Intent(loginRegister.this, doctorParentChoose.class);
                         startActivity(intent);
                         }
                     }
@@ -289,7 +280,7 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
                     public void onFailure(@NonNull Exception e) {
                         loadingFrame.setVisibility(View.INVISIBLE);
                         loginRelativeLayout.setVisibility(View.VISIBLE);
-                        Toast.makeText(LoginRegister.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(loginRegister.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -301,13 +292,15 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Intent intent = new Intent(LoginRegister.this, DoctorParentChoose.class);
+                    Intent intent = new Intent(loginRegister.this, doctorParentChoose.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(LoginRegister.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(loginRegister.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
+
         });
+
     }
 
     //facebook and google
@@ -339,22 +332,22 @@ public class LoginRegister extends AppCompatActivity { //implements GoogleApiCli
             public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
                 if (task.getResult().getSignInMethods().size() == 0){
                     // email not existed
-                    Toast.makeText(LoginRegister.this, "There is no user. Please register!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(loginRegister.this, "There is no user. Please register!!", Toast.LENGTH_SHORT).show();
 
                 }else {
                     // email existed
                     AuthCredential authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null);
                     myFirebaseAuth.signInWithCredential(authCredential)
-                            .addOnCompleteListener(LoginRegister.this, new OnCompleteListener<AuthResult>() {
+                            .addOnCompleteListener(loginRegister.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // When task is successful
-                                        Intent intent = new Intent(LoginRegister.this, DoctorParentChoose.class);
+                                        Intent intent = new Intent(loginRegister.this, doctorParentChoose.class);
                                         startActivity(intent);
                                     } else {
                                         // When task is unsuccessful
-                                        Toast.makeText(LoginRegister.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(loginRegister.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                                     }
                                 }

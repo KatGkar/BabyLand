@@ -2,15 +2,10 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -24,8 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class viewParentInfo extends AppCompatActivity {
 
@@ -129,11 +122,11 @@ public class viewParentInfo extends AppCompatActivity {
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_add:
-                        Intent intent = new Intent(viewParentInfo.this, AddChildToDoctor.class);
+                        Intent intent = new Intent(viewParentInfo.this, addChildToDoctor.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_account:
-                        Intent intent1 = new Intent(viewParentInfo.this, UserAccount.class);
+                        Intent intent1 = new Intent(viewParentInfo.this, userAccount.class);
                         intent1.putExtra("user", "doctor");
                         startActivity(intent1);
                         return true;
@@ -199,7 +192,8 @@ public class viewParentInfo extends AppCompatActivity {
             parentInfoRelativeLayout.setVisibility(View.INVISIBLE);
             parentsRelativeLayout.setVisibility(View.VISIBLE);
         }else{
-            super.onBackPressed();
+            Intent intent = new Intent(viewParentInfo.this, mainScreenDoctor.class);
+            startActivity(intent);
         }
     }
 

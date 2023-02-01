@@ -2,18 +2,13 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -44,7 +39,7 @@ public class viewVaccination extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private DatabaseReference reference, reference2;
     private Button addOtherVaccineButton, saveVaccineButton;
-    private recyclerAdapter.recyclerVewOnClickListener listener;
+    private RecyclerAdapter.recyclerVewOnClickListener listener;
     private RelativeLayout addOtherVaccineRelativeLayout, vaccinesRelativeLayout;
     private TextView doctorNameTextView, dateVaccinatedTextView;
     private EditText vaccineNameEditText;
@@ -180,20 +175,20 @@ public class viewVaccination extends AppCompatActivity {
                         return true;
                     case R.id.navigation_add:
                         if(userType.equals("doctor")){
-                            Intent intent = new Intent(viewVaccination.this, AddChildToDoctor.class);
+                            Intent intent = new Intent(viewVaccination.this, addChildToDoctor.class);
                             startActivity(intent);
                         }else{
-                            Intent intent = new Intent(viewVaccination.this, AddBaby.class);
+                            Intent intent = new Intent(viewVaccination.this, addBaby.class);
                             startActivity(intent);
                         }
                         return true;
                     case R.id.navigation_account:
                         if(userType.equals("doctor")){
-                            Intent intent1 = new Intent(viewVaccination.this, UserAccount.class);
+                            Intent intent1 = new Intent(viewVaccination.this, userAccount.class);
                             intent1.putExtra("user", "doctor");
                             startActivity(intent1);
                         }else{
-                            Intent intent1 = new Intent(viewVaccination.this, UserAccount.class);
+                            Intent intent1 = new Intent(viewVaccination.this, userAccount.class);
                             intent1.putExtra("user", "parent");
                             startActivity(intent1);
 
@@ -254,12 +249,12 @@ public class viewVaccination extends AppCompatActivity {
 
     //setting adapter for recyclerView
     private void setAdapter() {
-        recyclerAdapter adapter = new recyclerAdapter(listener, vaccines, "viewVaccination", userType);
+        RecyclerAdapter adapter = new RecyclerAdapter(listener, vaccines, "viewVaccination", userType);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         vaccinationRecyclerView.setLayoutManager(layoutManager);
         vaccinationRecyclerView.setItemAnimator(new DefaultItemAnimator());
         vaccinationRecyclerView.setAdapter(adapter);
-        adapter.addVaccination(new recyclerAdapter.addVaccination() {
+        adapter.addVaccination(new RecyclerAdapter.addVaccination() {
             @Override
             public void addVaccine(int position) {
                 vaccines.get(position).setDate(d + "/"+ m+"/"+yy);
@@ -278,7 +273,13 @@ public class viewVaccination extends AppCompatActivity {
             addOtherVaccineButton.setVisibility(View.VISIBLE);
             vaccinesRelativeLayout.setVisibility(View.VISIBLE);
         }else{
-            super.onBackPressed();
+           if(userType.equals("parent")){
+               Intent intent = new Intent(viewVaccination.this, mainScreenParents.class);
+               startActivity(intent);
+           }else {
+               Intent intent = new Intent(viewVaccination.this, mainScreenDoctor.class);
+               startActivity(intent);
+           }
         }
     }
 }

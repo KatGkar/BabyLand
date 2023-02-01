@@ -1,25 +1,17 @@
 package com.example.babyland;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -37,12 +29,12 @@ import java.util.ArrayList;
 
 public class showDevelopmentsList extends AppCompatActivity {
 
-    private String babyAmka;
+    private String babyAmka, userType;
     private ArrayList<Development> developments;
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private RecyclerView developmentsRecyclerView, developmentalMonitoringRecyclerView, examinationRecyclerView, sustenanceRecyclerView;
-    private recyclerAdapter.recyclerVewOnClickListener listener;
+    private RecyclerAdapter.recyclerVewOnClickListener listener;
     private TextView ageText,weightText, lengthText, dateText, headCircumferenceText, doctorTextView, observationsTextView,
                 noDevelopmentTextView, textViewDevs;
     private BottomNavigationView bottomNavigationView;
@@ -58,6 +50,7 @@ public class showDevelopmentsList extends AppCompatActivity {
         //getting extras
         Bundle extras = getIntent().getExtras();
         babyAmka = extras.getString("babyAmka");
+        userType = extras.getString("userType");
 
         //getting views from xml file
         bottomNavigationView = findViewById(R.id.bottomNavigationViewShowDevelopments);
@@ -112,13 +105,24 @@ public class showDevelopmentsList extends AppCompatActivity {
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_add:
-                        Intent intent = new Intent(showDevelopmentsList.this, AddChildToDoctor.class);
-                        startActivity(intent);
+                        if(userType.equals("doctor")){
+                            Intent intent = new Intent(showDevelopmentsList.this, addChildToDoctor.class);
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(showDevelopmentsList.this, addBaby.class);
+                            startActivity(intent);
+                        }
                         return true;
                     case R.id.navigation_account:
-                        Intent intent1 = new Intent(showDevelopmentsList.this, UserAccount.class);
-                        intent1.putExtra("user", "doctor");
-                        startActivity(intent1);
+                        if(userType.equals("doctor")) {
+                            Intent intent1 = new Intent(showDevelopmentsList.this, userAccount.class);
+                            intent1.putExtra("user", "doctor");
+                            startActivity(intent1);
+                        }else{
+                            Intent intent1 = new Intent(showDevelopmentsList.this, userAccount.class);
+                            intent1.putExtra("user", "parent");
+                            startActivity(intent1);
+                        }
                         return true;
                 }
                 return false;
@@ -163,7 +167,7 @@ public class showDevelopmentsList extends AppCompatActivity {
     //loading data into recyclerView
     private void setAdapter() {
         setOnClickListener();
-        recyclerAdapter adapter = new recyclerAdapter(listener, developments, "developments","none");
+        RecyclerAdapter adapter = new RecyclerAdapter(listener, developments, "developments","none");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         developmentsRecyclerView.setLayoutManager(layoutManager);
         developmentsRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -192,7 +196,7 @@ public class showDevelopmentsList extends AppCompatActivity {
 
     //click listener to show developments details
     private void setOnClickListener() {
-        listener = new recyclerAdapter.recyclerVewOnClickListener() {
+        listener = new RecyclerAdapter.recyclerVewOnClickListener() {
             @Override
             public void onClick(View view, int position) {
                 developmentsRecyclerView.setVisibility(View.INVISIBLE);
@@ -214,19 +218,19 @@ public class showDevelopmentsList extends AppCompatActivity {
                     observationsTextView.setText(dev.getObservations());
                 }
                 //developmental monitoring info
-                recyclerAdapter adapter = new recyclerAdapter(listener, dev.getDevelopmentalMonitoring(), "developmentalMonitoring","none");
+                RecyclerAdapter adapter = new RecyclerAdapter(listener, dev.getDevelopmentalMonitoring(), "developmentalMonitoring","none");
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 developmentalMonitoringRecyclerView.setLayoutManager(layoutManager);
                 developmentalMonitoringRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 developmentalMonitoringRecyclerView.setAdapter(adapter);
                 //examination info
-                adapter = new recyclerAdapter(listener, dev.getExamination(), "exam","none");
+                adapter = new RecyclerAdapter(listener, dev.getExamination(), "exam","none");
                 layoutManager = new LinearLayoutManager(getApplicationContext());
                 examinationRecyclerView.setLayoutManager(layoutManager);
                 examinationRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 examinationRecyclerView.setAdapter(adapter);
                 //sustenance info
-                adapter = new recyclerAdapter(listener, dev.getSustenance(), "sust","none");
+                adapter = new RecyclerAdapter(listener, dev.getSustenance(), "sust","none");
                 layoutManager = new LinearLayoutManager(getApplicationContext());
                 sustenanceRecyclerView.setLayoutManager(layoutManager);
                 sustenanceRecyclerView.setItemAnimator(new DefaultItemAnimator());

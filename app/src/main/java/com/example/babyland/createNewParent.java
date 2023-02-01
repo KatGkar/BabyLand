@@ -2,8 +2,6 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -29,10 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class createNewParent extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -86,7 +81,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
         //getting current date
         Calendar cal = Calendar.getInstance();
         int yy = cal.get(Calendar.YEAR);
-        int mm = cal.get(Calendar.MONTH);
+        int mm = cal.get(Calendar.MONTH) + 1;
         int dd = cal.get(Calendar.DAY_OF_MONTH);
 
         // set current date into textview
@@ -94,16 +89,12 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
         if (dd <= 9) {
             d = "0" + d;
         }
-        if (mm < 12) {
-            mm++;
-        }
         String m = String.valueOf(mm);
         if (mm <= 9) {
             m = "0" + m;
         }
         dateOfBirthParentOne.setHint(new StringBuilder()
-                .append(d).append(" ").append("/").append(m).append("/")
-                .append(yy));
+                .append(d).append(" ").append("/").append(m).append("/").append(yy));
 
         //setting visibilities
         calendar.setVisibility(View.INVISIBLE);
@@ -122,55 +113,17 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                String m = "0";
-                String d = "0";
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                    //date1 is selected date
-                    Date date1 = sdf.parse(dayOfMonth + "/" + month + "/" + year);
-                    int da = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                    int mo = Calendar.getInstance().get(Calendar.MONTH) + 1;
-                    int ye = Calendar.getInstance().get(Calendar.YEAR);
-                    //date2 is date now
-                    Date date2 = sdf.parse(da + "/" + mo + "/" + ye);
-                    if (date1.compareTo(date2) > 0) {
-                        //if date selected is after date now
-                        mo++;
-                        if (mo == 13) {
-                            mo = 12;
-                        }
-                        if (mo <= 9) {
-                            m = "0" + mo;
-                        } else {
-                            m = String.valueOf(mo);
-                        }
-                        if (da <= 9) {
-                            d = "0" + da;
-                        } else {
-                            d = String.valueOf(da);
-                        }
-                        year = Calendar.getInstance().get(Calendar.YEAR);
-
-                    } else {
-                        //if date selected is now or if date selected is before date now
-                        // month++;
-                       /* if(month == 13){
-                            month = 12;
-                        }*/
-                        if (month <= 9) {
-                            m = "0" + month;
-                        } else {
-                            m = String.valueOf(month);
-                        }
-                        if (dayOfMonth <= 9) {
-                            d = "0" + dayOfMonth;
-                        } else {
-                            d = String.valueOf(dayOfMonth);
-                        }
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                String m, d;
+                month = month + 1;
+                if (month <= 9) {
+                    m = "0" + month;
+                } else {
+                    m = String.valueOf(month);
+                }
+                if (dayOfMonth <= 9) {
+                    d = "0" + dayOfMonth;
+                } else {
+                    d = String.valueOf(dayOfMonth);
                 }
                 dateOfBirthParentOne.setText(d + "/" + m + "/" + year);
                 calendar.setVisibility(View.INVISIBLE);
@@ -192,8 +145,6 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!s.toString().equals(current)) {
-                    String d = "0";
-                    String m = "0";
                     String clean = s.toString().replaceAll("[^\\d.]", "");
                     String cleanC = current.replaceAll("[^\\d.]", "");
 
@@ -212,69 +163,21 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
                         int month = Integer.parseInt(clean.substring(2, 4));
                         int year = Integer.parseInt(clean.substring(4, 8));
 
-                       /* if(month>12){
+                        if(month>12){
                             month = 12;
                         }
                         cal.set(Calendar.MONTH, month);
 
-                        year = (year<1970)?1970:(year>2023)?2022:year;
-                        cal.set(Calendar.YEAR, year);
-*/
-                        day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum((Calendar.DATE)) : day;
-                        try {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                            //date1 is selected date
-                            Date date1 = sdf.parse(day + "/" + month + "/" + year);
-                            int da = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                            int mo = Calendar.getInstance().get(Calendar.MONTH);
-                            int ye = Calendar.getInstance().get(Calendar.YEAR);
-                            //date2 is date now
-                            Date date2 = sdf.parse(da + "/" + mo + "/" + ye);
-                            if (date1.compareTo(date2) > 0) {
-                                //if date selected is after date now
-                                mo++;
-                                if (mo == 13) {
-                                    mo = 12;
-                                }
-                                if (mo <= 9) {
-                                    m = "0" + mo;
-                                } else {
-                                    m = String.valueOf(mo);
-                                }
-                                if (da <= 9) {
-                                    d = "0" + da;
-                                } else {
-                                    d = String.valueOf(da);
-                                }
-                                day = Integer.parseInt(d);
-                                month = Integer.parseInt(m);
-                                year = Calendar.getInstance().get(Calendar.YEAR);
-
-                            } else {
-                                //if date selected is now or if date selected is before date now
-                                //month++;
-                                if (month == 13) {
-                                    month = 12;
-                                }
-                                if (month <= 9) {
-                                    m = "0" + month;
-                                } else {
-                                    m = String.valueOf(month);
-                                }
-                                if (day <= 9) {
-                                    d = "0" + day;
-                                } else {
-                                    d = String.valueOf(day);
-                                }
-                                day = Integer.parseInt(d);
-                                month = Integer.parseInt(m);
-                            }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        //Birth year 1970-2010
+                        if(year<1970){
+                            year=1970;
+                            Toast.makeText(createNewParent.this, "Birth year should be between 1970 and 2010", Toast.LENGTH_SHORT).show();
+                        }else if(year>2010){
+                            year = 2010;
+                            Toast.makeText(createNewParent.this, "Birth year should be between 1970 and 2010", Toast.LENGTH_SHORT).show();
                         }
-
-
+                        cal.set(Calendar.YEAR, year);
+                        day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum((Calendar.DATE)) : day;
                         clean = String.format("%02d%02d%02d", day, month, year);
                     }
 
@@ -317,7 +220,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
                 String text=editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
                     flagNext=false;
-                    nameParentOne.setError("Only letters please!!");
+                    nameParentOne.setError("Type only letters please!!");
                 }
             }
         });
@@ -337,7 +240,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
                 String text=editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
                     flagNext=false;
-                    surnameParentOne.setError("Only letters please!!");
+                    surnameParentOne.setError("Type only letters please!!");
                 }
             }
         });
@@ -357,7 +260,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
                 String text=editable.toString();
                 if (!text.matches("^[0-9]+$")) {
                     flagNext=false;
-                    amkaParentOne.setError("Only numbers please!!");
+                    amkaParentOne.setError("Type only numbers please!!");
                 }
             }
         });
@@ -367,7 +270,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
     //on back button pressed
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(createNewParent.this, LoginRegister.class);
+        Intent intent = new Intent(createNewParent.this, loginRegister.class);
         startActivity(intent);
     }
 
@@ -386,7 +289,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
             flagNext = false;
         }
         if (TextUtils.isEmpty(amkaParentOne.getText()) || (amkaParentOne.getText().length() != 11)) {
-            amkaParentOne.setError("Amka should have length 11 numbers!");
+            amkaParentOne.setError("Amka number should have length 11 numbers!");
             amkaParentOne.requestFocus();
             flagNext = false;
         }
@@ -399,6 +302,11 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
             Toast.makeText(this, "Please a choose a blood type!", Toast.LENGTH_SHORT).show();
             bloodSpinner.requestFocus();
             flagNext = false;
+        }
+        if(!dateOfBirthParentOne.getText().toString().matches("^[0-9]+(\\/[0-9]+)*$" )) {
+            flagNext=false;
+            dateOfBirthParentOne.requestFocus();
+            Toast.makeText(this, "Please fill in correct birth date!", Toast.LENGTH_SHORT).show();
         }
 
         //check if amka number is unique
@@ -448,7 +356,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
             this.startActivity(myIntent);
         } else if (flagUnique == 2) {
             //there is another user with this amka
-            amkaParentOne.setError("Amka should be unique");
+            amkaParentOne.setError("Amka number should be unique! Please try again");
             amkaParentOne.requestFocus();
         } else if(flagUnique == 3){
             //there is a parent with this amka number but he is not a user yet
@@ -471,10 +379,10 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
                                                 if (amkaParentOne.getText().toString().equals(amka)) {
                                                     reference.child(amka).removeValue();
                                                     reference.child(currentUserUID).setValue(parent);
-                                                    Toast.makeText(createNewParent.this, "User created!", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(createNewParent.this, "Info saved successfully!", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
-                                            Intent intent = new Intent(createNewParent.this, MainScreenParents.class);
+                                            Intent intent = new Intent(createNewParent.this, mainScreenParents.class);
                                             startActivity(intent);
                                             finish();
                                         }
@@ -504,7 +412,7 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
                 }
             };
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Parent exists already continue with this parent??").setPositiveButton("Yes", dialogClickListener)
+            builder.setMessage("Parent exists already. Do you continue with this parent??").setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
         }
 

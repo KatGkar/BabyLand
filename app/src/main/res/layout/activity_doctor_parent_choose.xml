@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
-    tools:context=".DoctorParentChoose">
+    tools:context=".doctorParentChoose">
 
     <RelativeLayout
         android:id="@+id/chooseRelativeLayout"
@@ -23,46 +23,66 @@
                 android:id="@+id/chooseTypeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="152dp"
                 android:fontFamily="@font/bai_jamjuree"
-                android:text="Please choose user type..."
+                android:layout_marginTop="200dp"
+                android:text="Please choose user type to continue..."
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/parentsButton"
-                android:layout_width="100dp"
-                android:layout_height="130dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="80dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/facebook_google_buttons"
-                android:backgroundTint="@color/fui_bgGoogle"
-                android:elevation="20dp"
-                android:padding="1dp"
-                android:visibility="visible"
-                app:layout_constraintStart_toStartOf="@+id/chooseTypeTextView"
-                app:layout_constraintTop_toBottomOf="@+id/chooseTypeTextView"
-                app:srcCompat="@drawable/parent" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@color/fui_transparent"
+                app:layout_constraintTop_toBottomOf="@+id/chooseTypeTextView">
 
-            <ImageView
-                android:id="@+id/doctorButton"
-                android:layout_width="100dp"
-                android:layout_height="130dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginEnd="30dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/facebook_google_buttons"
-                android:backgroundTint="@color/fui_bgGoogle"
-                android:elevation="20dp"
-                android:padding="1dp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="@+id/chooseTypeTextView"
-                app:layout_constraintTop_toBottomOf="@+id/chooseTypeTextView"
-                app:srcCompat="@drawable/doctor" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:background="@color/fui_transparent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/parentsButton"
+                        android:layout_width="100dp"
+                        android:layout_height="130dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/facebook_google_buttons"
+                        android:backgroundTint="@color/fui_bgGoogle"
+                        android:elevation="20dp"
+                        android:padding="1dp"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/parent" />
+
+                    <ImageView
+                        android:id="@+id/doctorButton"
+                        android:layout_width="100dp"
+                        android:layout_height="130dp"
+                        android:layout_marginStart="20dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/facebook_google_buttons"
+                        android:backgroundTint="@color/fui_bgGoogle"
+                        android:elevation="20dp"
+                        android:padding="1dp"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toEndOf="@+id/parentsButton"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/doctor" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 

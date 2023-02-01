@@ -19,7 +19,7 @@
         android:windowSoftInputMode="adjustPan"
         android:theme="@style/Theme.BabyLand">
         <activity
-            android:name=".UserAccount"
+            android:name=".userAccount"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -54,24 +54,24 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".AddChildToDoctor"
+            android:name=".addChildToDoctor"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainScreenDoctor"
+            android:name=".mainScreenDoctor"
             android:exported="false"/>
         <activity
-            android:name=".DoctorParentChoose"
+            android:name=".doctorParentChoose"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".deleteChildActivity"
+            android:name=".deleteChild"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -85,17 +85,17 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".RegisterUsernamePasswordActivity"
+            android:name=".registerUsernamePasswordActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".MonitoringDevelopment"
+            android:name=".monitoringDevelopment"
             android:exported="false" />
         <activity
-            android:name=".LoginRegister"
+            android:name=".loginRegister"
             android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -104,7 +104,7 @@
         </intent-filter>
         </activity>
         <activity
-            android:name=".MainScreenParents"
+            android:name=".mainScreenParents"
             android:exported="false" />
         <activity
             android:name=".nextParent"
@@ -113,13 +113,13 @@
             android:name=".createNewParent"
             android:exported="false" />
         <activity
-            android:name=".FamilyHistoryInput"
+            android:name=".familyHistoryInput"
             android:exported="false" />
         <activity
             android:name=".viewCharts"
             android:exported="false" />
         <activity
-            android:name=".AddBaby"
+            android:name=".addBaby"
             android:exported="false" />
 
         <meta-data
@@ -152,9 +152,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".CustomTabActivity"
-            android:exported="false" />
     </application>
 
 </manifest>

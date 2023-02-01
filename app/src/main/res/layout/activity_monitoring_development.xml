@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
-    tools:context=".MonitoringDevelopment">
+    tools:context=".monitoringDevelopment">
 
     <CalendarView
         android:id="@+id/calendar"
@@ -366,7 +366,6 @@
                 android:ems="10"
                 android:gravity="center"
                 android:hint="Head Circumference in cm"
-                android:inputType="number"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:shadowDx="2"
@@ -391,7 +390,6 @@
                 android:ems="10"
                 android:gravity="center"
                 android:hint="Length in cm"
-                android:inputType="number"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:shadowDx="2"
@@ -438,8 +436,7 @@
                 android:elevation="20dp"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="Weight in cm"
-                android:inputType="number"
+                android:hint="Weight in kg"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:shadowDx="2"

@@ -1,22 +1,15 @@
 package com.example.babyland;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -32,12 +25,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FamilyHistoryInput extends AppCompatActivity{
+public class familyHistoryInput extends AppCompatActivity{
 
     protected RecyclerView recyclerView;
     protected ArrayList<FamilyHistoryIllnesses> illnesses;
     private ArrayList<Vaccination> vaccines;
-    private recyclerAdapter.recyclerVewOnClickListener listener;
+    private RecyclerAdapter.recyclerVewOnClickListener listener;
     private Button saveButton;
     private FirebaseDatabase database;
     private DatabaseReference reference1, reference2;
@@ -110,13 +103,13 @@ public class FamilyHistoryInput extends AppCompatActivity{
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        Intent intent = new Intent(FamilyHistoryInput.this, MainScreenParents.class);
+                        Intent intent = new Intent(familyHistoryInput.this, mainScreenParents.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_add:
                         return true;
                     case R.id.navigation_account:
-                        Intent intent1 = new Intent(FamilyHistoryInput.this, UserAccount.class);
+                        Intent intent1 = new Intent(familyHistoryInput.this, userAccount.class);
                         intent1.putExtra("user", "parent");
                         startActivity(intent1);
                         return true;
@@ -128,13 +121,13 @@ public class FamilyHistoryInput extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(FamilyHistoryInput.this, AddBaby.class);
+        Intent intent = new Intent(familyHistoryInput.this, addBaby.class);
         startActivity(intent);
     }
 
     //setting adapter for recyclerView
     private void setAdapter() {
-        recyclerAdapter adapter = new recyclerAdapter(listener, illnesses, "illnessInput", "none");
+        RecyclerAdapter adapter = new RecyclerAdapter(listener, illnesses, "illnessInput", "none");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -228,8 +221,8 @@ public class FamilyHistoryInput extends AppCompatActivity{
                                 }
                             });
                         }
-                        Toast.makeText(FamilyHistoryInput.this, "Child added successfully!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
+                        Toast.makeText(familyHistoryInput.this, "Child added successfully!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), mainScreenParents.class);
                         startActivity(intent);
                     }
                 }

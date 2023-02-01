@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
     private ArrayList list;
     private String id, userType;
     private recyclerVewOnClickListener listener;
@@ -67,11 +67,11 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
 
     @NonNull
     @Override
-    public recyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.family_history_recycler, parent, false);
         if (id.equals("illnessInput")) {
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.family_history_recycler, parent, false);
-            recyclerAdapter.MyViewHolder view = new recyclerAdapter.MyViewHolder(itemView, radioButtonChange, textChange, sustenanceCheck);
+            RecyclerAdapter.MyViewHolder view = new RecyclerAdapter.MyViewHolder(itemView, radioButtonChange, textChange, sustenanceCheck);
         }else if(id.equals("examination")){
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.examination_list_item, parent, false);
         }else if(id.equals("developmental")){
@@ -99,7 +99,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull recyclerAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerAdapter.MyViewHolder holder, int position) {
         if (id.equals("illnessInput")) {
             List<FamilyHistoryIllnesses> lists = (List<FamilyHistoryIllnesses>) (List<?>) list;
             String name = lists.get(position).getIllness();
@@ -117,7 +117,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 holder.illnessDetails.setVisibility(View.GONE);
             }
         }else if(id.equals("examination")){
-            List<examinationItems> lists = (List<examinationItems>) (List<?>) list;
+            List<ExaminationItems> lists = (List<ExaminationItems>) (List<?>) list;
             String name = lists.get(position).getName();
             holder.examinationListItemText.setText(name);
             int rad = lists.get(position).getDetails();
@@ -129,7 +129,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 holder.radioButton3.setChecked(true);
             }
         }else if(id.equals("developmental")){
-            List<developmentalItems> lists = (List<developmentalItems>)  list;
+            List<DevelopmentalItems> lists = (List<DevelopmentalItems>)  list;
             String name = lists.get(position).getName();
             holder.developmentalListItemText.setText(name);
             String details = lists.get(position).getDetails();
@@ -143,7 +143,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             holder.ageTextView.setText(age);
             holder.dateTextView.setText(date);
         }else if(id.equals("developmentalMonitoring")){
-            List<developmentalItems> lists = (List<developmentalItems>) list;
+            List<DevelopmentalItems> lists = (List<DevelopmentalItems>) list;
             String name = lists.get(position).getName();
             String details = lists.get(position).getDetails();
             holder.detailsDevelopmentalMonitoringTextView.setText(details);
@@ -152,7 +152,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 holder.detailsDevelopmentalMonitoringTextView.setText("Nothing");
             }
         }else if(id.equals("exam")){
-            List<examinationItems> lists = (List<examinationItems>) list;
+            List<ExaminationItems> lists = (List<ExaminationItems>) list;
             String name = lists.get(position).getName();
             int details = lists.get(position).getDetails();
             if(details==1){
@@ -165,13 +165,13 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 holder.nameExaminationTextView.setText(name + " : No information");
             }
         }else if(id.equals("sustenance")) {
-            List<sustenanceItems> lists = (List<sustenanceItems>) list;
+            List<SustenanceItems> lists = (List<SustenanceItems>) list;
             String name  = lists.get(position).getName();
             holder.checkedSustenanceMonitoring.setText(name);
             Boolean v = lists.get(position).getChecked();
             holder.checkedSustenanceMonitoring.setChecked(v);
         }else if(id.equals("sust")){
-            List<sustenanceItems> lists = (List<sustenanceItems>) list;
+            List<SustenanceItems> lists = (List<SustenanceItems>) list;
             String name = lists.get(position).getName();
             Boolean value = lists.get(position).getChecked();
             holder.checkShowDevelopments.setText(name);
@@ -186,9 +186,9 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             holder.birthDateTextViewDelete.setText("Birth date: "+birthDate);
             holder.amkaTextViewDelete.setText("Amka: "+amka);
             if(sex.equals("BOY")){
-                Picasso.get().load(R.drawable._02_baby_boy_1).into(holder.sexImageViewDelete);
+                Picasso.get().load(R.drawable.male).error(R.drawable.male).into(holder.sexImageViewDelete);
             }else{
-                Picasso.get().load(R.drawable.baby_girl1).into(holder.sexImageViewDelete);
+                Picasso.get().load(R.drawable.female).error(R.drawable.female).into(holder.sexImageViewDelete);
             }
             int monthsD;
             Calendar cal = Calendar.getInstance();
@@ -242,9 +242,9 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             holder.amkaAvailableChildrenText.setText(amka);
             holder.nameAvailableChildrenText.setText(name);
             if(sex.equals("BOY")){
-                Picasso.get().load(R.drawable._02_baby_boy_1).into(holder.sexAvailableChildren);
+                Picasso.get().load(R.drawable.male).error(R.drawable.male).into(holder.sexAvailableChildren);
             }else{
-                Picasso.get().load(R.drawable.baby_girl1).into(holder.sexAvailableChildren);
+                Picasso.get().load(R.drawable.female).error(R.drawable.female).into(holder.sexAvailableChildren);
             }
         }else if(id.equals("familyHistoric")){
             List<FamilyHistoryIllnesses> lists = (List<FamilyHistoryIllnesses>) list;
@@ -288,7 +288,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
 
     }
 
-    public recyclerAdapter(recyclerVewOnClickListener listener, ArrayList list, String id, String userType) {
+    public RecyclerAdapter(recyclerVewOnClickListener listener, ArrayList list, String id, String userType) {
         this.list = list;
         this.id=id;
         this.listener = listener;
@@ -366,7 +366,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                     }
                 });
             }else if(id.equals("developmental")){
-                List<developmentalItems> lists = (List<developmentalItems>) (List<?>) list;
+                List<DevelopmentalItems> lists = (List<DevelopmentalItems>) (List<?>) list;
                 developmentalListItemText = itemView.findViewById(R.id.developmentalListItemText);
                 developmentalEditText = itemView.findViewById(R.id.developmentalEditText);
                 card = itemView.findViewById(R.id.cardViewId);

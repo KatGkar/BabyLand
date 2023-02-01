@@ -1,15 +1,15 @@
 package com.example.babyland;
 
-public class developmentalItems {
+public class DevelopmentalItems {
     String name, ageGap, details;
 
-    public developmentalItems(String name, String ageGap, String details) {
+    public DevelopmentalItems(String name, String ageGap, String details) {
         this.name = name;
         this.ageGap = ageGap;
         this.details = details;
     }
 
-    public developmentalItems(){}
+    public DevelopmentalItems(){}
 
     public String getName() {
         return name;

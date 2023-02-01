@@ -7,7 +7,7 @@
     android:background="@drawable/gradient"
     app:layout_constraintBottom_toTopOf="@id/bottomNavigationViewMainScreenParents"
     app:layout_constraintTop_toTopOf="parent"
-    tools:context=".FamilyHistoryInput">
+    tools:context=".familyHistoryInput">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationViewFamilyHistoryInput"

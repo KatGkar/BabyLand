@@ -5,27 +5,15 @@
 #E20059
 #ECEAE7
 
-multilingua 	
-
-
+multilingua
+check xml files
 sto telos ola ta visibilities visible sta xml
-
-
-check if custom tab activity is needed
-check messages shown
-check visibilities
+on delete child delete from doctor database
 app icon
-
-Check dates and calendars
+drawable file
 FrontEnd
-Facebook google sign in
+set database
 
-	set database
-createNewUser, nextParent, addBaby, monitoringDevelopemnt --> date on month, watch out for calendars
-
-
-design patrern
-mvc oattern 
 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
 
 

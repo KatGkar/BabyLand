@@ -2,16 +2,12 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,7 +29,7 @@ public class showHistoric extends AppCompatActivity {
     private DatabaseReference reference;
     private BottomNavigationView bottomNavigationView;
     private ArrayList<FamilyHistoryIllnesses> familyHistoric;
-    private recyclerAdapter.recyclerVewOnClickListener listener;
+    private RecyclerAdapter.recyclerVewOnClickListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,11 +90,11 @@ public class showHistoric extends AppCompatActivity {
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_add:
-                        Intent intent = new Intent(showHistoric.this, AddChildToDoctor.class);
+                        Intent intent = new Intent(showHistoric.this, addChildToDoctor.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_account:
-                        Intent intent1 = new Intent(showHistoric.this, UserAccount.class);
+                        Intent intent1 = new Intent(showHistoric.this, userAccount.class);
                         intent1.putExtra("user", "doctor");
                         startActivity(intent1);
                         return true;
@@ -111,7 +107,7 @@ public class showHistoric extends AppCompatActivity {
 
     //setting adapter for recyclerView
     private void setAdapter() {
-        recyclerAdapter adapter = new recyclerAdapter(listener, familyHistoric, "familyHistoric","none");
+        RecyclerAdapter adapter = new RecyclerAdapter(listener, familyHistoric, "familyHistoric","none");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         familyHistoricRecyclerView.setLayoutManager(layoutManager);
         familyHistoricRecyclerView.setItemAnimator(new DefaultItemAnimator());

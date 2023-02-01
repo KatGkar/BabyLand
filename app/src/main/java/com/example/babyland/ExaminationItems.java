@@ -1,13 +1,13 @@
 package com.example.babyland;
 
-public class examinationItems {
+public class ExaminationItems {
     String name, ageGap;
     int details;
 
-    public examinationItems() {
+    public ExaminationItems() {
     }
 
-    public examinationItems(String name, String ageGap, Integer details) {
+    public ExaminationItems(String name, String ageGap, Integer details) {
         this.name = name;
         this.ageGap = ageGap;
         this.details = details;

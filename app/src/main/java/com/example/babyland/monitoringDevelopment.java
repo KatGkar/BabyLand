@@ -2,22 +2,16 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -39,26 +33,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class MonitoringDevelopment extends AppCompatActivity {
+public class monitoringDevelopment extends AppCompatActivity {
 
     private TextView dateText, doctorText;
     private EditText weightText, lengthText, headCircumferenceText, observationText;
-    private ArrayList<developmentalItems> developmentalMonitoring;
-    private ArrayList<examinationItems> examination;
-    private ArrayList<sustenanceItems> sustenance;
+    private ArrayList<DevelopmentalItems> developmentalMonitoring;
+    private ArrayList<ExaminationItems> examination;
+    private ArrayList<SustenanceItems> sustenance;
     private Button sustenanceButton, examinationButton, developmentalMonitoringButton, observationsButton, saveMeasurementButton;
     private Switch hearingSwitch;
     private RelativeLayout generalLayout, sustenanceLayout, examinationLayout, developmentalLayout, observationsLayout;
     private CalendarView calendarView;
     private RecyclerView recyclerViewExamination, recyclerViewDevelopmental, recyclerViewSustenance;
-    private recyclerAdapter.recyclerVewOnClickListener listener;
+    private RecyclerAdapter.recyclerVewOnClickListener listener;
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private String babyAmka, ageType, age, currentUserUID;
@@ -146,6 +139,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
         sustenanceLayout.setVisibility(View.INVISIBLE);
         examinationLayout.setVisibility(View.INVISIBLE);
         developmentalLayout.setVisibility(View.INVISIBLE);
+        observationsLayout.setVisibility(View.INVISIBLE);
 
         //get number of devs on database
         monitoringDevNumber = getDevNumber();
@@ -154,16 +148,12 @@ public class MonitoringDevelopment extends AppCompatActivity {
         //getting current date
         Calendar cal = Calendar.getInstance();
         int yy = cal.get(Calendar.YEAR);
-        int mm = cal.get(Calendar.MONTH);
+        int mm = cal.get(Calendar.MONTH) + 1;
         int dd = cal.get(Calendar.DAY_OF_MONTH);
-
         // set current date into textview
         String d = String.valueOf(dd);
         if (dd <= 9) {
             d = "0" + d;
-        }
-        if (mm < 12) {
-            mm++;
         }
         String m = String.valueOf(mm);
         if (mm <= 9) {
@@ -192,18 +182,15 @@ public class MonitoringDevelopment extends AppCompatActivity {
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
                     //date1 is selected date
+                    month = month+1;
                     Date date1 = sdf.parse(dayOfMonth + "/" + month + "/" + year);
                     int da = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                    int mo = Calendar.getInstance().get(Calendar.MONTH);
+                    int mo = Calendar.getInstance().get(Calendar.MONTH) + 1;
                     int ye = Calendar.getInstance().get(Calendar.YEAR);
                     //date2 is date now
                     Date date2 = sdf.parse(da + "/" + mo + "/" + ye);
                     if (date1.compareTo(date2) > 0) {
-                        //if date selected is after date now
-                        mo++;
-                        if (mo == 13) {
-                            mo = 12;
-                        }
+                        //if dateSelected is after dateNow
                         if (mo <= 9) {
                             m = "0" + mo;
                         } else {
@@ -214,14 +201,8 @@ public class MonitoringDevelopment extends AppCompatActivity {
                         } else {
                             d = String.valueOf(da);
                         }
-                        year = Calendar.getInstance().get(Calendar.YEAR);
-
                     } else {
                         //if date selected is now or if date selected is before date now
-                        month++;
-                        if (month == 13) {
-                            month = 12;
-                        }
                         if (month <= 9) {
                             m = "0" + month;
                         } else {
@@ -300,11 +281,11 @@ public class MonitoringDevelopment extends AppCompatActivity {
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_add:
-                        Intent intent = new Intent(MonitoringDevelopment.this, AddChildToDoctor.class);
+                        Intent intent = new Intent(monitoringDevelopment.this, addChildToDoctor.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_account:
-                        Intent intent1 = new Intent(MonitoringDevelopment.this, UserAccount.class);
+                        Intent intent1 = new Intent(monitoringDevelopment.this, userAccount.class);
                         intent1.putExtra("user", "doctor");
                         startActivity(intent1);
                         return true;
@@ -347,7 +328,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 String text=editable.toString();
-                if (!text.matches("^[0-9]+$")) {
+                if (!text.matches("^\\d\\d?[,.]\\d\\d?$")) {
                     error=true;
                     weightText.setError("Only numbers please!!");
                 }
@@ -367,7 +348,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 String text=editable.toString();
-                if (!text.matches("^[0-9]+$")) {
+                if (!text.matches("^\\d\\d?[,.]\\d\\d?$")) {
                     error=true;
                     lengthText.setError("Only numbers please!!");
                 }
@@ -387,7 +368,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 String text=editable.toString();
-                if (!text.matches("^[0-9]+$")) {
+                if (!text.matches("^\\d\\d?[,.]\\d\\d?$")) {
                     error=true;
                     headCircumferenceText.setError("Only numbers please!!");
                 }
@@ -406,36 +387,36 @@ public class MonitoringDevelopment extends AppCompatActivity {
     //loads data from list into recyclerView
     private void setAdapter(String id) {
         if (id.equals("examination")) {
-            recyclerAdapter adapter = new recyclerAdapter(listener, examination, "examination","none");
+            RecyclerAdapter adapter = new RecyclerAdapter(listener, examination, "examination","none");
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerViewExamination.setLayoutManager(layoutManager);
             recyclerViewExamination.setItemAnimator(new DefaultItemAnimator());
             recyclerViewExamination.setAdapter(adapter);
-            adapter.radioButtonChange(new recyclerAdapter.radioButtonChange() {
+            adapter.radioButtonChange(new RecyclerAdapter.radioButtonChange() {
                 @Override
                 public void rChange(int id, int position) {
                     examination.get(position).setDetails(id);
                 }
             });
         } else if (id.equals("developmental")) {
-            recyclerAdapter adapter = new recyclerAdapter(listener, developmentalMonitoring, "developmental","none");
+            RecyclerAdapter adapter = new RecyclerAdapter(listener, developmentalMonitoring, "developmental","none");
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerViewDevelopmental.setLayoutManager(layoutManager);
             recyclerViewDevelopmental.setItemAnimator(new DefaultItemAnimator());
             recyclerViewDevelopmental.setAdapter(adapter);
-            adapter.textChange(new recyclerAdapter.textChange() {
+            adapter.textChange(new RecyclerAdapter.textChange() {
                 @Override
                 public void textChanged(int position, String text) {
                     developmentalMonitoring.get(position).setDetails(text);
                 }
             });
         }else if(id.equals("sustenance")){
-            recyclerAdapter adapter = new recyclerAdapter(listener, sustenance, "sustenance","none");
+            RecyclerAdapter adapter = new RecyclerAdapter(listener, sustenance, "sustenance","none");
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerViewSustenance.setLayoutManager(layoutManager);
             recyclerViewSustenance.setItemAnimator(new DefaultItemAnimator());
             recyclerViewSustenance.setAdapter(adapter);
-            adapter.sustenanceCheck(new recyclerAdapter.sustenanceCheck() {
+            adapter.sustenanceCheck(new RecyclerAdapter.sustenanceCheck() {
                 @Override
                 public void sustenanceChecked(int position, Boolean value) {
                     sustenance.get(position).setChecked(value);
@@ -463,7 +444,8 @@ public class MonitoringDevelopment extends AppCompatActivity {
             calendarView.setVisibility(View.INVISIBLE);
             generalLayout.setVisibility(View.VISIBLE);
         }else if(generalLayout.getVisibility() == View.VISIBLE){
-            super.onBackPressed();
+            Intent intent = new Intent(monitoringDevelopment.this, mainScreenDoctor.class);
+            startActivity(intent);
         }
     }
 
@@ -477,7 +459,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         for (DataSnapshot sn : snapshot.getChildren()) {
-                            GenericTypeIndicator<examinationItems> t = new GenericTypeIndicator<examinationItems>() {
+                            GenericTypeIndicator<ExaminationItems> t = new GenericTypeIndicator<ExaminationItems>() {
                             };
                             if(Integer.valueOf(age) <=4){
                                 examination.add(sn.getValue(t));
@@ -503,7 +485,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         for (DataSnapshot sn : snapshot.getChildren()) {
-                            GenericTypeIndicator<developmentalItems> t = new GenericTypeIndicator<developmentalItems>() {
+                            GenericTypeIndicator<DevelopmentalItems> t = new GenericTypeIndicator<DevelopmentalItems>() {
                             };
                             if(sn.getValue(t).getAgeGap().equals(age)){
                                 developmentalMonitoring.add(sn.getValue(t));
@@ -525,9 +507,9 @@ public class MonitoringDevelopment extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         for (DataSnapshot sn : snapshot.getChildren()) {
-                            GenericTypeIndicator<sustenanceItems> t = new GenericTypeIndicator<sustenanceItems>() {
+                            GenericTypeIndicator<SustenanceItems> t = new GenericTypeIndicator<SustenanceItems>() {
                             };
-                            sustenanceItems s = sn.getValue(t);
+                            SustenanceItems s = sn.getValue(t);
                             String prev ="";
                             if(age.equals("1")){
                                 age="0";
@@ -608,7 +590,7 @@ public class MonitoringDevelopment extends AppCompatActivity {
             reference.child(String.valueOf(monitoringDevNumber +1)).setValue(dev);
             onBackPressed();
         }else{
-            Toast.makeText(this, "Something is wrong.Please check all fields!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Something is wrong.Please check all fields and try again!!", Toast.LENGTH_SHORT).show();
         }
     }
 

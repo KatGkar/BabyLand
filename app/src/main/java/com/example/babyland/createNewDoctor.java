@@ -2,8 +2,6 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +11,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,7 +73,7 @@ public class createNewDoctor extends AppCompatActivity {
                 String text = editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ ]+$")) {
                     flagNext=false;
-                    nameEditText.setError("Only numbers please!!");
+                    nameEditText.setError("Type only letters please!!");
                 }
             }
         });
@@ -96,7 +93,7 @@ public class createNewDoctor extends AppCompatActivity {
                 String text=editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
                     flagNext=false;
-                    surnameEditText.setError("Only letters please!!");
+                    surnameEditText.setError("Type only letters please!!");
                 }
             }
         });
@@ -116,7 +113,7 @@ public class createNewDoctor extends AppCompatActivity {
                 String text=editable.toString();
                 if (!text.matches("^[0-9]+$")) {
                     flagNext=false;
-                    medicalIDEditText.setError("Only numbers please!!");
+                    medicalIDEditText.setError("Type only numbers please!!");
                 }
             }
         });
@@ -136,7 +133,7 @@ public class createNewDoctor extends AppCompatActivity {
                 String text=editable.toString();
                 if (!text.matches("^[0-9]+$")) {
                     flagNext=false;
-                    phoneNumberEditText.setError("Only numbers please!!");
+                    phoneNumberEditText.setError("Type only numbers please!!");
                 }
             }
         });
@@ -200,7 +197,7 @@ public class createNewDoctor extends AppCompatActivity {
             reference = database.getReference("doctor");
             reference.child(currentUserUID).setValue(doctor);
             Toast.makeText(this, "Info saved successfully!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(createNewDoctor.this, MainScreenDoctor.class);
+            Intent intent = new Intent(createNewDoctor.this, mainScreenDoctor.class);
             startActivity(intent);
             finish();
         }else if(!flagUnique){

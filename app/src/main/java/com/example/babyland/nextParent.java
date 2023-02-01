@@ -36,14 +36,13 @@ import java.util.Calendar;
 
 public class nextParent extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    private TextView userProfile;
     private EditText nameParentTwo, surnameParentTwo, amkaParentTwo, phoneNumberParentTwo, emailAddressParentTwo,
             dateOfBirthParentTwo;
     private String  nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne,
             bloodTypeParentOne, currentUserUID;
     private String[] bloodType = {"Blood Type", "A RhD positive (A+)", "A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
-    private int[] bloodImages = {R.drawable.blood_type_black, R.drawable.a_plus, R.drawable.a_minus,
+    private int[] bloodImages = {R.drawable.blood_type, R.drawable.a_plus, R.drawable.a_minus,
             R.drawable.b_minus, R.drawable.b_plus, R.drawable.o_plus, R.drawable.o_minus,
             R.drawable.ab_minus, R.drawable.ab_minus};
     private CalendarView calendar;
@@ -73,7 +72,6 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
         bloodTypeParentOne = extras.getString("bloodType");
 
         //getting ids from layout
-        userProfile = findViewById(R.id.profileUser2);
         nameParentTwo = findViewById(R.id.nameParentTwo);
         surnameParentTwo = findViewById(R.id.surnameParentTwo);
         amkaParentTwo = findViewById(R.id.amkaParentTwo);
@@ -100,9 +98,6 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
         //getting user UID from database
         currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        //UI
-        userProfile.setPaintFlags(userProfile.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
         //setting blood types in list
         CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),bloodImages,bloodType);
         bloodTypeParentTwoSpinner.setAdapter(customAdapter);
@@ -112,13 +107,19 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
         //getting current date
         Calendar cal = Calendar.getInstance();
         int yy = cal.get(Calendar.YEAR);
-        int mm = cal.get(Calendar.MONTH);
+        int mm = cal.get(Calendar.MONTH) + 1;
         int dd = cal.get(Calendar.DAY_OF_MONTH);
-
+        String d = String.valueOf(dd);
+        if (dd <= 9) {
+            d = "0" + d;
+        }
+        String m = String.valueOf(mm);
+        if (mm <= 9) {
+            m = "0" + m;
+        }
         // set current date into textview
         dateOfBirthParentTwo.setHint(new StringBuilder()
-                .append(dd).append(" ").append("/").append(mm + 1).append("/")
-                .append(yy));
+                .append(d).append(" ").append("/").append(m).append("/").append(yy));
 
         //onclick listener for calendar opening
         calendarButton.setOnClickListener(new View.OnClickListener() {
@@ -134,13 +135,17 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
             {
-                String m="1";
-                String d="1";
-                if(month<=9){
-                    m = "0"+ month;
+                String m, d;
+                month = month + 1;
+                if (month <= 9) {
+                    m = "0" + month;
+                } else {
+                    m = String.valueOf(month);
                 }
-                if(dayOfMonth<=9){
-                    d = "0"+dayOfMonth;
+                if (dayOfMonth <= 9) {
+                    d = "0" + dayOfMonth;
+                } else {
+                    d = String.valueOf(dayOfMonth);
                 }
                 dateOfBirthParentTwo.setText(d + "/" + m + "/" + year);
                 calendar.setVisibility(View.INVISIBLE);
@@ -161,40 +166,46 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!s.toString().equals(current)){
+                if (!s.toString().equals(current)) {
                     String clean = s.toString().replaceAll("[^\\d.]", "");
                     String cleanC = current.replaceAll("[^\\d.]", "");
 
                     int cl = clean.length();
                     int sel = cl;
-                    for(int i=2; i<=cl && i<6; i+=2){
+                    for (int i = 2; i <= cl && i < 6; i += 2) {
                         sel++;
                     }
-                    if(clean.equals(cleanC)){
+                    if (clean.equals(cleanC)) {
                         sel--;
                     }
-                    if(clean.length()<8){
+                    if (clean.length() < 8) {
                         clean = clean + ddmmyyyy.substring(clean.length());
-                    }else{
-                        int day = Integer.parseInt(clean.substring(0,2));
-                        int month = Integer.parseInt(clean.substring(2,4));
-                        int year = Integer.parseInt(clean.substring(4,8));
+                    } else {
+                        int day = Integer.parseInt(clean.substring(0, 2));
+                        int month = Integer.parseInt(clean.substring(2, 4));
+                        int year = Integer.parseInt(clean.substring(4, 8));
 
                         if(month>12){
                             month = 12;
                         }
-                        cal.set(Calendar.MONTH, month-1);
+                        cal.set(Calendar.MONTH, month);
 
-                        year = (year<1970)?1970:(year>2010)?2010:year;
+                        //Birth year 1970-2010
+                        if(year<1970){
+                            year=1970;
+                            Toast.makeText(nextParent.this, "Birth year should be between 1970 and 2010", Toast.LENGTH_SHORT).show();
+                        }else if(year>2010){
+                            year = 2010;
+                            Toast.makeText(nextParent.this, "Birth year should be between 1970 and 2010", Toast.LENGTH_SHORT).show();
+                        }
                         cal.set(Calendar.YEAR, year);
-
-                        day = (day>cal.getActualMaximum(Calendar.DATE))?cal.getActualMaximum((Calendar.DATE)):day;
+                        day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum((Calendar.DATE)) : day;
                         clean = String.format("%02d%02d%02d", day, month, year);
                     }
 
-                    clean = String.format("%s/%s/%s", clean.substring(0,2), clean.substring(2,4), clean.substring(4,8));
+                    clean = String.format("%s/%s/%s", clean.substring(0, 2), clean.substring(2, 4), clean.substring(4, 8));
 
-                    sel = sel<0?0:sel;
+                    sel = sel < 0 ? 0 : sel;
                     current = clean;
                     dateOfBirthParentTwo.setText(current);
                     dateOfBirthParentTwo.setSelection(sel<current.length()? sel : current.length());
@@ -238,7 +249,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
                 String text=editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
                     flagNext = false;
-                    nameParentTwo.setError("Only letters please!!");
+                    nameParentTwo.setError("Type only letters please!!");
                 }
             }
         });
@@ -258,7 +269,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
                 String text=editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
                     flagNext = false;
-                    surnameParentTwo.setError("Only letters please!!");
+                    surnameParentTwo.setError("Type only letters please!!");
                 }
             }
         });
@@ -278,7 +289,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
                 String text=editable.toString();
                 if (!text.matches("^[0-9]+$")) {
                     flagNext = false;
-                    phoneNumberParentTwo.setError("Only numbers please!!");
+                    phoneNumberParentTwo.setError("Type only numbers please!!");
                 }
             }
         });
@@ -298,7 +309,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
                 String text=editable.toString();
                 if (!text.matches("^[0-9]+$")) {
                     flagNext = false;
-                    amkaParentTwo.setError("Only numbers please!!");
+                    amkaParentTwo.setError("Type only numbers please!!");
                 }
             }
         });
@@ -328,7 +339,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
             flagNext = false;
         }
         if (TextUtils.isEmpty(amkaParentTwo.getText())|| (amkaParentTwo.getText().length() != 11)) {
-           amkaParentTwo.setError("Amka should have length 11 numbers!");
+           amkaParentTwo.setError("Amka number should have length 11 numbers!");
            amkaParentTwo.requestFocus();
            flagNext = false;
         }
@@ -346,6 +357,11 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
             Toast.makeText(this, "Please choose a blood type!!", Toast.LENGTH_SHORT).show();
             bloodTypeParentTwoSpinner.requestFocus();
             flagNext=false;
+        }
+        if(!dateOfBirthParentTwo.getText().toString().matches("^[0-9]+(\\/[0-9]+)*$")) {
+            flagNext=false;
+            dateOfBirthParentTwo.requestFocus();
+            Toast.makeText(this, "Please fill in correct birth date!", Toast.LENGTH_SHORT).show();
         }
 
         //check if amka number is unique
@@ -388,7 +404,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
                         reference.child(currentUserUID).setValue(p);
                         //showMessage("Success","User created successfully!!");
                         //go to app main screen
-                        Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
+                        Intent intent = new Intent(getApplicationContext(), mainScreenParents.class);
                         startActivity(intent);
                         finish();
 
@@ -417,7 +433,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
                            p1 = new Parent(nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne, bloodTypeParentOne, parent.getAmka(), true, kids);
                            reference = FirebaseDatabase.getInstance().getReference("parent");
                            reference.child(currentUserUID).setValue(p1);
-                           Intent in = new Intent(getApplicationContext(), MainScreenParents.class);
+                           Intent in = new Intent(getApplicationContext(), mainScreenParents.class);
                            startActivity(in);
                            finish();
 
@@ -429,7 +445,7 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
            };
            try {
                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-               builder.setMessage("Parent exists already continue with this parent??").setPositiveButton("Yes", dialogClickListener)
+               builder.setMessage("Parent exists already. Do you want to continue with this parent??").setPositiveButton("Yes", dialogClickListener)
                        .setNegativeButton("No", dialogClickListener).show();
            }catch (Exception e){
                System.out.println(e.getLocalizedMessage());
@@ -444,8 +460,8 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
                reference = database.getReference("parent");
                reference.child(currentUserUID).setValue(p1);
                reference.child(amkaParentTwo.getText().toString()).setValue(p2);
-               Toast.makeText(this, "User created successfully!!", Toast.LENGTH_SHORT).show();
-               Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
+               Toast.makeText(this, "Info saved successfully!!", Toast.LENGTH_SHORT).show();
+               Intent intent = new Intent(getApplicationContext(), mainScreenParents.class);
                startActivity(intent);
            }
        }

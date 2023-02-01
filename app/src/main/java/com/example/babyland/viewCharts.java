@@ -5,15 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import com.firebase.ui.auth.data.model.User;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -65,10 +62,6 @@ public class viewCharts extends AppCompatActivity {
         //UI
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
-        //setting visibilities
-        lineChart.setVisibility(View.INVISIBLE);
-        buttonsRelativeLayout.setVisibility(View.VISIBLE);
-
         //setting database
         database = FirebaseDatabase.getInstance();
 
@@ -81,9 +74,21 @@ public class viewCharts extends AppCompatActivity {
         dataValuesChild = new ArrayList<>();
         devs = new ArrayList<>();
         dataSets = new ArrayList<>();
+        dataValues.clear();
+        dataValues2.clear();
+        dataValues3.clear();
+        dataValues4.clear();
+        dataValues5.clear();
+        dataValuesChild.clear();
+        devs.clear();
+        dataSets.clear();
 
         //find baby sex
         findBabySex();
+
+        //setting visibilities
+        lineChart.setVisibility(View.INVISIBLE);
+        buttonsRelativeLayout.setVisibility(View.VISIBLE);
 
         //getting baby developments
        reference =database.getReference("monitoringDevelopment");
@@ -116,6 +121,7 @@ public class viewCharts extends AppCompatActivity {
                 dataValues3.clear();
                 dataValues4.clear();
                 dataValues5.clear();
+                dataValuesChild.clear();
                 showStatistics("length");
             }
         });
@@ -129,6 +135,7 @@ public class viewCharts extends AppCompatActivity {
                 dataValues3.clear();
                 dataValues4.clear();
                 dataValues5.clear();
+                dataValuesChild.clear();
                 showStatistics("weight");
             }
         });
@@ -150,20 +157,20 @@ public class viewCharts extends AppCompatActivity {
                         return true;
                     case R.id.navigation_add:
                         if(userType.equals("doctor")){
-                            Intent intent = new Intent(viewCharts.this, AddChildToDoctor.class);
+                            Intent intent = new Intent(viewCharts.this, addChildToDoctor.class);
                             startActivity(intent);
                         }else{
-                            Intent intent = new Intent(getApplicationContext(), AddBaby.class);
+                            Intent intent = new Intent(getApplicationContext(), addBaby.class);
                             startActivity(intent);
                         }
                         return true;
                     case R.id.navigation_account:
                         if(userType.equals("doctor")){
-                            Intent intent = new Intent(viewCharts.this, UserAccount.class);
+                            Intent intent = new Intent(viewCharts.this, userAccount.class);
                             intent.putExtra("user", "doctor");
                             startActivity(intent);
                         }else{
-                            Intent intent = new Intent(viewCharts.this, UserAccount.class);
+                            Intent intent = new Intent(viewCharts.this, userAccount.class);
                             intent.putExtra("user", "parent");
                             startActivity(intent);
                         }
@@ -176,6 +183,7 @@ public class viewCharts extends AppCompatActivity {
 
     //showing line chart
     private void completeLineChart(String type){
+        dataSets.clear();
         buttonsRelativeLayout.setVisibility(View.INVISIBLE);
         lineChart.setVisibility(View.VISIBLE);
         //setting babies statistics to array list
@@ -290,11 +298,17 @@ public class viewCharts extends AppCompatActivity {
             lineChart.setVisibility(View.INVISIBLE);
             buttonsRelativeLayout.setVisibility(View.VISIBLE);
         }else{
-            super.onBackPressed();
+            if(userType.equals("doctor")){
+                Intent intent = new Intent(viewCharts.this, mainScreenDoctor.class);
+                startActivity(intent);
+            }else{
+                Intent intent = new Intent(viewCharts.this, mainScreenParents.class);
+                startActivity(intent);
+            }
         }
     }
 
-    //on rsume page
+    //on resume page
     @Override
     protected void onResume() {
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);

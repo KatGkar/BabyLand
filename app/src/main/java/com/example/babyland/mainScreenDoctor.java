@@ -2,16 +2,12 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +31,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MainScreenDoctor extends AppCompatActivity {
+public class mainScreenDoctor extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference reference;
@@ -44,7 +40,7 @@ public class MainScreenDoctor extends AppCompatActivity {
     private ArrayList<Baby> doctorsChildren;
     private RelativeLayout doctorsChildrenLayout, showChildRelativeLayout, deleteChildVerificationRelativeLayout, noChildRelativeLayout;
     private RecyclerView doctorsChildrenRecyclerView;
-    private recyclerAdapter.recyclerVewOnClickListener listener;
+    private RecyclerAdapter.recyclerVewOnClickListener listener;
     private Button addDevelopmentsButton, viewParentsButton, showDevelopmentsButton, viewFamilyHistoricButton, vaccinationsButton,
             deleteChildButton, deleteChildVerificationButton, noChildButton, viewChartButton;
     private TextView nameTextView, amkaTextView, dateOfBirthTextView;
@@ -116,11 +112,11 @@ public class MainScreenDoctor extends AppCompatActivity {
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_add:
-                        Intent intent = new Intent(MainScreenDoctor.this, AddChildToDoctor.class);
+                        Intent intent = new Intent(mainScreenDoctor.this, addChildToDoctor.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_account:
-                        Intent intent1 = new Intent(MainScreenDoctor.this, UserAccount.class);
+                        Intent intent1 = new Intent(mainScreenDoctor.this, userAccount.class);
                         intent1.putExtra("user", "doctor");
                         startActivity(intent1);
                         return true;
@@ -133,7 +129,7 @@ public class MainScreenDoctor extends AppCompatActivity {
         noChildButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainScreenDoctor.this, AddChildToDoctor.class);
+                Intent intent = new Intent(mainScreenDoctor.this, addChildToDoctor.class);
                 startActivity(intent);
             }
         });
@@ -163,7 +159,7 @@ public class MainScreenDoctor extends AppCompatActivity {
             deleteChildVerificationRelativeLayout.setVisibility(View.INVISIBLE);
             showChildRelativeLayout.setVisibility(View.VISIBLE);
         }else{
-            Intent intent = new Intent(MainScreenDoctor.this, LoginRegister.class);
+            Intent intent = new Intent(mainScreenDoctor.this, loginRegister.class);
             startActivity(intent);
         }
 
@@ -206,7 +202,7 @@ public class MainScreenDoctor extends AppCompatActivity {
     //setting adapter for recyclerView
     private void setAdapter() {
         setOnClickListener();
-        recyclerAdapter adapter = new recyclerAdapter(listener, doctorsChildren, "availableChildren","none");
+        RecyclerAdapter adapter = new RecyclerAdapter(listener, doctorsChildren, "availableChildren","none");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         doctorsChildrenRecyclerView.setLayoutManager(layoutManager);
         doctorsChildrenRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -214,7 +210,7 @@ public class MainScreenDoctor extends AppCompatActivity {
     }
 
     private void setOnClickListener() {
-        listener = new recyclerAdapter.recyclerVewOnClickListener() {
+        listener = new RecyclerAdapter.recyclerVewOnClickListener() {
             @Override
             public void onClick(View view, int position) {
                 //show Details
@@ -225,9 +221,9 @@ public class MainScreenDoctor extends AppCompatActivity {
                 dateOfBirthTextView.setText("Birth date: " +doctorsChildren.get(position).getDateOfBirth());
                 String sex= doctorsChildren.get(position).getSex();
                 if(sex.equals("BOY")){
-                    Picasso.get().load(R.drawable._02_baby_boy_1).into(sexImageView);
+                    Picasso.get().load(R.drawable.male).error(R.drawable.male).into(sexImageView);
                 }else{
-                    Picasso.get().load(R.drawable.baby_girl1).into(sexImageView);
+                    Picasso.get().load(R.drawable.female).error(R.drawable.female).into(sexImageView);
                 }
                 addDevelopmentsButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -334,7 +330,7 @@ public class MainScreenDoctor extends AppCompatActivity {
             ageType = "months";
             age = "12";
         }
-        Intent intent = new Intent(MainScreenDoctor.this, MonitoringDevelopment.class);
+        Intent intent = new Intent(mainScreenDoctor.this, monitoringDevelopment.class);
         intent.putExtra("babyAmka", babyAmka);
         intent.putExtra("ageType", ageType);
         intent.putExtra("age", age);
@@ -343,28 +339,29 @@ public class MainScreenDoctor extends AppCompatActivity {
 
     //view parents button
     private void viewParents(String babyAmka){
-        Intent intent = new Intent(MainScreenDoctor.this, viewParentInfo.class);
+        Intent intent = new Intent(mainScreenDoctor.this, viewParentInfo.class);
         intent.putExtra("babyAmka", babyAmka);
         startActivity(intent);
     }
 
     //show developments button
     private void showDevelopments(String babyAmka){
-        Intent intent = new Intent(MainScreenDoctor.this, showDevelopmentsList.class);
+        Intent intent = new Intent(mainScreenDoctor.this, showDevelopmentsList.class);
         intent.putExtra("babyAmka", babyAmka);
+        intent.putExtra("userType", "doctor");
         startActivity(intent);
     }
 
     //view family historic button
     private void viewFamilyHistoric(String babyAmka){
-        Intent intent = new Intent(MainScreenDoctor.this, showHistoric.class);
+        Intent intent = new Intent(mainScreenDoctor.this, showHistoric.class);
         intent.putExtra("babyAmka", babyAmka);
         startActivity(intent);
     }
 
     //vaccinations button
     private void vaccinations(String babyAmka){
-        Intent intent = new Intent(MainScreenDoctor.this, viewVaccination.class);
+        Intent intent = new Intent(mainScreenDoctor.this, viewVaccination.class);
         intent.putExtra("babyAmka", babyAmka);
         intent.putExtra("userType", "doctor");
         startActivity(intent);
@@ -382,12 +379,12 @@ public class MainScreenDoctor extends AppCompatActivity {
                     doctorsChildren.remove(position);
                     reference = database.getReference("doctor");
                     reference.child(currentUserUID).child("kids").setValue(doctorsChildren);
-                    Toast.makeText(MainScreenDoctor.this, "Child deleted successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainScreenDoctor.this, "Child deleted successfully!", Toast.LENGTH_SHORT).show();
                     getChildren();
                     deleteChildVerificationRelativeLayout.setVisibility(View.INVISIBLE);
                     doctorsChildrenLayout.setVisibility(View.VISIBLE);
                 }else{
-                    Toast.makeText(MainScreenDoctor.this, "Amka number is not correct. Please try again!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainScreenDoctor.this, "Amka number is not correct! Please try again", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -395,7 +392,7 @@ public class MainScreenDoctor extends AppCompatActivity {
 
     //view chart button
     private void viewChart(String babyAmka){
-        Intent intent = new Intent(MainScreenDoctor.this, viewCharts.class);
+        Intent intent = new Intent(mainScreenDoctor.this, viewCharts.class);
         intent.putExtra("babyAmka", babyAmka);
         intent.putExtra("userType", "doctor");
         startActivity(intent);

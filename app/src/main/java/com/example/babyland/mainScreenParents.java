@@ -2,14 +2,10 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MainScreenParents extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class mainScreenParents extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private FirebaseDatabase database;
     private DatabaseReference reference, reference1;
@@ -120,7 +116,7 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
         addBabyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddBaby.class);
+                Intent intent = new Intent(getApplicationContext(), addBaby.class);
                 startActivity(intent);
             }
         });
@@ -129,7 +125,7 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
         deleteChildButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), deleteChildActivity.class);
+                Intent intent = new Intent(getApplicationContext(), deleteChild.class);
                 startActivity(intent);
             }
         });
@@ -138,7 +134,7 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
         chartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainScreenParents.this, viewCharts.class);
+                Intent intent = new Intent(mainScreenParents.this, viewCharts.class);
                 intent.putExtra("babyAmka", chooseChildSpinner.getSelectedItem().toString());
                 intent.putExtra("userType", "parent");
                 startActivity(intent);
@@ -157,7 +153,7 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
         viewVaccinesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainScreenParents.this, viewVaccination.class);
+                Intent intent = new Intent(mainScreenParents.this, viewVaccination.class);
                 intent.putExtra("babyAmka", chooseChildSpinner.getSelectedItem().toString());
                 intent.putExtra("userType", "parent");
                 startActivity(intent);
@@ -180,11 +176,11 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_add:
-                        Intent intent = new Intent(getApplicationContext(), AddBaby.class);
+                        Intent intent = new Intent(getApplicationContext(), addBaby.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_account:
-                        Intent intent1 = new Intent(MainScreenParents.this, UserAccount.class);
+                        Intent intent1 = new Intent(mainScreenParents.this, userAccount.class);
                         intent1.putExtra("user", "parent");
                         startActivity(intent1);
                         return true;
@@ -246,7 +242,7 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
             doctorInfoRelativeLayout.setVisibility(View.INVISIBLE);
             mainScreenLayout.setVisibility(View.VISIBLE);
         }else{
-            Intent intent = new Intent(MainScreenParents.this, LoginRegister.class);
+            Intent intent = new Intent(mainScreenParents.this, loginRegister.class);
             startActivity(intent);
         }
     }
@@ -256,6 +252,7 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
     protected void onResume() {
         super.onResume();
         mainScreenLayout.setVisibility(View.VISIBLE);
+        doctorInfoRelativeLayout.setVisibility(View.INVISIBLE);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         reference = database.getReference("parent");
         reference.addValueEventListener(new ValueEventListener() {
@@ -419,6 +416,7 @@ public class MainScreenParents extends AppCompatActivity implements AdapterView.
     public void showDevelopment(View view){
         Intent intent = new Intent(this, showDevelopmentsList.class);
         intent.putExtra("babyAmka", chooseChildSpinner.getSelectedItem().toString());
+        intent.putExtra("userType", "parent");
         startActivity(intent);
     }
 

@@ -2,13 +2,12 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,13 +17,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class DoctorParentChoose extends AppCompatActivity {
+public class doctorParentChoose extends AppCompatActivity {
 
     private ImageView doctorButton, parentButton, loadingImageView;
     private TextView chooseTypeTextView;
     private String currentUserUID;
     private FirebaseDatabase database;
     private DatabaseReference reference;
+    private RelativeLayout chooseRelativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +36,13 @@ public class DoctorParentChoose extends AppCompatActivity {
         parentButton = findViewById(R.id.parentsButton);
         loadingImageView = findViewById(R.id.loadingImageView);
         chooseTypeTextView = findViewById(R.id.chooseTypeTextView);
+        chooseRelativeLayout = findViewById(R.id.chooseRelativeLayout);
 
         //UI
-        chooseTypeTextView.setText("Please choose user type...");
+        chooseTypeTextView.setText("Please choose user type to continue...");
 
         //setting visibilities
-        doctorButton.setVisibility(View.INVISIBLE);
-        parentButton.setVisibility(View.INVISIBLE);
-        chooseTypeTextView.setVisibility(View.INVISIBLE);
+        chooseRelativeLayout.setVisibility(View.INVISIBLE);
         loadingImageView.setVisibility(View.VISIBLE);
 
         //setting database
@@ -61,7 +60,7 @@ public class DoctorParentChoose extends AppCompatActivity {
                 if(snapshot!=null){
                     for(DataSnapshot snapshots:snapshot.getChildren()){
                         if(snapshots.getKey().equals(currentUserUID)){
-                            Intent intent = new Intent(DoctorParentChoose.this, MainScreenDoctor.class);
+                            Intent intent = new Intent(doctorParentChoose.this, mainScreenDoctor.class);
                             startActivity(intent);
                         }
                     }
@@ -82,7 +81,7 @@ public class DoctorParentChoose extends AppCompatActivity {
                 if(snapshot!=null){
                     for(DataSnapshot snapshots:snapshot.getChildren()){
                         if(snapshots.getKey().equals(currentUserUID)){
-                            Intent intent = new Intent(DoctorParentChoose.this, MainScreenParents.class);
+                            Intent intent = new Intent(doctorParentChoose.this, mainScreenParents.class);
                             startActivity(intent);
                         }
                     }
@@ -100,7 +99,7 @@ public class DoctorParentChoose extends AppCompatActivity {
         doctorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DoctorParentChoose.this, createNewDoctor.class);
+                Intent intent = new Intent(doctorParentChoose.this, createNewDoctor.class);
                 startActivity(intent);
             }
         });
@@ -109,7 +108,7 @@ public class DoctorParentChoose extends AppCompatActivity {
         parentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DoctorParentChoose.this, createNewParent.class);
+                Intent intent = new Intent(doctorParentChoose.this, createNewParent.class);
                 startActivity(intent);
             }
         });
@@ -119,15 +118,13 @@ public class DoctorParentChoose extends AppCompatActivity {
     //if it is first time log in for user
     private void showLayout(){
         loadingImageView.setVisibility(View.INVISIBLE);
-        chooseTypeTextView.setVisibility(View.VISIBLE);
-        doctorButton.setVisibility(View.VISIBLE);
-        parentButton.setVisibility(View.VISIBLE);
+        chooseRelativeLayout.setVisibility(View.VISIBLE);
     }
 
     //on back pressed
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(DoctorParentChoose.this, LoginRegister.class);
+        Intent intent = new Intent(doctorParentChoose.this, loginRegister.class);
         startActivity(intent);
     }
 }

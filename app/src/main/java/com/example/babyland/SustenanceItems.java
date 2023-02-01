@@ -1,16 +1,16 @@
 package com.example.babyland;
 
-public class sustenanceItems {
+public class SustenanceItems {
     String name, ageGap;
     Boolean checked;
 
-    public sustenanceItems(String name, String ageGap, Boolean checked) {
+    public SustenanceItems(String name, String ageGap, Boolean checked) {
         this.name = name;
         this.ageGap = ageGap;
         this.checked = checked;
     }
 
-    public sustenanceItems(){}
+    public SustenanceItems(){}
 
     public String getName() {
         return name;

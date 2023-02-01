@@ -144,7 +144,7 @@
                 android:id="@+id/dateOfBirthParentInfoTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/calendar_black"
+                android:drawableLeft="@drawable/calendar"
                 android:fontFamily="@font/bai_jamjuree"
                 android:gravity="center"
                 android:textAlignment="center"

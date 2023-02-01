@@ -13,7 +13,6 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -40,14 +39,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-public class UserAccount extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class userAccount extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private TextView userFullnameTextView, userEmailTextView, userPhoneNumberTextView, userKidsTextView, userBirthDateTextView,
                     userBloodTypeTextView, userAmkaTextView, coParentFullNameTextView,
@@ -74,10 +70,12 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
     private RelativeLayout viewUserInfoRelativeLayout, updateUserInfoRelativeLayout, changeEmailRelativeLayout,
                             changePasswordRelativeLayout, coParentRelativeLayout, coParentAddRelativeLayout,
                             coParentExistsRelativeLayout, noCoParentRelativeLayout;
-    private CalendarView updateUserInfoCalendarView;
+    private CalendarView calendarView;
     private Spinner bloodTypeSpinner, coParentBloodTypeSpinner;
     private int position=0;
-    Boolean next, flagUnique, flagOnce=false, flagOnce1=false, flagNext;
+    private Boolean next, flagUnique, flagOnce=false, flagOnce1=false, flagNext;
+
+    String cal = "none";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,13 +98,13 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
         updateUserInfoButton = findViewById(R.id.updateUserInfoButton);
         viewUserInfoRelativeLayout = findViewById(R.id.viewUserInfoRelativeLayout);
         updateUserInfoRelativeLayout = findViewById(R.id.updateUserInfoRelativeLayout);
-        updateUserInfoCalendarView = findViewById(R.id.updateUserInfoCalendarView);
+        calendarView = findViewById(R.id.updateUserInfoCalendarView);
         nameEditText = findViewById(R.id.nameUserUpdateInfoEditTextView);
         surnameEditText = findViewById(R.id.surnameUserUpdateInfoEditTextView);
         amkaEditText = findViewById(R.id.amkaUserUpdateInfoTextView);
         phoneNumberEditText = findViewById(R.id.phoneNumberUserUpdateInfoEditTextView);
         birthDateEditText = findViewById(R.id.birthDateUserUpdateInfoEditTextView);
-        calendarButton = findViewById(R.id.calendarButtonUserUdate);
+        calendarButton = findViewById(R.id.calendarButtonUserUpdate);
         bloodTypeSpinner = findViewById(R.id.bloodTypeUpdateUserInfoSpinner);
         updateButton = findViewById(R.id.updateButton);
         deleteButton = findViewById(R.id.deleteUserButton);
@@ -154,28 +152,16 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
 
         //setting visibilities
         userPartnerSwitch.setVisibility(View.VISIBLE);
-        userAmkaTextView.setVisibility(View.VISIBLE);
-        userBloodTypeTextView.setVisibility(View.VISIBLE);
         userPartnerSwitch.setClickable(false);
         viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
         updateUserInfoRelativeLayout.setVisibility(View.INVISIBLE);
-        updateUserInfoCalendarView.setVisibility(View.INVISIBLE);
+        calendarView.setVisibility(View.INVISIBLE);
         changeEmailRelativeLayout.setVisibility(View.INVISIBLE);
         changePasswordRelativeLayout.setVisibility(View.INVISIBLE);
         coParentRelativeLayout.setVisibility(View.INVISIBLE);
         coParentDeleteButton.setClickable(false);
         coParentAddButton.setClickable(false);
         coParentAddRelativeLayout.setVisibility(View.INVISIBLE);
-
-
-        //onclick listener for calendar opening
-        calendarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateUserInfoCalendarView.setVisibility(View.VISIBLE);
-                updateUserInfoRelativeLayout.setVisibility(View.INVISIBLE);
-            }
-        });
 
         //getting data
         getUser();
@@ -198,63 +184,60 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
             }
         });
 
+        //onclick listener to open calendar for update user info
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendarView.setVisibility(View.VISIBLE);
+                updateUserInfoRelativeLayout.setVisibility(View.INVISIBLE);
+                cal = "user update";
+            }
+        });
+
+        //getting current date
+        Calendar cal = Calendar.getInstance();
+        int yy = cal.get(Calendar.YEAR);
+        int mm = cal.get(Calendar.MONTH) + 1;
+        int dd = cal.get(Calendar.DAY_OF_MONTH);
+
+        // set current date into textview
+        String d = String.valueOf(dd);
+        if (dd <= 9) {
+            d = "0" + d;
+        }
+        String m = String.valueOf(mm);
+        if (mm <= 9) {
+            m = "0" + m;
+        }
+        coParentBirthDateEditText.setHint(new StringBuilder()
+                .append(d).append(" ").append("/").append(m).append("/")
+                .append(yy));
+
+
         //getting date of the calendar
-        updateUserInfoCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                String m = "0";
-                String d = "0";
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                    //date1 is selected date
-                    Date date1 = sdf.parse(dayOfMonth + "/" + month + "/" + year);
-                    int da = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                    int mo = Calendar.getInstance().get(Calendar.MONTH);
-                    int ye = Calendar.getInstance().get(Calendar.YEAR);
-                    //date2 is date now
-                    Date date2 = sdf.parse(da + "/" + mo + "/" + ye);
-                    if (date1.compareTo(date2) > 0) {
-                        //if date selected is after date now
-                        mo++;
-                        if (mo == 13) {
-                            mo = 12;
-                        }
-                        if (mo <= 9) {
-                            m = "0" + mo;
-                        } else {
-                            m = String.valueOf(mo);
-                        }
-                        if (da <= 9) {
-                            d = "0" + da;
-                        } else {
-                            d = String.valueOf(da);
-                        }
-                        year = Calendar.getInstance().get(Calendar.YEAR);
-
-                    } else {
-                        //if date selected is now or if date selected is before date now
-                        // month++;
-                       /* if(month == 13){
-                            month = 12;
-                        }*/
-                        if (month <= 9) {
-                            m = "0" + month;
-                        } else {
-                            m = String.valueOf(month);
-                        }
-                        if (dayOfMonth <= 9) {
-                            d = "0" + dayOfMonth;
-                        } else {
-                            d = String.valueOf(dayOfMonth);
-                        }
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                String m, d;
+                month = month + 1;
+                if (month <= 9) {
+                    m = "0" + month;
+                } else {
+                    m = String.valueOf(month);
                 }
-                birthDateEditText.setText(d + "/" + m + "/" + year);
-                updateUserInfoCalendarView.setVisibility(View.INVISIBLE);
-                updateUserInfoRelativeLayout.setVisibility(View.VISIBLE);
+                if (dayOfMonth <= 9) {
+                    d = "0" + dayOfMonth;
+                } else {
+                    d = String.valueOf(dayOfMonth);
+                }
+                calendarView.setVisibility(View.INVISIBLE);
+                if(cal.equals("user update")){
+                    birthDateEditText.setText(d + "/" + m + "/" + year);
+                    updateUserInfoRelativeLayout.setVisibility(View.VISIBLE);
+                }else if(cal.equals("coParent update")){
+                    coParentBirthDateEditText.setText(d + "/" + m + "/" + year);
+                    coParentAddRelativeLayout.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -272,8 +255,6 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!s.toString().equals(current)) {
-                    String d = "0";
-                    String m = "0";
                     String clean = s.toString().replaceAll("[^\\d.]", "");
                     String cleanC = current.replaceAll("[^\\d.]", "");
 
@@ -292,69 +273,21 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                         int month = Integer.parseInt(clean.substring(2, 4));
                         int year = Integer.parseInt(clean.substring(4, 8));
 
-                       /* if(month>12){
+                        if(month>12){
                             month = 12;
                         }
                         cal.set(Calendar.MONTH, month);
 
-                        year = (year<1970)?1970:(year>2023)?2022:year;
-                        cal.set(Calendar.YEAR, year);
-*/
-                        day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum((Calendar.DATE)) : day;
-                        try {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                            //date1 is selected date
-                            Date date1 = sdf.parse(day + "/" + month + "/" + year);
-                            int da = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                            int mo = Calendar.getInstance().get(Calendar.MONTH);
-                            int ye = Calendar.getInstance().get(Calendar.YEAR);
-                            //date2 is date now
-                            Date date2 = sdf.parse(da + "/" + mo + "/" + ye);
-                            if (date1.compareTo(date2) > 0) {
-                                //if date selected is after date now
-                                mo++;
-                                if (mo == 13) {
-                                    mo = 12;
-                                }
-                                if (mo <= 9) {
-                                    m = "0" + mo;
-                                } else {
-                                    m = String.valueOf(mo);
-                                }
-                                if (da <= 9) {
-                                    d = "0" + da;
-                                } else {
-                                    d = String.valueOf(da);
-                                }
-                                day = Integer.parseInt(d);
-                                month = Integer.parseInt(m);
-                                year = Calendar.getInstance().get(Calendar.YEAR);
-
-                            } else {
-                                //if date selected is now or if date selected is before date now
-                                //month++;
-                                if (month == 13) {
-                                    month = 12;
-                                }
-                                if (month <= 9) {
-                                    m = "0" + month;
-                                } else {
-                                    m = String.valueOf(month);
-                                }
-                                if (day <= 9) {
-                                    d = "0" + day;
-                                } else {
-                                    d = String.valueOf(day);
-                                }
-                                day = Integer.parseInt(d);
-                                month = Integer.parseInt(m);
-                            }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        //Birth year 1970-2010
+                        if(year<1970){
+                            year=1970;
+                            Toast.makeText(getApplicationContext(), "Birth year should be between 1970 and 2010", Toast.LENGTH_SHORT).show();
+                        }else if(year>2010){
+                            year = 2010;
+                            Toast.makeText(getApplicationContext(), "Birth year should be between 1970 and 2010", Toast.LENGTH_SHORT).show();
                         }
-
-
+                        cal.set(Calendar.YEAR, year);
+                        day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum((Calendar.DATE)) : day;
                         clean = String.format("%02d%02d%02d", day, month, year);
                     }
 
@@ -447,19 +380,19 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
                         if(userType.equals("doctor")){
-                            Intent intent = new Intent(getApplicationContext(), MainScreenDoctor.class);
+                            Intent intent = new Intent(getApplicationContext(), mainScreenDoctor.class);
                             startActivity(intent);
                         }else{
-                            Intent intent = new Intent(getApplicationContext(), MainScreenParents.class);
+                            Intent intent = new Intent(getApplicationContext(), mainScreenParents.class);
                             startActivity(intent);
                         }
                         return true;
                     case R.id.navigation_add:
                         if(userType.equals("doctor")){
-                            Intent intent = new Intent(getApplicationContext(), AddChildToDoctor.class);
+                            Intent intent = new Intent(getApplicationContext(), addChildToDoctor.class);
                             startActivity(intent);
                         }else{
-                            Intent intent = new Intent(getApplicationContext(), AddBaby.class);
+                            Intent intent = new Intent(getApplicationContext(), addBaby.class);
                             startActivity(intent);
                         }
                         return true;
@@ -487,7 +420,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                 String text=editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
                     next = false;
-                    nameEditText.setError("Only letters please!!");
+                    nameEditText.setError("Type only letters please!!");
                 }
             }
         });
@@ -507,7 +440,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                 String text=editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
                     next = false;
-                    surnameEditText.setError("Only letters please!!");
+                    surnameEditText.setError("Type only letters please!!");
                 }
             }
         });
@@ -527,7 +460,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                 String text=editable.toString();
                 if (!text.matches("^[0-9]+$")) {
                     next = false;
-                    amkaEditText.setError("Only numbers please!!");
+                    amkaEditText.setError("Type only numbers please!!");
                 }
             }
         });
@@ -547,7 +480,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                 String text=editable.toString();
                 if (!text.matches("^[0-9]+$")) {
                     next = false;
-                    phoneNumberEditText.setError("Only numbers please!!");
+                    phoneNumberEditText.setError("Type only numbers please!!");
                 }
             }
         });
@@ -567,7 +500,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                 String text=editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
                     flagNext = false;
-                    coParentNameEditText.setError("Only letters please!!");
+                    coParentNameEditText.setError("Type only letters please!!");
                 }
             }
         });
@@ -587,7 +520,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                 String text=editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ]+$")) {
                     flagNext = false;
-                    coParentSurnameEditText.setError("Only letters please!!");
+                    coParentSurnameEditText.setError("Type only letters please!!");
                 }
             }
         });
@@ -607,7 +540,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                 String text=editable.toString();
                 if (!text.matches("^[0-9]+$")) {
                     flagNext = false;
-                    coParentAmkaEditText.setError("Only numbers please!!");
+                    coParentAmkaEditText.setError("Type only numbers please!!");
                 }
             }
         });
@@ -627,7 +560,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                 String text=editable.toString();
                 if (!text.matches("^[0-9]+$")) {
                     flagNext = false;
-                    coParentPhoneNumberEditText.setError("Only numbers please!!");
+                    coParentPhoneNumberEditText.setError("Type only numbers please!!");
                 }
             }
         });
@@ -658,14 +591,14 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
             };
             try {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Are you sure you want to delete co-parent???").setPositiveButton("Yes", dialogClickListener)
+                builder.setMessage("Are you sure you want to delete co-parent? Deletion will be permanent").setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
             }catch (Exception e){
                 System.out.println(e.getLocalizedMessage());
             }
 
         }else{
-            Toast.makeText(this, "There is no parent to delete", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "There is no parent to delete!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -678,42 +611,22 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
             //if there is no other parent
             coParentRelativeLayout.setVisibility(View.INVISIBLE);
             coParentAddRelativeLayout.setVisibility(View.VISIBLE);
-            updateUserInfoCalendarView.setVisibility(View.INVISIBLE);
+            calendarView.setVisibility(View.INVISIBLE);
             Calendar cal = Calendar.getInstance();
             int yy = cal.get(Calendar.YEAR);
-            int mm = cal.get(Calendar.MONTH);
+            int mm = cal.get(Calendar.MONTH) + 1;
             int dd = cal.get(Calendar.DAY_OF_MONTH);
 
             // set current date into textview
             coParentBirthDateEditText.setHint(new StringBuilder()
-                    .append(dd).append(" ").append("/").append(mm + 1).append("/")
-                    .append(yy));
+                    .append(dd).append(" ").append("/").append(mm).append("/").append(yy));
 
             //onclick listener for calendar opening
             calendarCoParentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    updateUserInfoCalendarView.setVisibility(View.VISIBLE);
+                    calendarView.setVisibility(View.VISIBLE);
                     coParentAddRelativeLayout.setVisibility(View.INVISIBLE);
-                }
-            });
-
-            //getting date of the calendar
-            updateUserInfoCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-                @Override
-                public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
-                {
-                    String m="1";
-                    String d="1";
-                    if(month<=9){
-                        m = "0"+ month;
-                    }
-                    if(dayOfMonth<=9){
-                        d = "0"+dayOfMonth;
-                    }
-                    coParentBirthDateEditText.setText(d + "/" + m + "/" + year);
-                    updateUserInfoCalendarView.setVisibility(View.INVISIBLE);
-                    coParentAddRelativeLayout.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -730,40 +643,46 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if(!s.toString().equals(current)){
+                    if (!s.toString().equals(current)) {
                         String clean = s.toString().replaceAll("[^\\d.]", "");
                         String cleanC = current.replaceAll("[^\\d.]", "");
 
                         int cl = clean.length();
                         int sel = cl;
-                        for(int i=2; i<=cl && i<6; i+=2){
+                        for (int i = 2; i <= cl && i < 6; i += 2) {
                             sel++;
                         }
-                        if(clean.equals(cleanC)){
+                        if (clean.equals(cleanC)) {
                             sel--;
                         }
-                        if(clean.length()<8){
+                        if (clean.length() < 8) {
                             clean = clean + ddmmyyyy.substring(clean.length());
-                        }else{
-                            int day = Integer.parseInt(clean.substring(0,2));
-                            int month = Integer.parseInt(clean.substring(2,4));
-                            int year = Integer.parseInt(clean.substring(4,8));
+                        } else {
+                            int day = Integer.parseInt(clean.substring(0, 2));
+                            int month = Integer.parseInt(clean.substring(2, 4));
+                            int year = Integer.parseInt(clean.substring(4, 8));
 
                             if(month>12){
                                 month = 12;
                             }
-                            cal.set(Calendar.MONTH, month-1);
+                            cal.set(Calendar.MONTH, month);
 
-                            year = (year<1970)?1970:(year>2010)?2010:year;
+                            //Birth year 1970-2010
+                            if(year<1970){
+                                year=1970;
+                                Toast.makeText(getApplicationContext(), "Birth year should be between 1970 and 2010", Toast.LENGTH_SHORT).show();
+                            }else if(year>2010){
+                                year = 2010;
+                                Toast.makeText(getApplicationContext(), "Birth year should be between 1970 and 2010", Toast.LENGTH_SHORT).show();
+                            }
                             cal.set(Calendar.YEAR, year);
-
-                            day = (day>cal.getActualMaximum(Calendar.DATE))?cal.getActualMaximum((Calendar.DATE)):day;
+                            day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum((Calendar.DATE)) : day;
                             clean = String.format("%02d%02d%02d", day, month, year);
                         }
 
-                        clean = String.format("%s/%s/%s", clean.substring(0,2), clean.substring(2,4), clean.substring(4,8));
+                        clean = String.format("%s/%s/%s", clean.substring(0, 2), clean.substring(2, 4), clean.substring(4, 8));
 
-                        sel = sel<0?0:sel;
+                        sel = sel < 0 ? 0 : sel;
                         current = clean;
                         coParentBirthDateEditText.setText(current);
                         coParentBirthDateEditText.setSelection(sel<current.length()? sel : current.length());
@@ -798,7 +717,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
             flagNext = false;
         }
         if (TextUtils.isEmpty(coParentAmkaEditText.getText()) || (coParentAmkaEditText.getText().length() != 11)) {
-            coParentAmkaEditText.setError("Amka should have length 11 numbers!");
+            coParentAmkaEditText.setError("Amka number should have length 11 numbers!");
             flagNext = false;
         }
         if (TextUtils.isEmpty(coParentPhoneNumberEditText.getText()) || (coParentPhoneNumberEditText.getText().length() != 10)) {
@@ -812,6 +731,10 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
         if (coParentBloodTypeSpinner.getSelectedItem().equals("Blood Type")) {
             Toast.makeText(this, "Please choose a blood type!", Toast.LENGTH_SHORT).show();
             flagNext = false;
+        }
+        if(!coParentBirthDateEditText.getText().toString().matches("^[0-9]+(\\/[0-9]+)*$" )) {
+            flagNext=false;
+            Toast.makeText(this, "Please fill in correct birth date!", Toast.LENGTH_SHORT).show();
         }
 
         //find if amka is being used
@@ -872,7 +795,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
             try {
                 if (!flagOnce) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("Parent exists already continue with this parent??").setPositiveButton("Yes", dialogClickListener)
+                    builder.setMessage("Parent exists already.Do you want to continue with this parent??").setPositiveButton("Yes", dialogClickListener)
                             .setNegativeButton("No", dialogClickListener).show();
                 }
                 }catch(Exception e) {
@@ -896,7 +819,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                 reference2.child(coParentAmkaEditText.getText().toString()).setValue(coParent);
                 //go to app main screen
                 if(!flagOnce1){
-                    Toast.makeText(this, "User created successfully!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Info saved successfully!!", Toast.LENGTH_SHORT).show();
                 }
                 //go to app main screen
                 coParentAddRelativeLayout.setVisibility(View.INVISIBLE);
@@ -970,7 +893,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            Toast.makeText(UserAccount.this, "Password changed successfully!", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(userAccount.this, "Password updated successfully!", Toast.LENGTH_SHORT).show();
                                                             changePasswordRelativeLayout.setVisibility(View.INVISIBLE);
                                                             viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
                                                         }
@@ -983,14 +906,14 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                             }
                         };
                         try {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(UserAccount.this);
-                            builder.setMessage("Are you sure you want to update password??").setPositiveButton("Yes", dialogClickListener)
+                            AlertDialog.Builder builder = new AlertDialog.Builder(userAccount.this);
+                            builder.setMessage("Are you sure you want to update password?").setPositiveButton("Yes", dialogClickListener)
                                     .setNegativeButton("No", dialogClickListener).show();
                         } catch (Exception e) {
                             System.out.println(e.getLocalizedMessage());
                         }
                     } else {
-                        Toast.makeText(UserAccount.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(userAccount.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -1030,7 +953,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                                                             if (task.isSuccessful()) {
                                                                 reference1 = database.getReference("parent");
                                                                 reference1.child(currentUserUID).child("email").setValue(emailEditText.getText().toString());
-                                                                Toast.makeText(UserAccount.this, "Email updated successfully!", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(userAccount.this, "Email updated successfully!", Toast.LENGTH_SHORT).show();
                                                                 changeEmailRelativeLayout.setVisibility(View.INVISIBLE);
                                                                 viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
                                                                 getUser();
@@ -1038,7 +961,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                                                         }
                                                     });
                                         }else{
-                                            Toast.makeText(UserAccount.this, "Email is the same!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(userAccount.this, "Email is the same!", Toast.LENGTH_SHORT).show();
                                         }
                                     } else if (userType.equals("doctor")) {
                                         if (!doctor.getEmail().equals(emailEditText.getText().toString())) {
@@ -1050,7 +973,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                                                             if (task.isSuccessful()) {
                                                                 reference2 = database.getReference("doctor");
                                                                 reference2.child(currentUserUID).child("email").setValue(emailEditText.getText().toString());
-                                                                Toast.makeText(UserAccount.this, "Email updated successfully!", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(userAccount.this, "Email updated successfully!", Toast.LENGTH_SHORT).show();
                                                                 changeEmailRelativeLayout.setVisibility(View.INVISIBLE);
                                                                 viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
                                                                 getUser();
@@ -1058,7 +981,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                                                         }
                                                     });
                                         }else{
-                                            Toast.makeText(UserAccount.this, "Email is the same!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(userAccount.this, "Email is the same!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -1068,8 +991,8 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                         }
                     };
                     try {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(UserAccount.this);
-                        builder.setMessage("Are you sure you want to update the email address??").setPositiveButton("Yes", dialogClickListener)
+                        AlertDialog.Builder builder = new AlertDialog.Builder(userAccount.this);
+                        builder.setMessage("Are you sure you want to update the email address?").setPositiveButton("Yes", dialogClickListener)
                                 .setNegativeButton("No", dialogClickListener).show();
                     } catch (Exception e) {
                         System.out.println(e.getLocalizedMessage());
@@ -1161,6 +1084,9 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                 System.out.println(e.getLocalizedMessage());
                 userKidsTextView.setText("0");
             }
+            userBloodTypeTextView.setVisibility(View.VISIBLE);
+            userBirthDateTextView.setVisibility(View.VISIBLE);
+            userPartnerSwitch.setVisibility(View.VISIBLE);
             userBirthDateTextView.setText(parent.getDateOfBirth());
             userBloodTypeTextView.setText(parent.getBloodType());
             userAmkaTextView.setText(parent.getAmka());
@@ -1204,6 +1130,9 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                     position = i;
                 }
             }
+            birthDateEditText.setVisibility(View.VISIBLE);
+            calendarButton.setVisibility(View.VISIBLE);
+            bloodTypeSpinner.setVisibility(View.VISIBLE);
             bloodTypeSpinner.setSelection(position);
         }else{
             nameEditText.setText(doctor.getName());
@@ -1228,7 +1157,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
             next = false;
         }
         if (TextUtils.isEmpty(amkaEditText.getText()) || (amkaEditText.getText().length() != 11)) {
-            amkaEditText.setError("Amka should have length 11 numbers!");
+            amkaEditText.setError("Amka number should have length 11 numbers!");
             next = false;
         }
         if (TextUtils.isEmpty(phoneNumberEditText.getText()) || (phoneNumberEditText.getText().length() != 10)) {
@@ -1238,6 +1167,10 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
         if (bloodTypeSpinner.getSelectedItem().equals("Blood Type")) {
             ((TextView) bloodTypeSpinner.getSelectedView()).setError("Please choose a blood type!");
             next = false;
+        }
+        if(!birthDateEditText.getText().toString().matches("^[0-9]+(\\/[0-9]+)*$" )) {
+            next=false;
+            Toast.makeText(this, "Please fill in correct birth date!", Toast.LENGTH_SHORT).show();
         }
 
         //checking users Amka
@@ -1272,7 +1205,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                     viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
                     getUser();
                 }else if(!flagUnique){
-                    amkaEditText.setError("Amka number should be unique!");
+                    amkaEditText.setError("Amka number should be unique! Please try again");
                 }
             }
 
@@ -1472,7 +1405,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                         viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
                         getUser();
                     }else if(!flagUnique){
-                        amkaEditText.setError("Medical ID should be unique");
+                        amkaEditText.setError("Medical ID should be unique! Please try again");
                     }
                 }
             }
@@ -1495,15 +1428,25 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
     //on back button pressed
     @Override
     public void onBackPressed() {
-        if(updateUserInfoCalendarView.getVisibility() == View.VISIBLE){
-            updateUserInfoCalendarView.setVisibility(View.INVISIBLE);
-            updateUserInfoRelativeLayout.setVisibility(View.VISIBLE);
+        if(calendarView.getVisibility() == View.VISIBLE){
+            calendarView.setVisibility(View.INVISIBLE);
+            if(cal.equals("user update")){
+                updateUserInfoRelativeLayout.setVisibility(View.VISIBLE);
+            }else{
+                coParentAddRelativeLayout.setVisibility(View.VISIBLE);
+            }
         }else if(updateUserInfoRelativeLayout.getVisibility() == View.VISIBLE){
             updateUserInfoRelativeLayout.setVisibility(View.INVISIBLE);
             viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
             getUser();
         }else if(viewUserInfoRelativeLayout.getVisibility() == View.VISIBLE){
-            super.onBackPressed();
+            if(userType.equals("doctor")){
+                Intent intent = new Intent(userAccount.this, mainScreenDoctor.class);
+                startActivity(intent);
+            }else{
+                Intent intent = new Intent(userAccount.this, mainScreenParents.class);
+                startActivity(intent);
+            }
         }else if(changeEmailRelativeLayout.getVisibility() == View.VISIBLE){
             changeEmailRelativeLayout.setVisibility(View.INVISIBLE);
             viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
@@ -1542,7 +1485,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
                                     updateDatabase("delete");
                                 }
                                 System.out.println("User deleted successfully!");
-                                Intent intent = new Intent(UserAccount.this, LoginRegister.class);
+                                Intent intent = new Intent(userAccount.this, loginRegister.class);
                                 startActivity(intent);
                             }
                         });
@@ -1554,7 +1497,7 @@ public class UserAccount extends AppCompatActivity implements AdapterView.OnItem
         };
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Are you sure you want to delete this user??").setPositiveButton("Yes", dialogClickListener)
+            builder.setMessage("Are you sure you want to delete this user? Deletion will be permanent").setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
         }catch (Exception e){
             System.out.println(e.getLocalizedMessage());

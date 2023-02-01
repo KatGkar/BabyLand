@@ -2,16 +2,12 @@ package com.example.babyland;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,7 +18,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,9 +28,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
-public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class addBaby extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private EditText babyBirthDate, babyNameTextView, babyAmkaTextView, babyBirthPlaceTextView;
     private RadioButton babyBoy, babyGirl;
@@ -45,7 +43,6 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
             R.drawable.b_minus, R.drawable.b_plus, R.drawable.o_plus, R.drawable.o_minus,
             R.drawable.ab_minus, R.drawable.ab_minus};
     private Spinner babyBloodTypeSpinner;
-    private RadioGroup radioGroup;
     private CalendarView calendar;
     private Button calendarButton;
     private RelativeLayout infoRelativeLayout;
@@ -72,7 +69,6 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
         calendar = findViewById(R.id.calendarView2);
         calendarButton = findViewById(R.id.calendarButton);
         infoRelativeLayout = findViewById(R.id.infoRelativeLayout);
-        radioGroup = findViewById(R.id.radioGroup);
         bottomNavigationView = findViewById(R.id.bottomNavigationViewAddBaby);
 
         //UI
@@ -88,18 +84,24 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
         //getting current date
         Calendar  cal = Calendar.getInstance();
         int yy = cal.get(Calendar.YEAR);
-        int mm = cal.get(Calendar.MONTH);
+        int mm = cal.get(Calendar.MONTH) +1;
         int dd = cal.get(Calendar.DAY_OF_MONTH);
+        String d = String.valueOf(dd);
+        if (dd <= 9) {
+            d = "0" + d;
+        }
+        String m = String.valueOf(mm);
+        if (mm <= 9) {
+            m = "0" + m;
+        }
 
         // set current date into textview
         babyBirthDate.setHint(new StringBuilder()
-                .append(dd).append(" ").append("/").append(mm + 1).append("/")
-                .append(yy));
+                .append(d).append(" ").append("/").append(m).append("/").append(yy));
 
         //setting visibilities
         calendar.setVisibility(View.INVISIBLE);
         infoRelativeLayout.setVisibility(View.VISIBLE);
-        radioGroup.setVisibility(View.VISIBLE);
 
         //setting blood types in list
         CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),bloodImages,bloodType);
@@ -112,7 +114,6 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
             public void onClick(View v) {
                 calendar.setVisibility(View.VISIBLE);
                 infoRelativeLayout.setVisibility(View.INVISIBLE);
-                radioGroup.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -121,18 +122,50 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
             {
-                String m="1";
-                String d="1";
-                if(month<=9){
-                    m = "0"+ month;
+                String m = "0";
+                String d = "0";
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                    //date1 is selected date
+                    month = month+1;
+                    Date date1 = sdf.parse(dayOfMonth + "/" + month + "/" + year);
+                    int da = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                    int mo = Calendar.getInstance().get(Calendar.MONTH) + 1;
+                    int ye = Calendar.getInstance().get(Calendar.YEAR);
+                    //date2 is date now
+                    Date date2 = sdf.parse(da + "/" + mo + "/" + ye);
+                    if (date1.compareTo(date2) > 0) {
+                        //if dateSelected is after dateNow
+                        if (mo <= 9) {
+                            m = "0" + mo;
+                        } else {
+                            m = String.valueOf(mo);
+                        }
+                        if (da <= 9) {
+                            d = "0" + da;
+                        } else {
+                            d = String.valueOf(da);
+                        }
+                    } else {
+                        //if date selected is now or if date selected is before date now
+                        if (month <= 9) {
+                            m = "0" + month;
+                        } else {
+                            m = String.valueOf(month);
+                        }
+                        if (dayOfMonth <= 9) {
+                            d = "0" + dayOfMonth;
+                        } else {
+                            d = String.valueOf(dayOfMonth);
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if(dayOfMonth<=9){
-                    d = "0"+dayOfMonth;
-                }
-                babyBirthDate.setText(d + "/" + m + "/" + year);
+                babyBirthDate.setText(d + "/" + m + "/" + String.valueOf(year));
                 calendar.setVisibility(View.INVISIBLE);
                 infoRelativeLayout.setVisibility(View.VISIBLE);
-                radioGroup.setVisibility(View.VISIBLE);
             }
         });
 
@@ -173,7 +206,14 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
                         }
                         cal.set(Calendar.MONTH, month-1);
 
-                        year = (year<2019)?2019:(year>2023)?2022:year;
+                        if(year<2019){
+                            year=2019;
+                            Toast.makeText(addBaby.this, "Birth year should be between 2019 and 2023", Toast.LENGTH_SHORT).show();
+                        }else if(year>2023){
+                            year = 2023;
+                            Toast.makeText(addBaby.this, "Birth year should be between 2019 and 2023", Toast.LENGTH_SHORT).show();
+                        }
+                        year = (year<2019)?2019:(year>2023)?2023:year;
                         cal.set(Calendar.YEAR, year);
 
                         day = (day>cal.getActualMaximum(Calendar.DATE))?cal.getActualMaximum((Calendar.DATE)):day;
@@ -209,13 +249,13 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        Intent intent = new Intent(AddBaby.this, MainScreenParents.class);
+                        Intent intent = new Intent(addBaby.this, mainScreenParents.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_add:
                         return true;
                     case R.id.navigation_account:
-                        Intent intent1 = new Intent(AddBaby.this, UserAccount.class);
+                        Intent intent1 = new Intent(addBaby.this, userAccount.class);
                         intent1.putExtra("user", "parent");
                         startActivity(intent1);
                         return true;
@@ -241,7 +281,7 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
                 String text=editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ ]+$")) {
                     flagNext=false;
-                    babyNameTextView.setError("Only letters please!!");
+                    babyNameTextView.setError("Type only letters please!!");
                 }
             }
         });
@@ -261,7 +301,7 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
                 String text=editable.toString();
                 if (!text.matches("^[a-zA-Zα-ωΑ-ΩίόάέύώήΈΆΊΌΎΉΏ ]+$")) {
                     flagNext=false;
-                    babyBirthPlaceTextView.setError("Only letters please!!");
+                    babyBirthPlaceTextView.setError("Type only letters please!!");
                 }
             }
         });
@@ -281,7 +321,7 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
                 String text=editable.toString();
                 if (!text.matches("^[0-9]+$")) {
                     flagNext=false;
-                    babyAmkaTextView.setError("Only numbers please!!");
+                    babyAmkaTextView.setError("Type only numbers please!!");
                 }
             }
         });
@@ -302,7 +342,7 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
             calendar.setVisibility(View.INVISIBLE);
             infoRelativeLayout.setVisibility(View.VISIBLE);
         }else{
-            Intent intent = new Intent(AddBaby.this, FamilyHistoryInput.class);
+            Intent intent = new Intent(addBaby.this, mainScreenParents.class);
             startActivity(intent);
         }
     }
@@ -346,6 +386,11 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
             babyBloodTypeSpinner.requestFocus();
             flagNext=false;
         }
+        if(!babyBirthDate.getText().toString().matches("^[0-9]+(\\/[0-9]+)*$")) {
+            flagNext=false;
+            babyBirthDate.requestFocus();
+            Toast.makeText(this, "Please fill in correct birth date!", Toast.LENGTH_SHORT).show();
+        }
 
         //find if amka number is unique
         flagUnique = true;
@@ -374,7 +419,7 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
     //check if restrictions are met
     private void check(){
         if(flagNext && flagUnique) {
-            Intent myIntent = new Intent(this, FamilyHistoryInput.class);
+            Intent myIntent = new Intent(this, familyHistoryInput.class);
             myIntent.putExtra("sex", sex);
             myIntent.putExtra("name", babyNameTextView.getText().toString());
             myIntent.putExtra("birthDate", babyBirthDate.getText().toString());
@@ -384,7 +429,7 @@ public class AddBaby extends AppCompatActivity implements AdapterView.OnItemSele
             this.startActivity(myIntent);
             finish();
         }else if(!flagUnique) {
-            babyAmkaTextView.setError("Amka should be unique");
+            babyAmkaTextView.setError("Amka should be unique! Please try again");
         }
     }
 
