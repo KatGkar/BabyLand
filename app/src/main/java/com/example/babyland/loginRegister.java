@@ -262,16 +262,16 @@ public class loginRegister extends AppCompatActivity { //implements GoogleApiCli
                     public void onSuccess(AuthResult authResult) {
                         loadingFrame.setVisibility(View.VISIBLE);
                         //checking if user has completed email validation
-                        FirebaseUser user = myFirebaseAuth.getCurrentUser();
+                        /*FirebaseUser user = myFirebaseAuth.getCurrentUser();
                         if(!user.isEmailVerified()){
                             user.sendEmailVerification();
                             loadingFrame.setVisibility(View.INVISIBLE);
                             loginRelativeLayout.setVisibility(View.VISIBLE);
                             Toast.makeText(loginRegister.this, "Please check your email!", Toast.LENGTH_SHORT).show();
                         }else{
-                        Intent intent = new Intent(loginRegister.this, doctorParentChoose.class);
+                        */Intent intent = new Intent(loginRegister.this, doctorParentChoose.class);
                         startActivity(intent);
-                        }
+                        //}
                     }
                 })
 
