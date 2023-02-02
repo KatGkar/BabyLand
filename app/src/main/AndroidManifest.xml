@@ -8,6 +8,7 @@
 
     <application
         android:allowBackup="false"
+        android:testOnly="false"
         android:fullBackupContent="false"
         android:fullBackupOnly="false"
         android:hardwareAccelerated="true"
