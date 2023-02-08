@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,15 +35,15 @@ public class viewVaccination extends AppCompatActivity {
 
     private ArrayList<Vaccination> vaccines;
     private RecyclerView vaccinationRecyclerView;
-    private String babyAmka, currentUserUID, doctorName, m, d, userType;
+    private String babyAmka, currentUserUID, doctorName, m, d, userType,amkaParent1, amkaParent2;
     private FirebaseDatabase database;
     private BottomNavigationView bottomNavigationView;
-    private DatabaseReference reference, reference2;
+    private DatabaseReference reference, reference2, reference3, reference4;
     private Button addOtherVaccineButton, saveVaccineButton;
     private RecyclerAdapter.recyclerVewOnClickListener listener;
     private RelativeLayout addOtherVaccineRelativeLayout, vaccinesRelativeLayout;
     private TextView doctorNameTextView, dateVaccinatedTextView;
-    private EditText vaccineNameEditText;
+    private TextInputEditText vaccineNameEditText;
     private int mm, yy, dd, vaccineNumber;;
 
 
@@ -64,7 +65,7 @@ public class viewVaccination extends AppCompatActivity {
         addOtherVaccineRelativeLayout = findViewById(R.id.addOtherVaccineRelativeLayout);
         doctorNameTextView = findViewById(R.id.doctorNameTextView);
         dateVaccinatedTextView = findViewById(R.id.dateVaccinatedTextView);
-        vaccineNameEditText = findViewById(R.id.vaccineNameEditText);
+        vaccineNameEditText = findViewById(R.id.vaccineNameTextInput);
         vaccinesRelativeLayout = findViewById(R.id.vaccRelativeLayout);
 
         //UI
@@ -259,10 +260,146 @@ public class viewVaccination extends AppCompatActivity {
             public void addVaccine(int position) {
                 vaccines.get(position).setDate(d + "/"+ m+"/"+yy);
                 vaccines.get(position).setDoctorName(doctorName);
+                updateDatabase(vaccines.get(position).getUniqueID());
                 setAdapter();
+            }
+        });
+    }
+
+
+    private void updateDatabase(int id){
+        //updating child's database
+        reference2 = FirebaseDatabase.getInstance().getReference("baby").child(babyAmka).child("vaccinations");
+        reference2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot!=null){
+                    for(DataSnapshot snapshots:snapshot.getChildren()){
+                        GenericTypeIndicator<Vaccination> t = new GenericTypeIndicator<Vaccination>() {};
+                        int uniqueID = snapshots.getValue(t).getUniqueID();
+                        if(uniqueID == id){
+                            reference2.child(snapshots.getKey()).child("doctorName").setValue(doctorName);
+                            reference2.child(snapshots.getKey()).child("date").setValue(d + "/"+ m+"/"+yy);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+
+        //updating doctor's database
+        reference3 = FirebaseDatabase.getInstance().getReference("doctor").child(currentUserUID).child("kids");
+        reference3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot!=null){
+                    for(DataSnapshot snapshots:snapshot.getChildren()) {
+                        GenericTypeIndicator<ArrayList<Baby>> t = new GenericTypeIndicator<ArrayList<Baby>>() {};
+                        ArrayList<Baby> listBaby = snapshot.getValue(t);
+                        for (int i = 0; i < listBaby.size(); i++) {
+                            //find kid
+                            if (listBaby.get(i).getAmka().equals(babyAmka)) {
+                                ArrayList<Vaccination> vacc = listBaby.get(i).getVaccinations();
+                                for (int j = 0; j < vacc.size(); j++) {
+                                    if (vacc.get(j).getUniqueID() == id) {
+                                        vacc.get(j).setDoctorName(doctorName);
+                                        vacc.get(j).setDate(d + "/" + m + "/" + yy);
+                                        listBaby.get(i).setVaccinations(vacc);
+                                        reference3.setValue(listBaby);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        //find parent amka
+        reference = FirebaseDatabase.getInstance().getReference("baby").child(babyAmka);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot!=null){
+                    amkaParent1 = (String) snapshot.child("parentOneAmka").getValue();
+                    amkaParent2 = (String) snapshot.child("parentTwoAmka").getValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //updating parent's database
+        reference4 = FirebaseDatabase.getInstance().getReference("parent");
+        reference4.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot!=null){
+                    for(DataSnapshot snapshots:snapshot.getChildren()){
+                        GenericTypeIndicator<Parent> t = new GenericTypeIndicator<Parent>() {};
+                        //parent one
+                        if(snapshots.getValue(t).getAmka().equals(amkaParent1)){
+                            ArrayList<Baby> listKids = snapshots.getValue(t).getKids();
+                            //search baby
+                            for(int k=0;k<listKids.size();k++){
+                                if(listKids.get(k).getAmka().equals(babyAmka)){
+                                    ArrayList<Vaccination> vaccinationArrayList = listKids.get(k).getVaccinations();
+                                    //search vaccine
+                                    for(int h=0;h<vaccinationArrayList.size();h++){
+                                        if(vaccinationArrayList.get(h).getUniqueID() == id){
+                                            vaccinationArrayList.get(h).setDoctorName(doctorName);
+                                            vaccinationArrayList.get(h).setDate(d + "/"+ m+"/"+yy);
+                                            listKids.get(k).setVaccinations(vaccinationArrayList);
+                                            reference4.child(snapshots.getKey()).child("kids").setValue(listKids);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        //parent two
+                        if(snapshots.getValue(t).getAmka().equals(amkaParent2)){
+                            ArrayList<Baby> listKids2 = snapshots.getValue(t).getKids();
+                            //search baby
+                            for(int w=0;w<listKids2.size();w++){
+                                if(listKids2.get(w).getAmka().equals(babyAmka)){
+                                    ArrayList<Vaccination> vaccinations = listKids2.get(w).getVaccinations();
+                                    //search vaccine
+                                    for(int g=0;g<=vaccinations.size();g++){
+                                        if(vaccinations.get(g).getUniqueID() == id){
+                                            vaccinations.get(g).setDoctorName(doctorName);
+                                            vaccinations.get(g).setDate(d + "/"+ m+"/"+yy);
+                                            listKids2.get(w).setVaccinations(vaccinations);
+                                            reference4.child(snapshots.getKey()).child("kids").setValue(listKids2);
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
     //on back button pressed

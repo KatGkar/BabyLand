@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
+    tools:ignore="HardcodedText"
     tools:context=".doctorParentChoose">
 
     <RelativeLayout
@@ -57,8 +58,7 @@
                         android:layout_width="100dp"
                         android:layout_height="130dp"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/facebook_google_buttons"
-                        android:backgroundTint="@color/fui_bgGoogle"
+                        android:background="@drawable/buttons"
                         android:elevation="20dp"
                         android:padding="1dp"
                         android:visibility="visible"
@@ -72,8 +72,7 @@
                         android:layout_height="130dp"
                         android:layout_marginStart="20dp"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/facebook_google_buttons"
-                        android:backgroundTint="@color/fui_bgGoogle"
+                        android:background="@drawable/buttons"
                         android:elevation="20dp"
                         android:padding="1dp"
                         android:visibility="visible"
@@ -90,7 +89,7 @@
         android:id="@+id/loadingImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"

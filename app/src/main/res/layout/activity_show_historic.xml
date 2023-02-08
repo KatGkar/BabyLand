@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
+    tools:ignore="HardcodedText"
     tools:context=".showHistoric">
 
     <TextView
@@ -25,12 +26,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/familyHistoricRecyclerView"
-        android:layout_width="340dp"
+        android:layout_width="330dp"
         android:layout_height="580dp"
         android:background="@drawable/gradient"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewShowHistoric"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.765" />

@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class addChildToDoctor extends AppCompatActivity {
-    private EditText searchAmkaEditText, verificationEditText;
+    private TextInputEditText searchAmkaEditText, verificationEditText;
     private TextView nameAddChildTextView, amkaAddChildTextView, ageAddChildTextView, verificationTextView;
     private RecyclerView availableChildrenRecyclerView;
     private FirebaseDatabase database;
@@ -54,7 +55,7 @@ public class addChildToDoctor extends AppCompatActivity {
         setContentView(R.layout.activity_add_child_to_doctor);
 
         //getting views from xml
-        searchAmkaEditText = findViewById(R.id.searchAmkaEditText);
+        searchAmkaEditText = findViewById(R.id.searchAmkaTextInput);
         availableChildrenRecyclerView = findViewById(R.id.availableChildrenRecyclerView);
         viewChildInfoLayout = findViewById(R.id.viewChildInfoLayout);
         availableChildrenLayout = findViewById(R.id.availableChildrenLayout);
@@ -65,7 +66,7 @@ public class addChildToDoctor extends AppCompatActivity {
         sexAddChildImageView = findViewById(R.id.sexAddChildImage);
         searchButton = findViewById(R.id.searchButton);
         verificationButton = findViewById(R.id.verificationButton);
-        verificationEditText = findViewById(R.id.verificationEditTextView);
+        verificationEditText = findViewById(R.id.verificationAmkaTextInput);
         verificationRelativeLayout = findViewById(R.id.verificationRelativeLayout);
         verificationTextView = findViewById(R.id.verificationTextView);
         bottomNavigationView = findViewById(R.id.bottomNavigationViewAddChildToDoctor);
@@ -178,8 +179,6 @@ public class addChildToDoctor extends AppCompatActivity {
     @Override
     protected void onResume() {
         bottomNavigationView.setSelectedItemId(R.id.navigation_add);
-        verificationTextView.setText("");
-        verificationTextView.setHint("12345678912");
         super.onResume();
     }
 
@@ -203,8 +202,8 @@ public class addChildToDoctor extends AppCompatActivity {
                 availableChildrenLayout.setVisibility(View.INVISIBLE);
                 viewChildInfoLayout.setVisibility(View.VISIBLE);
                 Baby baby = availableChildren.get(position);
-                nameAddChildTextView.setText("Name: " +baby.getName());
-                amkaAddChildTextView.setText("Amka: " +baby.getAmka());
+                nameAddChildTextView.setText(baby.getName());
+                amkaAddChildTextView.setText(baby.getAmka());
                 if(baby.getSex().equals("BOY")){
                     Picasso.get().load(R.drawable.male).error(R.drawable.male).into(sexAddChildImageView);
                 }else{
@@ -253,7 +252,7 @@ public class addChildToDoctor extends AppCompatActivity {
                     ageType = "months";
                     age = String.valueOf(monthsD);
                 }
-                ageAddChildTextView.setText("Age: " + age +" " + ageType);
+                ageAddChildTextView.setText(age +" " + ageType);
 
                 addChildButton.setOnClickListener(new View.OnClickListener() {
                     @Override

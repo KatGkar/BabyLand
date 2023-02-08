@@ -55,7 +55,6 @@ public class deleteChild extends AppCompatActivity {
 
         //UI
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-        childInfoTextView.setPaintFlags(childInfoTextView.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
 
         //builder to show message
         builder = new AlertDialog.Builder(this);

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
+    tools:ignore="HardcodedText"
     tools:context=".userAccount">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,7 +24,7 @@
         android:id="@+id/coParentAddRelativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewUserAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,83 +46,98 @@
                 android:text="Please fill in some personal information for co-parent"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="22dp"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/calendarCoParentButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_alignTop="@+id/coParentBirthDateTextInputLayout"
+                android:layout_alignEnd="@+id/coParentBirthDateTextInputLayout"
+                android:layout_alignBottom="@+id/coParentBirthDateTextInputLayout"
+                android:layout_alignParentEnd="true"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/calendar"
-                android:elevation="20dp"
-                app:layout_constraintEnd_toEndOf="@+id/coParentBirthDateEditText"
-                app:layout_constraintTop_toTopOf="@+id/coParentBirthDateEditText" />
+                android:background="@color/fui_transparent"
+                android:elevation="50dp"
+                android:src="@drawable/calendar"
+                app:layout_constraintBottom_toBottomOf="@id/coParentBirthDateTextInputLayout"
+                app:layout_constraintEnd_toEndOf="@+id/coParentBirthDateTextInputLayout"
+                app:layout_constraintTop_toTopOf="@+id/coParentBirthDateTextInputLayout"
+                app:layout_constraintVertical_bias="0.50" />
 
-            <EditText
-                android:id="@+id/coParentSurnameEditText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Surname"
-                android:inputType="textPersonName"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/coParentSurNameTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:shadowRadius="2"
-                android:textColor="#000000"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/coParentNameEditText" />
+                app:layout_constraintTop_toBottomOf="@id/coParentNameTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/coParentSurNameTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Surname"
+                    android:inputType="textPersonName"
+                    android:textColor="#000000" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Spinner
                 android:id="@+id/coParentBloodSpinner"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/drop_down_adapter"
                 android:elevation="20dp"
                 android:ems="10"
+                android:fontFamily="@font/bai_jamjuree"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:shadowDx="2"
                 android:shadowDy="4"
                 android:shadowRadius="2"
-                android:spinnerMode="dropdown"
+                android:textAlignment="center"
                 android:textColor="#000000"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/coParentPhoneNumberEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/coParentPhoneNumberTextInputLayout" />
 
-            <EditText
-                android:id="@+id/coParentNameEditText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/coParentNameTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
                 android:shadowRadius="2"
-                android:textColor="#000000"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView24" />
+                app:layout_constraintTop_toBottomOf="@id/textView24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/coParentNameTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name"
+                    android:inputType="textPersonName"
+                    android:textColor="#000000" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <Button
                 android:id="@+id/coParentSaveButton"
@@ -129,8 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:adjustViewBounds="true"
-                android:background="@drawable/facebook_google_buttons"
-                android:backgroundTint="@color/fui_bgGoogle"
+                android:background="@drawable/buttons"
                 android:cropToPadding="true"
                 android:elevation="20dp"
                 android:onClick="coParentSave"
@@ -141,88 +156,97 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/coParentBloodSpinner" />
 
-            <EditText
-                android:id="@+id/coParentEmailEditText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Email Address"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/coParentEmailTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:shadowRadius="2"
-                android:textColor="#000000"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/coParentSurnameEditText" />
+                app:layout_constraintTop_toBottomOf="@id/coParentAmkaTextInputLayout">
 
-            <EditText
-                android:id="@+id/coParentAmkaEditText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Amka"
-                android:inputType="phone"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
-                android:shadowRadius="2"
-                android:textColor="#000000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/coParentEmailEditText" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/coParentEmailTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#000000" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/coParentPhoneNumberEditText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Phone Number "
-                android:inputType="phone"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/coParentAmkaTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:shadowRadius="2"
-                android:textColor="#000000"
+                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/coParentBirthDateEditText" />
+                app:layout_constraintTop_toBottomOf="@id/coParentSurNameTextInputLayout">
 
-            <EditText
-                android:id="@+id/coParentBirthDateEditText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:ems="10"
-                android:hint="Birth date"
-                android:inputType="date"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/coParentAmkaTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Amka"
+                    android:inputType="textPersonName"
+                    android:textColor="#000000" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/coParentPhoneNumberTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coParentBirthDateTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/coParentPhoneNumberTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="Phone number"
+                    android:inputType="phone"
+                    android:textColor="#000000" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/coParentBirthDateTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/coParentAmkaEditText" />
+                app:layout_constraintTop_toBottomOf="@id/coParentEmailTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/coParentBirthDateTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="Birth Date"
+                    android:inputType="date" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
@@ -245,7 +269,7 @@
                 android:id="@+id/coParentExistsRelativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -261,7 +285,7 @@
                         android:text="Co-parent information"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="24dp"
+                        android:textSize="24sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.50"
@@ -274,12 +298,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/facebook_google_buttons"
-                        android:backgroundTint="@color/fui_bgGoogle"
+                        android:background="@drawable/buttons"
                         android:cropToPadding="true"
                         android:elevation="20dp"
                         android:onClick="coParentDelete"
-                        android:text="delete co-parent"
+                        android:text="Delete co-parent"
                         android:textColor="#000000"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.501"
@@ -292,13 +315,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="70dp"
                         android:layout_marginTop="40dp"
-                        android:drawableLeft="@drawable/person"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="fullname"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/person"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textView12" />
 
@@ -308,13 +331,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="70dp"
                         android:layout_marginTop="20dp"
-                        android:drawableLeft="@drawable/calendar"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="BirthDate"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/calendar"
                         app:layout_constraintHorizontal_bias="0.50"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/coParentBloodTypeTextView" />
@@ -325,13 +348,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="70dp"
                         android:layout_marginTop="20dp"
-                        android:drawableLeft="@drawable/blood_type_black"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="Blood type"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/blood_type_black"
                         app:layout_constraintHorizontal_bias="0.50"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/coParentPhoneNumberTextView" />
@@ -342,13 +365,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="70dp"
                         android:layout_marginTop="20dp"
-                        android:drawableLeft="@drawable/phone"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="Phone number"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/phone"
                         app:layout_constraintHorizontal_bias="0.50"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/coParentAmkaTextView" />
@@ -359,13 +382,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="70dp"
                         android:layout_marginTop="20dp"
-                        android:drawableLeft="@drawable/identification"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="amka"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/identification"
                         app:layout_constraintHorizontal_bias="0.50"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/coParentEmailTextView" />
@@ -376,13 +399,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="70dp"
                         android:layout_marginTop="20dp"
-                        android:drawableLeft="@drawable/email"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="email"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/email"
                         app:layout_constraintHorizontal_bias="0.50"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/coParentFullNameTextView" />
@@ -393,7 +416,7 @@
                 android:id="@+id/noCoParentRelativeLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
@@ -411,8 +434,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/facebook_google_buttons"
-                        android:backgroundTint="@color/fui_bgGoogle"
+                        android:background="@drawable/buttons"
                         android:cropToPadding="true"
                         android:elevation="20dp"
                         android:onClick="coParentAdd"
@@ -430,7 +452,7 @@
                         android:fontFamily="@font/bai_jamjuree"
                         android:text="There is no co-parent"
                         android:textColor="@color/black"
-                        android:textSize="24dp"
+                        android:textSize="24sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.50"
@@ -446,7 +468,7 @@
         android:id="@+id/passwordChangeRelativeLayout"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewUserAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
@@ -458,26 +480,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/newPasswordVerificaitonEditText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="New password again"
-                android:inputType="textPassword"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordValidationInputTextLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/newPasswordEditText" />
+                app:layout_constraintTop_toBottomOf="@id/newPasswordTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordValidationInputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password Validation"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <TextView
@@ -487,32 +510,36 @@
                 android:fontFamily="@font/bai_jamjuree"
                 android:text="Update password"
                 android:textColor="@color/black"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/newPasswordEditText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/newPasswordTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:elevation="20dp"
-                android:ems="10"
-                android:hint="New password"
-                android:inputType="textPassword"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView11" />
+                app:layout_constraintTop_toBottomOf="@id/textView11">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newPasswordTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <Button
                 android:id="@+id/passwordChangeButton"
@@ -520,8 +547,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:adjustViewBounds="true"
-                android:background="@drawable/facebook_google_buttons"
-                android:backgroundTint="@color/fui_bgGoogle"
+                android:background="@drawable/buttons"
                 android:cropToPadding="true"
                 android:elevation="20dp"
                 android:onClick="showPassword"
@@ -530,7 +556,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/newPasswordVerificaitonEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/passwordValidationInputTextLayout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
@@ -538,7 +564,7 @@
         android:id="@+id/changeEmailRelativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewUserAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
@@ -559,7 +585,7 @@
                 android:text="Fill in the new email address"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="22dp"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
@@ -572,8 +598,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:adjustViewBounds="true"
-                android:background="@drawable/facebook_google_buttons"
-                android:backgroundTint="@color/fui_bgGoogle"
+                android:background="@drawable/buttons"
                 android:cropToPadding="true"
                 android:elevation="20dp"
                 android:onClick="showEmail"
@@ -582,38 +607,38 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userEmailEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout" />
 
-            <EditText
-                android:id="@+id/userEmailEditText"
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/edit_texts"
-                android:digits="1234567890"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toBottomOf="@id/textView">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailInputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
     <CalendarView
         android:id="@+id/updateUserInfoCalendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewUserAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
@@ -625,7 +650,7 @@
         android:id="@+id/updateUserInfoRelativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewUserAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -635,139 +660,157 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/calendarButtonUserUpdate"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+            <ImageButton
+                android:id="@+id/calendarButton"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignTop="@+id/userBirthDateUpdateTextInputLayout"
+                android:layout_alignEnd="@+id/userBirthDateUpdateTextInputLayout"
+                android:layout_alignBottom="@+id/userBirthDateUpdateTextInputLayout"
+                android:layout_alignParentEnd="true"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/calendar"
-                android:elevation="20dp"
-                app:layout_constraintEnd_toEndOf="@+id/birthDateUserUpdateInfoEditTextView"
-                app:layout_constraintTop_toTopOf="@+id/birthDateUserUpdateInfoEditTextView" />
+                android:background="@color/fui_transparent"
+                android:elevation="50dp"
+                android:src="@drawable/calendar"
+                app:layout_constraintBottom_toBottomOf="@id/userBirthDateUpdateTextInputLayout"
+                app:layout_constraintEnd_toEndOf="@+id/userBirthDateUpdateTextInputLayout"
+                app:layout_constraintTop_toTopOf="@+id/userBirthDateUpdateTextInputLayout"
+                app:layout_constraintVertical_bias="0.50" />
 
             <Spinner
                 android:id="@+id/bloodTypeUpdateUserInfoSpinner"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
-                android:shadowRadius="2"
-                android:spinnerMode="dropdown"
-                android:textColor="#000000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/birthDateUserUpdateInfoEditTextView" />
-
-            <EditText
-                android:id="@+id/nameUserUpdateInfoEditTextView"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="50dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/edit_texts"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/drop_down_adapter"
                 android:elevation="20dp"
                 android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName"
+                android:fontFamily="@font/bai_jamjuree"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:shadowDx="2"
                 android:shadowDy="4"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView14" />
+                app:layout_constraintTop_toBottomOf="@+id/userBirthDateUpdateTextInputLayout" />
 
-            <EditText
-                android:id="@+id/amkaUserUpdateInfoTextView"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Amka"
-                android:inputType="phone"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nameUpdateUserTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneNumberUserUpdateInfoEditTextView" />
+                app:layout_constraintTop_toBottomOf="@id/textView14">
 
-            <EditText
-                android:id="@+id/birthDateUserUpdateInfoEditTextView"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:ems="10"
-                android:hint="Birth date"
-                android:inputType="date"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
-                android:shadowRadius="2"
-                android:textColor="#000000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/amkaUserUpdateInfoTextView" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nameUpdateUserTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/surnameUserUpdateInfoEditTextView"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Surname"
-                android:inputType="textPersonName"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/amkaUpdateUserTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameUserUpdateInfoEditTextView" />
+                app:layout_constraintTop_toBottomOf="@id/surNameUpdateUserTextInputLayout">
 
-            <EditText
-                android:id="@+id/phoneNumberUserUpdateInfoEditTextView"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Phone Number"
-                android:inputType="phone"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/amkaUpdateUserTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Amka"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/userBirthDateUpdateTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/surnameUserUpdateInfoEditTextView" />
+                app:layout_constraintTop_toBottomOf="@id/phoneNumberUpdateUserTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/userBirthDateUpdateTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="Birth Date"
+                    android:inputType="date" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/surNameUpdateUserTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:shadowRadius="2"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameUpdateUserTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/surNameUpdateUserTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Surname"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneNumberUpdateUserTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:shadowRadius="2"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/amkaUpdateUserTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNumberUpdateUserTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone Number"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/updateButton"
@@ -775,8 +818,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:adjustViewBounds="true"
-                android:background="@drawable/facebook_google_buttons"
-                android:backgroundTint="@color/fui_bgGoogle"
+                android:background="@drawable/buttons"
                 android:cropToPadding="true"
                 android:elevation="20dp"
                 android:text="Update Information"
@@ -788,18 +830,17 @@
 
             <TextView
                 android:id="@+id/textView14"
-                android:layout_width="329dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="50dp"
-                android:layout_marginEnd="20dp"
                 android:fontFamily="@font/bai_jamjuree"
                 android:gravity="center"
                 android:text="Update information"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -811,7 +852,7 @@
         android:id="@+id/viewUserInfoRelativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewUserAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -822,7 +863,7 @@
             android:layout_height="match_parent">
 
             <RelativeLayout
-                android:layout_width="250dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -832,7 +873,7 @@
                 app:layout_constraintVertical_bias="0.50">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="250dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <Button
@@ -841,8 +882,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/facebook_google_buttons"
-                        android:backgroundTint="@color/fui_bgGoogle"
+                        android:background="@drawable/buttons"
                         android:cropToPadding="true"
                         android:elevation="20dp"
                         android:text="Change Password"
@@ -857,8 +897,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/facebook_google_buttons"
-                        android:backgroundTint="@color/fui_bgGoogle"
+                        android:background="@drawable/buttons"
                         android:cropToPadding="true"
                         android:elevation="20dp"
                         android:text="Update Info"
@@ -872,8 +911,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/facebook_google_buttons"
-                        android:backgroundTint="@color/fui_bgGoogle"
+                        android:background="@drawable/buttons"
                         android:cropToPadding="true"
                         android:elevation="20dp"
                         android:text="CO-Parent"
@@ -888,8 +926,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/facebook_google_buttons"
-                        android:backgroundTint="@color/fui_bgGoogle"
+                        android:background="@drawable/buttons"
                         android:cropToPadding="true"
                         android:elevation="20dp"
                         android:onClick="deleteUser"
@@ -906,8 +943,7 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="16dp"
                         android:adjustViewBounds="true"
-                        android:background="@drawable/facebook_google_buttons"
-                        android:backgroundTint="@color/fui_bgGoogle"
+                        android:background="@drawable/buttons"
                         android:cropToPadding="true"
                         android:elevation="20dp"
                         android:text="Change Email"
@@ -939,13 +975,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginEnd="15dp"
-                        android:drawableLeft="@drawable/phone"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="Phone Number"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/phone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -978,13 +1014,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginEnd="15dp"
-                        android:drawableLeft="@drawable/identification"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="Amka"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/identification"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -996,13 +1032,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginEnd="15dp"
-                        android:drawableLeft="@drawable/calendar"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="Birth Date"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/calendar"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1014,13 +1050,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginEnd="15dp"
-                        android:drawableLeft="@drawable/email"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="Email"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/email"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1032,13 +1068,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginEnd="15dp"
-                        android:drawableLeft="@drawable/blood_type_black"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="Blood Type"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/blood_type_black"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1050,13 +1086,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginEnd="15dp"
-                        android:drawableLeft="@drawable/child_black"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="Kids"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/child_black"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1068,13 +1104,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginEnd="15dp"
-                        android:drawableLeft="@drawable/person"
                         android:fontFamily="@font/bai_jamjuree"
                         android:gravity="center"
                         android:text="Name"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
+                        app:drawableLeftCompat="@drawable/person"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1092,7 +1128,7 @@
                 android:text="User information"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="26dp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

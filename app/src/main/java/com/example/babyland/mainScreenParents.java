@@ -196,10 +196,10 @@ public class mainScreenParents extends AppCompatActivity implements AdapterView.
         if(doctor!=null) {
             mainScreenLayout.setVisibility(View.INVISIBLE);
             doctorInfoRelativeLayout.setVisibility(View.VISIBLE);
-            doctorMedicalIDTextView.setText("Medical ID: " +doctor.getMedicalID());
-            doctorEmailTextView.setText("Email: " + doctor.getEmail());
-            doctorFullNameTextView.setText("Fullname: "+doctor.getName() + " " + doctor.getSurname());
-            doctorPhoneNumberTextView.setText("Phone number: " +doctor.getPhoneNumber());
+            doctorMedicalIDTextView.setText(doctor.getMedicalID());
+            doctorEmailTextView.setText(doctor.getEmail());
+            doctorFullNameTextView.setText(doctor.getName() + " " + doctor.getSurname());
+            doctorPhoneNumberTextView.setText(doctor.getPhoneNumber());
         }else{
             Toast.makeText(this, "No doctor yet!!", Toast.LENGTH_SHORT).show();
         }

@@ -6,60 +6,80 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
+    tools:ignore="HardcodedText"
     tools:context=".mainScreenParents">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationViewMainScreenParents"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/main"
+        android:background="@drawable/main_menu"
+        app:elevation="10dp"
+        app:itemIconTint="@color/black"
+        app:itemBackground="@drawable/navigation_items_background"
+        app:itemTextColor="@color/navigation_items_text"
+        app:labelVisibilityMode="labeled"/>
 
     <RelativeLayout
         android:id="@+id/doctorInfoRelativeView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/gradient_darker"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMainScreenParents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationViewMainScreenParents"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.50">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="291dp"
-            android:layout_height="300dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
             android:background="@drawable/gradient">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.50"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/doctor" />
 
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="88dp"
                 android:fontFamily="@font/bai_jamjuree"
-                android:text="Doctor info"
+                android:text="Doctor information"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/imageView2" />
 
             <TextView
                 android:id="@+id/doctorMedicalIIDTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="20dp"
                 android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
                 android:text="TextView"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
+                android:textSize="18sp"
+                app:drawableLeftCompat="@drawable/identification"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/doctorPhoneNumberTextView" />
 
@@ -69,12 +89,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
                 android:text="TextView"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
+                android:textSize="18sp"
+                app:drawableLeftCompat="@drawable/phone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/doctorEmailTextView" />
 
@@ -84,12 +104,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
                 android:text="TextView"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
+                android:textSize="18sp"
+                app:drawableLeftCompat="@drawable/email"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/doctorFullNameTextView" />
 
@@ -99,12 +119,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
                 android:text="TextView"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
+                android:textSize="18sp"
+                app:drawableLeftCompat="@drawable/person"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -114,7 +134,7 @@
         android:id="@+id/mainScreenLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMainScreenParents"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,6 +143,54 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/buttonsRelative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewVaccinesButton">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/viewDoctorInfoButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttons"
+                        android:onClick="viewDoctor"
+                        android:text="Doctor"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/deleteChildButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/buttons"
+                        android:text="Delete Baby"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@+id/viewDoctorInfoButton"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/chartButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/buttons"
+                        android:text="Charts"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@+id/deleteChildButton"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/statisticLayout"
@@ -153,7 +221,7 @@
                         android:text="Statistics"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -168,7 +236,7 @@
                         android:text="TextView"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.50"
@@ -184,7 +252,7 @@
                         android:text="TextView"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/ageMainScreenTextView" />
@@ -200,9 +268,9 @@
                         android:text="TextView"
                         android:textAlignment="center"
                         android:textColor="#000000"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.497"
+                        app:layout_constraintHorizontal_bias="0.50"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/statisticsTextView" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -213,12 +281,13 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/edit_texts"
+                android:background="@drawable/drop_down_adapter"
                 android:elevation="20dp"
                 android:ems="10"
                 android:fontFamily="@font/bai_jamjuree"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
+                android:pointerIcon="arrow"
                 android:shadowDx="2"
                 android:shadowDy="4"
                 android:shadowRadius="2"
@@ -228,58 +297,31 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <Button
                 android:id="@+id/showDevelopmentButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:background="@drawable/facebook_google_buttons"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/buttons"
                 android:onClick="showDevelopment"
                 android:text="Show development"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/deleteChildButton" />
-
-            <Button
-                android:id="@+id/deleteChildButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:text="Delete Baby"
-                app:layout_constraintStart_toStartOf="@+id/viewVaccinesButton"
-                app:layout_constraintTop_toBottomOf="@+id/viewVaccinesButton" />
-
-            <Button
-                android:id="@+id/chartButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:text="Charts"
-                app:layout_constraintEnd_toStartOf="@+id/deleteChildButton"
-                app:layout_constraintTop_toTopOf="@+id/deleteChildButton" />
-
-            <Button
-                android:id="@+id/viewDoctorInfoButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:onClick="viewDoctor"
-                android:text="Doctor"
-                app:layout_constraintStart_toEndOf="@+id/deleteChildButton"
-                app:layout_constraintTop_toTopOf="@+id/deleteChildButton" />
+                app:layout_constraintTop_toBottomOf="@+id/buttonsRelative" />
 
             <Button
                 android:id="@+id/viewVaccinesButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
-                android:background="@drawable/facebook_google_buttons"
+                android:background="@drawable/buttons"
                 android:text="Vaccines"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
@@ -309,7 +351,7 @@
                 android:layout_height="236dp"
                 android:layout_marginTop="68dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/babylandlogo" />
@@ -319,10 +361,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
-                android:background="@drawable/facebook_google_buttons"
+                android:background="@drawable/buttons"
                 android:text="Add baby"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -336,7 +379,8 @@
                 android:text="There is no child! Press button to add baby!"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="20dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView3" />
@@ -344,15 +388,7 @@
 
     </RelativeLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationViewMainScreenParents"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@drawable/main_menu"
-        app:elevation="10dp"
-        app:itemBackground="@drawable/navigation_items_background"
-        app:itemTextColor="@color/navigation_items_text"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/main" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

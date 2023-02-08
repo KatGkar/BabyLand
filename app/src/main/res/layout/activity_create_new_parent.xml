@@ -6,6 +6,7 @@
     android:background="@drawable/gradient"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="HardcodedText"
     tools:context=".createNewParent">
 
     <CalendarView
@@ -35,7 +36,7 @@
                 android:id="@+id/imageView4"
                 android:layout_width="110dp"
                 android:layout_height="100dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,152 +45,166 @@
 
             <Spinner
                 android:id="@+id/bloodTypeParentOne"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/drop_down_adapter"
                 android:elevation="20dp"
                 android:ems="10"
+                android:fontFamily="@font/bai_jamjuree"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:shadowDx="2"
                 android:shadowDy="4"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
-                app:layout_constraintHorizontal_bias="0.50"
-                android:spinnerMode="dropdown"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/birthDateParentOne" />
+                app:layout_constraintTop_toBottomOf="@+id/birthDateParentOneTextInputLayout" />
 
-            <EditText
-                android:id="@+id/birthDateParentOne"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:ems="10"
-                android:inputType="date"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:hint="Birth date"
-                android:background="@drawable/edit_texts"
-                android:shadowDx="2"
-                android:shadowDy="4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/birthDateParentOneTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneNumberParentOne" />
+                app:layout_constraintTop_toBottomOf="@id/phoneNumberParentOneTextInputLayout">
 
-            <Button
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/birthDateParentOneTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="Birth Date"
+                    android:inputType="date" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
                 android:id="@+id/calendarButtonOnParentOne"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/calendar"
-                android:elevation="20dp"
-                app:layout_constraintEnd_toEndOf="@+id/birthDateParentOne"
-                app:layout_constraintTop_toTopOf="@+id/birthDateParentOne" />
+                android:src="@drawable/calendar"
+                android:background="@color/fui_transparent"
+                android:layout_alignParentEnd="true"
+                android:elevation="50dp"
+                app:layout_constraintVertical_bias="0.50"
+                android:layout_alignTop="@+id/birthDateParentOneTextInputLayout"
+                android:layout_alignBottom="@+id/birthDateParentOneTextInputLayout"
+                android:layout_alignEnd="@+id/birthDateParentOneTextInputLayout"
+                app:layout_constraintBottom_toBottomOf="@id/birthDateParentOneTextInputLayout"
+                app:layout_constraintEnd_toEndOf="@+id/birthDateParentOneTextInputLayout"
+                app:layout_constraintTop_toTopOf="@+id/birthDateParentOneTextInputLayout" />
 
-            <EditText
-                android:id="@+id/surnameParentOne"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Surname"
-                android:inputType="textPersonName"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/surnameParentOneTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameParentOne" />
+                app:layout_constraintTop_toBottomOf="@id/nameParentOneTextInputLayout">
 
-            <EditText
-                android:id="@+id/phoneNumberParentOne"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:digits="1234567890"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Phone Number"
-                android:inputType="phone"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/surnameParentOneTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Surname"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneNumberParentOneTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/amkaParentOne" />
+                app:layout_constraintTop_toBottomOf="@id/amkaParentOneTextInputLayout">
 
-            <EditText
-                android:id="@+id/nameParentOne"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNumberParentOneTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone Number"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nameParentOneTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                android:hint="Name"
-                android:inputType="textPersonName"
-                app:layout_constraintTop_toBottomOf="@+id/profileUser" />
+                app:layout_constraintTop_toBottomOf="@id/profileUser">
 
-            <EditText
-                android:id="@+id/amkaParentOne"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:digits="1234567890"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Amka"
-                android:inputType="phone"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nameParentOneTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/amkaParentOneTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/surnameParentOne" />
+                app:layout_constraintTop_toBottomOf="@id/surnameParentOneTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/amkaParentOneTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Amka"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/profileUser"
                 android:layout_width="310dp"
                 android:layout_height="69dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="15dp"
                 android:text="Please fill in some personal information"
                 android:fontFamily="@font/bai_jamjuree"
                 android:textStyle="bold"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="22dp"
+                android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
@@ -201,8 +216,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:adjustViewBounds="true"
-                android:background="@drawable/facebook_google_buttons"
-                android:backgroundTint="@color/fui_bgGoogle"
+                android:background="@drawable/buttons"
                 android:cropToPadding="true"
                 android:elevation="20dp"
                 android:onClick="nextParent"

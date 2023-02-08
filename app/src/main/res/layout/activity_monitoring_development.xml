@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
+    tools:ignore="HardcodedText"
     tools:context=".monitoringDevelopment">
 
     <CalendarView
@@ -24,8 +25,8 @@
         android:id="@+id/observationsLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/gradient_darker"
-        android:visibility="gone"
+        android:background="@drawable/gradient"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMonitoringDevelopment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +43,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/gradient">
+            android:background="@color/fui_transparent">
 
             <TextView
                 android:id="@+id/textView3"
@@ -57,33 +58,35 @@
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.11" />
 
-            <EditText
-                android:id="@+id/observationsText"
-                android:layout_width="269dp"
-                android:layout_height="234dp"
-                android:layout_marginTop="60dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/observationsTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="270dp"
+                android:layout_height="330dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:hint="Write your observations here please...."
-                android:inputType="textMultiLine"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.506"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/observationsTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Write your observations here please...."
+                    android:inputType="textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
@@ -92,9 +95,9 @@
         android:id="@+id/developmentalLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/gradient_darker"
+        android:background="@drawable/gradient"
         android:clickable="false"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMonitoringDevelopment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +114,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/gradient"
+            android:background="@color/fui_transparent"
             android:clickable="false">
 
             <TextView
@@ -127,6 +130,7 @@
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -151,8 +155,8 @@
         android:id="@+id/examinationLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/gradient_darker"
-        android:visibility="gone"
+        android:background="@drawable/gradient"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMonitoringDevelopment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -169,7 +173,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/gradient">
+            android:background="@color/fui_transparent">
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -202,8 +206,8 @@
         android:id="@+id/sustenanceLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/gradient_darker"
-        android:visibility="gone"
+        android:background="@drawable/gradient"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewMonitoringDevelopment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -220,7 +224,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/gradient">
+            android:background="@color/fui_transparent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewSustenance"
@@ -232,27 +236,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
-            <EditText
-                android:id="@+id/sustenanceText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sustenanceTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:hint="Observations..."
-                android:inputType="textMultiLine"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewSustenance" />
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewSustenance">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sustenanceTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Observations..."
+
+                    android:inputType="textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/textView20"
@@ -289,32 +294,99 @@
             android:layout_width="410dp"
             android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/saveMeasurementsButton"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:onClick="saveDevelopment"
-                android:text="Save measurement"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/developmentalMonitoringButton" />
-
-            <Button
-                android:id="@+id/developmentalMonitoringButton"
+            <RelativeLayout
+                android:id="@+id/relativeButtons0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:text="Developmental Monitoring"
-                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sustenanceButton" />
+                app:layout_constraintTop_toBottomOf="@id/relativeButtons1">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/developmentalMonitoringButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/buttons"
+                        android:text="Developmental Monitoring"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@id/examinationButton"
+                        app:layout_constraintTop_toTopOf="@id/examinationButton" />
+
+                    <Button
+                        android:id="@+id/examinationButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/buttons"
+                        android:text="Examination"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeButtons1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hearingSwitch">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/observationsButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/buttons"
+                        android:gravity="center"
+                        android:text="Observations"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@id/sustenanceButton"
+                        app:layout_constraintTop_toTopOf="@id/sustenanceButton" />
+
+                    <Button
+                        android:id="@+id/sustenanceButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttons"
+                        android:text="Sustenance"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/saveMeasurementsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/buttons"
+                android:onClick="saveDevelopment"
+                android:text="Save measurement"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeButtons0" />
 
             <TextView
                 android:id="@+id/dateText"
@@ -325,94 +397,59 @@
                 android:text="TextView"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/doctorText" />
 
-            <Button
-                android:id="@+id/sustenanceButton"
-                android:layout_width="100dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/headCircumferenceTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:text="Sustenance"
-                app:layout_constraintStart_toEndOf="@+id/examinationButton"
-                app:layout_constraintTop_toTopOf="@+id/examinationButton" />
-
-            <Button
-                android:id="@+id/examinationButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:text="Examination"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hearingSwitch" />
-
-            <EditText
-                android:id="@+id/headCircumferenceText"
-                android:layout_width="255dp"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:hint="Head Circumference in cm"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
                 android:shadowRadius="2"
-                android:textColor="#000000"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lengthText" />
-
-            <EditText
-                android:id="@+id/lengthText"
-                android:layout_width="255dp"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:gravity="center"
-                android:hint="Length in cm"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
-                android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/weightText" />
+                app:layout_constraintTop_toBottomOf="@id/lengthTextInputLayout">
 
-            <Button
-                android:id="@+id/observationsButton"
-                android:layout_width="120dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/headCircumferenceTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Head Circumference in cm"
+                    android:inputType="phone"
+                    android:textAlignment="center" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lengthTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="5dp"
-                android:background="@drawable/facebook_google_buttons"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Observations"
-                app:layout_constraintStart_toEndOf="@+id/sustenanceButton"
-                app:layout_constraintTop_toTopOf="@+id/sustenanceButton" />
+                android:shadowRadius="2"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/weightTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lengthTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Length in cm"
+                    android:inputType="phone"
+                    android:textAlignment="center" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Switch
                 android:id="@+id/hearingSwitch"
@@ -424,29 +461,32 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/headCircumferenceText"
+                app:layout_constraintTop_toBottomOf="@+id/headCircumferenceTextInputLayout"
                 app:track="@drawable/toogle_track" />
 
-            <EditText
-                android:id="@+id/weightText"
-                android:layout_width="255dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/weightTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:hint="Weight in kg"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dateText" />
+                app:layout_constraintTop_toBottomOf="@id/dateText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/weightTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Weight in kg"
+                    android:inputType="phone"
+                    android:textAlignment="center" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/doctorText"
@@ -457,7 +497,7 @@
                 android:text="TextView"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.504"
                 app:layout_constraintStart_toStartOf="parent"

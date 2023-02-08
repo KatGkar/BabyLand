@@ -18,11 +18,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,7 +38,7 @@ import java.util.Calendar;
 
 public class nextParent extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    private EditText nameParentTwo, surnameParentTwo, amkaParentTwo, phoneNumberParentTwo, emailAddressParentTwo,
+    private TextInputEditText nameParentTwo, surnameParentTwo, amkaParentTwo, phoneNumberParentTwo, emailAddressParentTwo,
             dateOfBirthParentTwo;
     private String  nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, emailAddressParentOne, dateOfBirthParentOne,
             bloodTypeParentOne, currentUserUID;
@@ -46,7 +48,8 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
             R.drawable.b_minus, R.drawable.b_plus, R.drawable.o_plus, R.drawable.o_minus,
             R.drawable.ab_minus, R.drawable.ab_minus};
     private CalendarView calendar;
-    private Button calendarButton,  saveButton, skipButton;
+    private Button saveButton, skipButton;
+    private ImageButton calendarButton;
     private RelativeLayout infoRelativeLayout;
     private FirebaseDatabase database;
     private DatabaseReference reference;
@@ -72,15 +75,15 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
         bloodTypeParentOne = extras.getString("bloodType");
 
         //getting ids from layout
-        nameParentTwo = findViewById(R.id.nameParentTwo);
-        surnameParentTwo = findViewById(R.id.surnameParentTwo);
-        amkaParentTwo = findViewById(R.id.amkaParentTwo);
-        phoneNumberParentTwo = findViewById(R.id.phoneNumberParentTwo);
-        emailAddressParentTwo = findViewById(R.id.emailParetntTwo);
+        nameParentTwo = findViewById(R.id.nameParentTwoTextInput);
+        surnameParentTwo = findViewById(R.id.surnameParentTwoTextInput);
+        amkaParentTwo = findViewById(R.id.amkaParentTwoTextInput);
+        phoneNumberParentTwo = findViewById(R.id.phoneNumberParentTwoTextInput);
+        emailAddressParentTwo = findViewById(R.id.emailParentTwoTextInput);
         calendar = findViewById(R.id.calendarView3);
         calendarButton = findViewById(R.id.calendarButtonOnParentTwo);
         infoRelativeLayout = findViewById(R.id.relativeLayoutParentTwo);
-        dateOfBirthParentTwo = findViewById(R.id.birthDateParentTwo);
+        dateOfBirthParentTwo = findViewById(R.id.birthDateParentTwoTextInput);
         bloodTypeParentTwoSpinner = findViewById(R.id.bloodTypeParentTwo);
         saveButton = findViewById(R.id.saveButton);
         skipButton = findViewById(R.id.skipButton);
@@ -102,24 +105,6 @@ public class nextParent extends AppCompatActivity implements AdapterView.OnItemS
         CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),bloodImages,bloodType);
         bloodTypeParentTwoSpinner.setAdapter(customAdapter);
         bloodTypeParentTwoSpinner.setOnItemSelectedListener(this);
-
-        //setting hint in babyBirthDate
-        //getting current date
-        Calendar cal = Calendar.getInstance();
-        int yy = cal.get(Calendar.YEAR);
-        int mm = cal.get(Calendar.MONTH) + 1;
-        int dd = cal.get(Calendar.DAY_OF_MONTH);
-        String d = String.valueOf(dd);
-        if (dd <= 9) {
-            d = "0" + d;
-        }
-        String m = String.valueOf(mm);
-        if (mm <= 9) {
-            m = "0" + m;
-        }
-        // set current date into textview
-        dateOfBirthParentTwo.setHint(new StringBuilder()
-                .append(d).append(" ").append("/").append(m).append("/").append(yy));
 
         //onclick listener for calendar opening
         calendarButton.setOnClickListener(new View.OnClickListener() {

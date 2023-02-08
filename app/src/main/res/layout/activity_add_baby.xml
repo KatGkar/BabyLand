@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
+    tools:ignore="HardcodedText"
     tools:context=".addBaby">
 
     <CalendarView
@@ -25,13 +26,36 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddBaby"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.275"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/babyNameTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:shadowRadius="2"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/radioGroup">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/babyNameTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <TextView
                 android:id="@+id/textView8"
@@ -42,86 +66,51 @@
                 android:text="Fiil in child infortmation"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="22dp"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/babyBirthPlaceText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/babyBirthPlaceTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:hint="BirthPlace"
-                android:inputType="textPersonName"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/babyBirthDate" />
+                app:layout_constraintTop_toBottomOf="@id/babyBirthDateTextInputLayout">
 
-            <Button
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/babyBirthPlaceTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Birth Place"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
                 android:id="@+id/calendarButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/calendar"
-                android:elevation="20dp"
-                app:layout_constraintEnd_toEndOf="@+id/babyBirthDate"
-                app:layout_constraintTop_toTopOf="@+id/babyBirthDate" />
-
-            <EditText
-                android:id="@+id/babyBirthDate"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:ems="10"
-                android:gravity="center"
-                android:hint="BirthDate"
-                android:inputType="date"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
-                android:shadowRadius="2"
-                android:textColor="#000000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.502"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/babyAmkaText" />
-
-            <EditText
-                android:id="@+id/babyNameText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:gravity="center"
-                android:hint="Name"
-                android:inputType="textPersonName"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
-                android:shadowRadius="2"
-                android:textColor="#000000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/radioGroup" />
+                android:src="@drawable/calendar"
+                android:background="@color/fui_transparent"
+                android:layout_alignParentEnd="true"
+                android:elevation="50dp"
+                app:layout_constraintVertical_bias="0.50"
+                android:layout_alignTop="@+id/babyBirthDateTextInputLayout"
+                android:layout_alignBottom="@+id/babyBirthDateTextInputLayout"
+                android:layout_alignEnd="@+id/babyBirthDateTextInputLayout"
+                app:layout_constraintBottom_toBottomOf="@id/babyBirthDateTextInputLayout"
+                app:layout_constraintEnd_toEndOf="@+id/babyBirthDateTextInputLayout"
+                app:layout_constraintTop_toTopOf="@+id/babyBirthDateTextInputLayout" />
 
 
             <Spinner
@@ -131,7 +120,7 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="50dp"
-                android:background="@drawable/edit_texts"
+                android:background="@drawable/drop_down_adapter"
                 android:elevation="20dp"
                 android:ems="10"
                 android:fontFamily="@font/bai_jamjuree"
@@ -145,35 +134,58 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/babyBirthPlaceText" />
+                app:layout_constraintTop_toBottomOf="@+id/babyBirthPlaceTextInputLayout" />
 
-            <EditText
-                android:id="@+id/babyAmkaText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/babyBirthDateTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:hint="Amka"
-                android:inputType="number"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
                 android:shadowRadius="2"
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/babyNameText" />
+                app:layout_constraintTop_toBottomOf="@id/babyAmkaTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/babyBirthDateTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="Birth Date"
+                    android:inputType="date" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/babyAmkaTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:shadowRadius="2"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/babyNameTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/babyAmkaTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Amka"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <RadioGroup
                 android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="40dp"
+                android:layout_margin="30dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -186,7 +198,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/radio_buttons"
                     android:button="@drawable/male"
-                    android:text="" />
+                    android:text=""/>
 
                 <RadioButton
                     android:id="@+id/babyGirl"
@@ -202,8 +214,9 @@
                 android:id="@+id/addBaby"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:background="@drawable/facebook_google_buttons"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/buttons"
+                android:textColor="@color/black"
                 android:onClick="addNewBaby"
                 android:text="NEXT"
                 app:layout_constraintEnd_toEndOf="parent"

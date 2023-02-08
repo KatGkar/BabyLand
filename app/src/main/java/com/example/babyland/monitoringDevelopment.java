@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +43,7 @@ import java.util.Locale;
 public class monitoringDevelopment extends AppCompatActivity {
 
     private TextView dateText, doctorText;
-    private EditText weightText, lengthText, headCircumferenceText, observationText;
+    private TextInputEditText weightText, lengthText, headCircumferenceText, observationText;
     private ArrayList<DevelopmentalItems> developmentalMonitoring;
     private ArrayList<ExaminationItems> examination;
     private ArrayList<SustenanceItems> sustenance;
@@ -72,9 +73,9 @@ public class monitoringDevelopment extends AppCompatActivity {
 
         //getting views from xml file
         dateText = findViewById(R.id.dateText);
-        weightText = findViewById(R.id.weightText);
-        lengthText = findViewById(R.id.lengthText);
-        headCircumferenceText = findViewById(R.id.headCircumferenceText);
+        weightText = findViewById(R.id.weightTextInput);
+        lengthText = findViewById(R.id.lengthTextInput);
+        headCircumferenceText = findViewById(R.id.headCircumferenceTextInput);
         sustenanceButton = findViewById(R.id.sustenanceButton);
         examinationButton = findViewById(R.id.examinationButton);
         developmentalMonitoringButton = findViewById(R.id.developmentalMonitoringButton);
@@ -89,7 +90,7 @@ public class monitoringDevelopment extends AppCompatActivity {
         recyclerViewDevelopmental = findViewById(R.id.recyclerViewDevelopmental);
         developmentalLayout = findViewById(R.id.developmentalLayout);
         observationsLayout = findViewById(R.id.observationsLayout);
-        observationText = findViewById(R.id.observationsText);
+        observationText = findViewById(R.id.observationsTextInput);
         recyclerViewSustenance = findViewById(R.id.recyclerViewSustenance);
         bottomNavigationView = findViewById(R.id.bottomNavigationViewMonitoringDevelopment);
         saveMeasurementButton = findViewById(R.id.saveMeasurementsButton);

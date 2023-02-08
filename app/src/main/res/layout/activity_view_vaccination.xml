@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="HardcodedText"
     tools:context=".viewVaccination">
 
     <RelativeLayout
@@ -41,8 +42,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/facebook_google_buttons"
+                android:background="@drawable/buttons"
                 android:text="Add another vaccine"
+                android:textColor="@color/black"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -58,6 +60,7 @@
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -69,8 +72,8 @@
         android:id="@+id/addOtherVaccineRelativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/gradient_darker"
-        android:visibility="gone"
+        android:background="@drawable/gradient"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewViewVaccination"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,11 +98,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/facebook_google_buttons"
+                android:background="@drawable/buttons"
                 android:text="Add Vaccine"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dateVaccinatedTextView" />
 
@@ -130,28 +134,30 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vaccineNameEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/vaccineNameTextInputLayout" />
 
-            <EditText
-                android:id="@+id/vaccineNameEditText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="48dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:hint="Vaccination name..."
-                android:inputType="textPersonName"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/vaccineNameTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/vaccineNameTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Vaccine name"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 

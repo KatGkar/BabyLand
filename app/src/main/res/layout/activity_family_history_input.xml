@@ -7,6 +7,8 @@
     android:background="@drawable/gradient"
     app:layout_constraintBottom_toTopOf="@id/bottomNavigationViewMainScreenParents"
     app:layout_constraintTop_toTopOf="parent"
+    tools:ignore="HardcodedText"
+    android:windowSoftInputMode="adjustPan"
     tools:context=".familyHistoryInput">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -24,7 +26,6 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewFamilyHistoryInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +34,30 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/illnessesTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:shadowRadius="2"
+                android:layout_width="0dp"
+                android:layout_height="90dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="start|top"
+                app:layout_constraintBottom_toTopOf="@+id/nextButton"
+                android:textColor="#000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewFamilyHistory">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/illnessesTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:hint="Other illnesses"
+                    android:inputType="textImeMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/textView9"
@@ -52,37 +77,24 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewFamilyHistory"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/editTextTextMultiLine"
+                android:layout_width="350dp"
+                android:layout_height="430dp"
+                app:layout_constraintHorizontal_bias="0.50"
+                app:layout_constraintBottom_toTopOf="@+id/illnessesTextInputLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView9" />
-
-            <EditText
-                android:id="@+id/editTextTextMultiLine"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:ems="10"
-                android:gravity="start|top"
-                android:hint="Άλλες σημαντικές παθήσεις ή καταστάσεις στην οικογένεια"
-                android:inputType="textMultiLine"
-                app:layout_constraintBottom_toTopOf="@+id/nextButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/nextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/facebook_google_buttons"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/buttons"
                 android:onClick="saveBaby"
                 android:text="Save"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"

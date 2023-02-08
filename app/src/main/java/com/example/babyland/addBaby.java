@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +37,7 @@ import java.util.Locale;
 
 public class addBaby extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    private EditText babyBirthDate, babyNameTextView, babyAmkaTextView, babyBirthPlaceTextView;
+    private TextInputEditText babyBirthDate, babyNameTextView, babyAmkaTextView, babyBirthPlaceTextView;
     private RadioButton babyBoy, babyGirl;
     private String[] bloodType = {"Blood Type", "A RhD positive (A+)","A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
@@ -44,12 +46,12 @@ public class addBaby extends AppCompatActivity implements AdapterView.OnItemSele
             R.drawable.ab_minus, R.drawable.ab_minus};
     private Spinner babyBloodTypeSpinner;
     private CalendarView calendar;
-    private Button calendarButton;
+    private ImageButton calendarButton;
     private RelativeLayout infoRelativeLayout;
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private Boolean flagUnique, flagNext;
-    private String sex;
+    private String sex, d, m;
     private BottomNavigationView bottomNavigationView;
 
 
@@ -59,12 +61,12 @@ public class addBaby extends AppCompatActivity implements AdapterView.OnItemSele
         setContentView(R.layout.activity_add_baby);
 
         //finding views on xml file
-        babyNameTextView = findViewById(R.id.babyNameText);
-        babyAmkaTextView = findViewById(R.id.babyAmkaText);
-        babyBirthPlaceTextView = findViewById(R.id.babyBirthPlaceText);
+        babyNameTextView = findViewById(R.id.babyNameTextInput);
+        babyAmkaTextView = findViewById(R.id.babyAmkaTextInput);
+        babyBirthPlaceTextView = findViewById(R.id.babyBirthPlaceTextInput);
         babyBoy = findViewById(R.id.babyBoy);
         babyGirl = findViewById(R.id.babyGirl);
-        babyBirthDate = findViewById(R.id.babyBirthDate);
+        babyBirthDate = findViewById(R.id.babyBirthDateTextInput);
         babyBloodTypeSpinner = findViewById(R.id.babyBloodTypeSpinner);
         calendar = findViewById(R.id.calendarView2);
         calendarButton = findViewById(R.id.calendarButton);
@@ -80,24 +82,6 @@ public class addBaby extends AppCompatActivity implements AdapterView.OnItemSele
         //setting default sex
         babyGirl.setChecked(true);
 
-        //setting hint in babyBirthDate
-        //getting current date
-        Calendar  cal = Calendar.getInstance();
-        int yy = cal.get(Calendar.YEAR);
-        int mm = cal.get(Calendar.MONTH) +1;
-        int dd = cal.get(Calendar.DAY_OF_MONTH);
-        String d = String.valueOf(dd);
-        if (dd <= 9) {
-            d = "0" + d;
-        }
-        String m = String.valueOf(mm);
-        if (mm <= 9) {
-            m = "0" + m;
-        }
-
-        // set current date into textview
-        babyBirthDate.setHint(new StringBuilder()
-                .append(d).append(" ").append("/").append(m).append("/").append(yy));
 
         //setting visibilities
         calendar.setVisibility(View.INVISIBLE);
@@ -231,7 +215,6 @@ public class addBaby extends AppCompatActivity implements AdapterView.OnItemSele
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 

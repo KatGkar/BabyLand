@@ -15,10 +15,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +33,7 @@ import java.util.Calendar;
 
 public class createNewParent extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private EditText nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, dateOfBirthParentOne;
+    private TextInputEditText nameParentOne, surnameParentOne, amkaParentOne, phoneNumberParentOne, dateOfBirthParentOne;
     private String[] bloodType = {"Blood Type", "A RhD positive (A+)", "A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
     private int[] bloodImages = {R.drawable.blood_type, R.drawable.a_plus, R.drawable.a_minus,
@@ -39,7 +41,8 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
             R.drawable.ab_minus, R.drawable.ab_minus};
     private Spinner bloodSpinner;
     private CalendarView calendar;
-    private Button calendarButton, nextParentButton;
+    private Button  nextParentButton;
+    private ImageButton calendarButton;
     private RelativeLayout infoRelativeLayout;
     private FirebaseDatabase database;
     private DatabaseReference reference;
@@ -55,14 +58,14 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_create_new_parent);
 
         //finding views from xml file
-        nameParentOne = findViewById(R.id.nameParentOne);
-        surnameParentOne = findViewById(R.id.surnameParentOne);
-        amkaParentOne = findViewById(R.id.amkaParentOne);
-        phoneNumberParentOne = findViewById(R.id.phoneNumberParentOne);
+        nameParentOne = findViewById(R.id.nameParentOneTextInput);
+        surnameParentOne = findViewById(R.id.surnameParentOneTextInput);
+        amkaParentOne = findViewById(R.id.amkaParentOneTextInput);
+        phoneNumberParentOne = findViewById(R.id.phoneNumberParentOneTextInput);
         calendar = findViewById(R.id.calendarView);
         calendarButton = findViewById(R.id.calendarButtonOnParentOne);
         infoRelativeLayout = findViewById(R.id.relativeLayoutParentOne);
-        dateOfBirthParentOne = findViewById(R.id.birthDateParentOne);
+        dateOfBirthParentOne = findViewById(R.id.birthDateParentOneTextInput);
         bloodSpinner = findViewById(R.id.bloodTypeParentOne);
         nextParentButton = findViewById(R.id.nextParentButton);
 
@@ -77,24 +80,6 @@ public class createNewParent extends AppCompatActivity implements AdapterView.On
         CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),bloodImages,bloodType);
         bloodSpinner.setAdapter(customAdapter);
         bloodSpinner.setOnItemSelectedListener(this);
-
-        //getting current date
-        Calendar cal = Calendar.getInstance();
-        int yy = cal.get(Calendar.YEAR);
-        int mm = cal.get(Calendar.MONTH) + 1;
-        int dd = cal.get(Calendar.DAY_OF_MONTH);
-
-        // set current date into textview
-        String d = String.valueOf(dd);
-        if (dd <= 9) {
-            d = "0" + d;
-        }
-        String m = String.valueOf(mm);
-        if (mm <= 9) {
-            m = "0" + m;
-        }
-        dateOfBirthParentOne.setHint(new StringBuilder()
-                .append(d).append(" ").append("/").append(m).append("/").append(yy));
 
         //setting visibilities
         calendar.setVisibility(View.INVISIBLE);

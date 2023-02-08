@@ -20,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -106,15 +108,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             holder.illnessName.setText(name);
             String details = lists.get(position).getDetails();
             holder.illnessDetails.setText(details);
-            holder.illnessDetails.setHint("Λεπτομέρειες....");
             Boolean sw = lists.get(position).getSwitches();
             if(sw){
                 holder.switches.setChecked(true);
-                holder.illnessDetails.setVisibility(View.VISIBLE);
+                holder.illnessDetailsLayout.setVisibility(View.VISIBLE);
 
             }else{
                 holder.switches.setChecked(false);
-                holder.illnessDetails.setVisibility(View.GONE);
+                holder.illnessDetailsLayout.setVisibility(View.GONE);
             }
         }else if(id.equals("examination")){
             List<ExaminationItems> lists = (List<ExaminationItems>) (List<?>) list;
@@ -295,15 +296,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         this.userType = userType;
     }
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView illnessName, illnessDetails, examinationListItemText, developmentalListItemText, ageTextView, dateTextView,
+        private TextView illnessName, examinationListItemText, developmentalListItemText, ageTextView, dateTextView,
                     nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExaminationTextView,
                     nameTextViewDelete, amkaTextViewDelete, birthDateTextViewDelete, ageTextViewDelete, amkaAvailableChildrenText,
                     nameAvailableChildrenText, illnessNameTextView, illnessDetailsTextView, vaccinationNameTextView,
                     vaccinationDateTextView, vaccinationDoctorTextView;
+        private TextInputEditText illnessDetails, developmentalEditText;
+        private TextInputLayout illnessDetailsLayout, developmentalLayout;
         private Switch switches;
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
-        private EditText developmentalEditText;
         private CardView card, cardViewAdd, cardViewExamination, cardViewVaccinations, cardViewDevelopments, cardViewDeleteChild;
         private boolean i=true;
         private Button addVaccineButton;
@@ -317,14 +319,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 illnessName = itemView.findViewById(R.id.illnessName);
                 switches = itemView.findViewById(R.id.switches);
                 illnessDetails = itemView.findViewById(R.id.illnessDetails);
+                illnessDetailsLayout = itemView.findViewById(R.id.illnessDetailsTextInputLayout);
                 switches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         int  i = getAdapterPosition();
                         if(switches.isChecked()){
-                            illnessDetails.setVisibility(View.VISIBLE);
+
+                            illnessDetailsLayout.setVisibility(View.VISIBLE);
                         }else{
-                            illnessDetails.setVisibility(View.GONE);
+                            illnessDetailsLayout.setVisibility(View.GONE);
                         }
                         FamilyHistoryIllnesses f1 = new FamilyHistoryIllnesses(lists.get(i).getIllness(), switches.isChecked(), lists.get(i).getDetails());
                         lists.set(i, f1);
@@ -368,15 +372,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             }else if(id.equals("developmental")){
                 List<DevelopmentalItems> lists = (List<DevelopmentalItems>) (List<?>) list;
                 developmentalListItemText = itemView.findViewById(R.id.developmentalListItemText);
-                developmentalEditText = itemView.findViewById(R.id.developmentalEditText);
+                developmentalEditText = itemView.findViewById(R.id.developmentalTextInput);
+                developmentalLayout = itemView.findViewById(R.id.developmentalTextInputLayout);
                 card = itemView.findViewById(R.id.cardViewId);
                 card.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(!i){
                             developmentalEditText.setVisibility(itemView.GONE);
+                            developmentalLayout.setVisibility(itemView.GONE);
                             i=true;
                         }else{
+                            developmentalLayout.setVisibility(itemView.VISIBLE);
                             developmentalEditText.setVisibility(itemView.VISIBLE);
                             i=false;
                         }

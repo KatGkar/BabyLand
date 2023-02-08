@@ -15,17 +15,17 @@
             android:id="@+id/imageSex"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:srcCompat="@drawable/doctor"></ImageView>
+            app:srcCompat="@drawable/doctor"/>
 
         <TextView
             android:id="@+id/textAmka"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
             android:gravity="center|center_vertical"
             android:text="Text Here"
-            android:textAlignment="center"></TextView>
+            android:textAlignment="center"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

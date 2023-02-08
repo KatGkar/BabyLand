@@ -6,48 +6,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
+    tools:ignore="HardcodedText"
     tools:context=".addChildToDoctor">
 
     <RelativeLayout
         android:id="@+id/verificationRelativeLayout"
-        android:layout_width="336dp"
-        android:layout_height="371dp"
-        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.50">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/verificationEditTextView"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/verificationAmkaTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:hint="12345678912"
-                android:inputType="textPersonName"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
                 android:shadowRadius="2"
+                android:textAlignment="center"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/verificationTextView" />
+                app:layout_constraintTop_toBottomOf="@id/verificationTextView">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/verificationAmkaTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Amka"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <TextView
                 android:id="@+id/verificationTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
                 android:fontFamily="@font/bai_jamjuree"
                 android:text="Please type one parent amka to verify the addition"
                 android:textAlignment="center"
@@ -64,40 +68,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
-                android:background="@drawable/facebook_google_buttons"
+                android:background="@drawable/buttons"
                 android:text="Verify"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/verificationEditTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/verificationAmkaTextInputLayout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/viewChildInfoLayout"
-        android:layout_width="400dp"
-        android:layout_height="690dp"
-        android:background="@drawable/gradient_darker"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:background="@drawable/gradient"
+        android:drawableStart="@drawable/person"
         android:elevation="20dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddChildToDoctor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.50">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="350dp"
-            android:layout_height="426dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="130dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="78dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/gradient"
             android:elevation="20dp">
 
@@ -105,11 +104,15 @@
                 android:id="@+id/ageAddChildTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
                 android:text="age"
-                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textColor="#000000"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:drawableLeftCompat="@drawable/calendar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/amkaAddChildTextView" />
 
@@ -117,22 +120,27 @@
                 android:id="@+id/addChildButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="108dp"
-                android:background="@drawable/facebook_google_buttons"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/buttons"
                 android:text="Add Child"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/amkaAddChildTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/ageAddChildTextView" />
 
             <TextView
                 android:id="@+id/nameAddChildTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
                 android:text="Name"
-                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textColor="#000000"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:drawableLeftCompat="@drawable/person"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/sexAddChildImage" />
 
@@ -140,21 +148,25 @@
                 android:id="@+id/amkaAddChildTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
+                android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
                 android:text="amka"
-                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textColor="#000000"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.508"
+                app:drawableLeftCompat="@drawable/identification"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nameAddChildTextView" />
 
             <ImageView
                 android:id="@+id/sexAddChildImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_width="107dp"
+                android:layout_height="91dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/parent" />
@@ -174,17 +186,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.50">
 
-        <EditText
-            android:id="@+id/searchAmkaEditText"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchAmkaTextInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="42dp"
-            android:layout_marginTop="27dp"
-            android:ems="10"
-            android:hint="Search by amka...."
-            android:inputType="textPersonName" />
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:shadowRadius="2"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchAmkaTextInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search by amka...."
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/availableChildrenRecyclerView"
@@ -204,10 +227,10 @@
             android:id="@+id/searchButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentTop="false"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="26dp"
-            android:layout_toEndOf="@+id/searchAmkaEditText"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignTop="@id/searchAmkaTextInputLayout"
+            android:layout_toEndOf="@+id/searchAmkaTextInputLayout"
             android:onClick="searchButton"
             app:srcCompat="@drawable/search" />
 

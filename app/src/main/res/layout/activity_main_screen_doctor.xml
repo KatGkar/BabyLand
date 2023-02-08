@@ -5,6 +5,7 @@
     android:id="@+id/constraintLayoutMainScreenDoctor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="HardcodedText"
     android:background="@drawable/gradient"
     tools:context=".mainScreenDoctor">
 
@@ -13,7 +14,7 @@
         android:id="@+id/noChildRelativeLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddBaby"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,8 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:adjustViewBounds="true"
-                android:background="@drawable/facebook_google_buttons"
-                android:backgroundTint="@color/fui_bgGoogle"
+                android:background="@drawable/buttons"
                 android:cropToPadding="true"
                 android:elevation="20dp"
                 android:text="Add child"
@@ -48,7 +48,7 @@
                 android:text="No child took over yet"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,8 +61,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="2dp"
-        android:background="@drawable/gradient_darker"
-        android:visibility="gone"
+        android:background="@drawable/gradient"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddBaby"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,38 +85,36 @@
                 android:id="@+id/deleteChildVerificationButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:background="@drawable/facebook_google_buttons"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/buttons"
                 android:text="Delete child"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/deleteChildVerificationEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/deleteChildVerificationTextInputLayout" />
 
-            <EditText
-                android:id="@+id/deleteChildVerificationEditText"
-                android:layout_width="230dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="35dp"
-                android:background="@drawable/edit_texts"
-                android:elevation="20dp"
-                android:ems="10"
-                android:fontFamily="@font/bai_jamjuree"
-                android:hint="Amka..."
-                android:inputType="textPersonName"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:shadowDx="2"
-                android:shadowDy="4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/deleteChildVerificationTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
                 android:shadowRadius="2"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="14sp"
-                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintTop_toBottomOf="@id/textView4">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/deleteChildVerificationTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Amka"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/textView4"
@@ -127,7 +125,8 @@
                 android:text="Please enter baby amka to verify deletion"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="16dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
@@ -149,29 +148,115 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/viewParentsButton"
-                android:layout_width="100dp"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="65dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:text="View Parents"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/deleteBabyButton"
-                app:layout_constraintTop_toBottomOf="@+id/viewChartButton" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.50"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/relativeLayoutButtons1">
 
-            <Button
-                android:id="@+id/showDevelopmentsButton"
-                android:layout_width="150dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/viewFamilyHistoricButton"
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttons"
+                        android:text="View family historic"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/showDevelopmentsButton"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/buttons"
+                        android:text="Show developments"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@id/viewFamilyHistoricButton"
+                        app:layout_constraintTop_toTopOf="@id/viewFamilyHistoricButton" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutButtons1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:text="show Developments"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/viewFamilyHistoricButton"
-                app:layout_constraintTop_toBottomOf="@+id/vaccinationButton" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.50"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/relativeButtons0">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/vaccinationButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttons"
+                        android:text="Vaccinations"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/addDevelopmentsButton"
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/buttons"
+                        android:text="Add Development"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@id/vaccinationButton"
+                        app:layout_constraintTop_toTopOf="@id/vaccinationButton" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeButtons0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.50"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewChartButton">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/deleteBabyButton"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/buttons"
+                        android:text="Delete Baby"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/viewParentsButton"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/buttons"
+                        android:text="View Parents"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@id/deleteBabyButton"
+                        app:layout_constraintTop_toTopOf="@id/deleteBabyButton" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/amkaShowChildTextView"
@@ -179,10 +264,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
                 android:text="amka"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="16dp"
+                android:textSize="18sp"
+                app:drawableLeftCompat="@drawable/identification"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.504"
                 app:layout_constraintStart_toStartOf="parent"
@@ -194,10 +281,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
                 android:text="name"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="16sp"
+                android:textSize="18sp"
+                app:drawableLeftCompat="@drawable/person"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
@@ -207,9 +296,9 @@
                 android:id="@+id/sexShowChildImageView"
                 android:layout_width="72dp"
                 android:layout_height="62dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="90dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/facebook" />
@@ -220,71 +309,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/bai_jamjuree"
+                android:gravity="center"
                 android:text="dateBirth"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="16dp"
+                android:textSize="18sp"
+                app:drawableLeftCompat="@drawable/person"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/amkaShowChildTextView" />
 
             <Button
-                android:id="@+id/addDevelopmentsButton"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="65dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:text="Add Development"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/deleteBabyButton" />
-
-            <Button
-                android:id="@+id/viewFamilyHistoricButton"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:text="View family historic"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addDevelopmentsButton" />
-
-            <Button
-                android:id="@+id/vaccinationButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="55dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:text="Vaccinations"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/addDevelopmentsButton"
-                app:layout_constraintTop_toBottomOf="@+id/viewParentsButton" />
-
-            <Button
-                android:id="@+id/deleteBabyButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="75dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/facebook_google_buttons"
-                android:text="DELETE BABY"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewChartButton" />
-
-            <Button
                 android:id="@+id/viewChartButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/buttons"
                 android:text="Charts"
                 android:textColor="@color/black"
-                android:background="@drawable/facebook_google_buttons"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dateOfBirthShowChildTextView" />
@@ -295,7 +338,7 @@
         android:id="@+id/doctorsChildrenLayout"
         android:layout_width="390dp"
         android:layout_height="636dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewAddBaby"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -316,7 +359,8 @@
             android:text="Children took over"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="20dp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/doctorsChildrenRecyclerView"

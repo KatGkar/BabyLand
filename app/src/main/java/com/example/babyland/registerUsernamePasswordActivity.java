@@ -27,6 +27,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -38,7 +39,7 @@ import java.util.Arrays;
 
 public class registerUsernamePasswordActivity extends AppCompatActivity{
 
-    private EditText emailTextView, passwordTextView, passwordValidTextView;
+    private TextInputEditText emailTextView, passwordTextView, passwordValidTextView;
     private String email, password, passwordValid;
     private FirebaseAuth firebaseAuth;
     private ImageView facebookButton, googleButton;
@@ -56,7 +57,7 @@ public class registerUsernamePasswordActivity extends AppCompatActivity{
         //getting views from xml file
         emailTextView = findViewById(R.id.emailTextView);
         passwordTextView = findViewById(R.id.passwordTextView);
-        passwordValidTextView = findViewById(R.id.passwordValidTextView);
+        passwordValidTextView = findViewById(R.id.passwordValidationTextView);
         registerButton = findViewById(R.id.registerUserButton);
         facebookButton = findViewById(R.id.facebookButtonRegister);
         googleButton = findViewById(R.id.googleButtonRegister);

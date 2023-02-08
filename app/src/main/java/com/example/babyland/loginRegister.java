@@ -9,11 +9,11 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.se.omapi.Session;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,10 +21,12 @@ import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -37,13 +39,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
@@ -54,7 +58,7 @@ public class loginRegister extends AppCompatActivity { //implements GoogleApiCli
     private CallbackManager callbackManager;
     private FirebaseAuth myFirebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
-    private EditText email, password;
+    private TextInputEditText email, password;
     private long delay = 1000;
     private long lastEditText = 0;
     private Handler handler = new Handler();
@@ -70,7 +74,7 @@ public class loginRegister extends AppCompatActivity { //implements GoogleApiCli
         setContentView(R.layout.activity_login_register);
 
         //getting views from xml file
-        email = findViewById(R.id.email);
+        email = findViewById(R.id.babyAmkaTextInput);
         password = findViewById(R.id.password);
         loadingFrame = findViewById(R.id.loadingFrame);
         myFirebaseAuth = FirebaseAuth.getInstance();
@@ -139,33 +143,33 @@ public class loginRegister extends AppCompatActivity { //implements GoogleApiCli
         //used for user login
         myFirebaseAuth = FirebaseAuth.getInstance();
         FacebookSdk.sdkInitialize(getApplicationContext());
-
-        //login callback manager for facebook login
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_ONLY);
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        handleFacebookToken(loginResult.getAccessToken());
-                    }
-
-                    @Override
-                    public void onCancel() {
-
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        Toast.makeText(loginRegister.this, "Facebook is not responding. Please try again later!!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        LoginManager.getInstance().logOut();
 
 
         //facebook sign in button
         facebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //login callback manager for facebook login
+               callbackManager = CallbackManager.Factory.create();
+                LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_ONLY);
+                LoginManager.getInstance().registerCallback(callbackManager,
+                        new FacebookCallback<LoginResult>() {
+                            @Override
+                            public void onSuccess(LoginResult loginResult) {
+                                handleFacebookToken(loginResult.getAccessToken());
+                            }
+
+                            @Override
+                            public void onCancel() {
+
+                            }
+
+                            @Override
+                            public void onError(FacebookException exception) {
+                                Toast.makeText(loginRegister.this, "Facebook is not responding. Please try again later!!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                 LoginManager.getInstance().logInWithReadPermissions(loginRegister.this, Arrays.asList("public_profile"));
 
             }
@@ -200,9 +204,7 @@ public class loginRegister extends AppCompatActivity { //implements GoogleApiCli
         loadingFrame.setVisibility(View.INVISIBLE);
         loginRelativeLayout.setVisibility(View.VISIBLE);
         email.setText("");
-        email.setHint("Email");
         password.setText("");
-        password.setHint("Password");
 
     }
 

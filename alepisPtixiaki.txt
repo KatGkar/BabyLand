@@ -1,22 +1,7 @@
-#ffe4e1
-#ca9ab6
-#b9d5ea
-#C1126B
-#E20059
-#ECEAE7
 
 multilingua
-check xml files
-sto telos ola ta visibilities visible sta xml
-on delete child delete from doctor database
-app icon
-drawable file
-FrontEnd
-set database
 
 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
-
-
 
 ///////////////////////////////////////////////////////////////////////////////////////
 public void addToDatabase(){

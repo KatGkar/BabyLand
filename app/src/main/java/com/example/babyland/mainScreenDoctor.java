@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,7 +45,7 @@ public class mainScreenDoctor extends AppCompatActivity {
     private Button addDevelopmentsButton, viewParentsButton, showDevelopmentsButton, viewFamilyHistoricButton, vaccinationsButton,
             deleteChildButton, deleteChildVerificationButton, noChildButton, viewChartButton;
     private TextView nameTextView, amkaTextView, dateOfBirthTextView;
-    private EditText deleteChildVerificationEditText;
+    private TextInputEditText deleteChildVerificationEditText;
     private ImageView sexImageView;
     private int monthsD=0;
 
@@ -69,7 +70,7 @@ public class mainScreenDoctor extends AppCompatActivity {
         vaccinationsButton = findViewById(R.id.vaccinationButton);
         deleteChildButton = findViewById(R.id.deleteBabyButton);
         deleteChildVerificationButton = findViewById(R.id.deleteChildVerificationButton);
-        deleteChildVerificationEditText = findViewById(R.id.deleteChildVerificationEditText);
+        deleteChildVerificationEditText = findViewById(R.id.deleteChildVerificationTextInput);
         deleteChildVerificationRelativeLayout = findViewById(R.id.deleteChildRelativeLayout);
         noChildButton = findViewById(R.id.noChildButton);
         noChildRelativeLayout = findViewById(R.id.noChildRelativeLayout);

@@ -165,10 +165,10 @@ public class viewParentInfo extends AppCompatActivity {
                             parent2 = snapshots.getValue(t);
                         }
                     }
-                    amkaParentOneTextView.setText("Parent amka: " +parent1.getAmka());
+                    amkaParentOneTextView.setText(parent1.getAmka());
                     try {
                         if (!parent2.getAmka().equals("00000000000")) {
-                            amkaParentTwoTextView.setText("Co-parent amka: " + parent2.getAmka());
+                            amkaParentTwoTextView.setText(parent2.getAmka());
                         } else {
                             amkaParentTwoTextView.setVisibility(View.INVISIBLE);
                         }

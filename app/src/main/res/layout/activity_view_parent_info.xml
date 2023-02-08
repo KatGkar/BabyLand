@@ -3,27 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    tools:ignore="HardcodedText"
     android:background="@drawable/gradient"
     android:layout_height="match_parent"
     tools:context=".viewParentInfo">
 
     <RelativeLayout
-        android:background="@drawable/gradient_darker"
         android:id="@+id/parentInfoRelativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/gradient"
         android:visibility="visible"
-        app:layout_constraintHorizontal_bias="0.50"
-        app:layout_constraintVertical_bias="0.50"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewViewParentInfo"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.50">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/gradient">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/parentInfoTextView"
@@ -34,7 +34,7 @@
                 android:text="Parent Info"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
@@ -54,109 +54,109 @@
                 android:id="@+id/bloodTypeParentInfoTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/blood_type_black"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
                 android:fontFamily="@font/bai_jamjuree"
                 android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="14dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="20dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/amkaParentInfoTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/amkaParentInfoTextView"
+                app:drawableLeftCompat="@drawable/blood_type_black" />
 
             <TextView
                 android:id="@+id/phoneNumberParentInfoTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/phone"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
                 android:fontFamily="@font/bai_jamjuree"
                 android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="14dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="20dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dateOfBirthParentInfoTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/dateOfBirthParentInfoTextView"
+                app:drawableLeftCompat="@drawable/phone" />
 
             <TextView
                 android:id="@+id/emailParentInfoTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/email"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
                 android:fontFamily="@font/bai_jamjuree"
                 android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="14dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="20dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneNumberParentInfoTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/phoneNumberParentInfoTextView"
+                app:drawableLeftCompat="@drawable/email" />
 
             <TextView
                 android:id="@+id/amkaParentInfoTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/identification"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
                 android:fontFamily="@font/bai_jamjuree"
                 android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="14dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="20dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameParentInfoTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/nameParentInfoTextView"
+                app:drawableLeftCompat="@drawable/identification" />
 
             <TextView
                 android:id="@+id/nameParentInfoTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/person"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
                 android:fontFamily="@font/bai_jamjuree"
                 android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="14dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="20dp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/parentInfoTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/parentInfoTextView"
+                app:drawableLeftCompat="@drawable/person" />
 
             <TextView
                 android:id="@+id/dateOfBirthParentInfoTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/calendar"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
                 android:fontFamily="@font/bai_jamjuree"
                 android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="14dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="20dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bloodTypeParentInfoTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/bloodTypeParentInfoTextView"
+                app:drawableLeftCompat="@drawable/calendar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
@@ -165,7 +165,7 @@
         android:id="@+id/parentsRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -180,7 +180,8 @@
                 android:text="Parent amka:"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="16dp"
+                android:textSize="18sp"
+                app:drawableLeftCompat="@drawable/identification"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
@@ -195,7 +196,8 @@
                 android:text="Co-parent amka:"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="16dp"
+                android:textSize="16sp"
+                app:drawableLeftCompat="@drawable/identification"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
@@ -210,7 +212,8 @@
                 android:text="Click amka number to show more details"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="20dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"

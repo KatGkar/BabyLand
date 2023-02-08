@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
+    tools:ignore="HardcodedText"
     tools:context=".showDevelopmentsList">
 
     <TextView
@@ -18,7 +19,7 @@
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,11 +31,13 @@
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
         android:scrollbarThumbVertical="@drawable/scrollbar"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewShowDevelopments"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/doctorShowDevelopmentsTextView">
+        app:layout_constraintTop_toBottomOf="@id/doctorShowDevelopmentsTextView"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -201,6 +204,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:textAlignment="center"
                 android:clickable="false"
                 android:gravity="center_horizontal"
                 android:text="Hearing"
@@ -231,31 +235,32 @@
     </ScrollView>
 
     <TextView
-            android:id="@+id/textViewDevelopments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bai_jamjuree"
-            android:text="Developments"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/developmentsRecyclerView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.781" />
+        android:id="@+id/textViewDevelopments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bai_jamjuree"
+        android:text="Developments"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/developmentsRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.781" />
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/developmentsRecyclerView"
-            android:layout_width="341dp"
-            android:layout_height="599dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewShowDevelopments"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+        android:id="@+id/developmentsRecyclerView"
+        android:layout_width="341dp"
+        android:layout_height="599dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewShowDevelopments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/noDevelopmentTextView"

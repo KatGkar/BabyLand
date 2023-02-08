@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class createNewDoctor extends AppCompatActivity {
 
-    private EditText nameEditText, surnameEditText, medicalIDEditText, phoneNumberEditText;
+    private TextInputEditText nameEditText, surnameEditText, medicalIDEditText, phoneNumberEditText;
     private Button saveButton;
     private Boolean flagNext, flagUnique;
     private String currentUserUID, currentUserEmail;
@@ -36,10 +37,10 @@ public class createNewDoctor extends AppCompatActivity {
         setContentView(R.layout.activity_create_new_doctor);
 
         //getting views from xml file
-        nameEditText = findViewById(R.id.doctorNameEditTextView);
-        surnameEditText = findViewById(R.id.doctorSurnameEditTextView);
-        medicalIDEditText = findViewById(R.id.doctorMedicalIDEditTextView);
-        phoneNumberEditText = findViewById(R.id.doctorPhoneNumberEditTextView);
+        nameEditText = findViewById(R.id.doctorNameTextInput);
+        surnameEditText = findViewById(R.id.doctorSurNameTextInput);
+        medicalIDEditText = findViewById(R.id.doctorMedicalIDTextInput);
+        phoneNumberEditText = findViewById(R.id.doctorPhoneNumberTextInput);
         saveButton = findViewById(R.id.saveDoctorInfoButton);
 
         //getting user from database

@@ -6,18 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
+    tools:ignore="HardcodedText"
     tools:context=".createNewDoctor">
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="310dp"
         android:layout_height="69dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="25dp"
         android:fontFamily="@font/bai_jamjuree"
         android:text="Please fill in some personal information"
         android:textAlignment="center"
         android:textColor="#000000"
-        android:textSize="22dp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
@@ -30,8 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:adjustViewBounds="true"
-        android:background="@drawable/facebook_google_buttons"
-        android:backgroundTint="@color/fui_bgGoogle"
+        android:background="@drawable/buttons"
         android:cropToPadding="true"
         android:elevation="20dp"
         android:onClick="saveInfo"
@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/doctorPhoneNumberEditTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/doctorPhoneNumberTextInputLayout" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -52,85 +52,91 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/doctor" />
 
-    <EditText
-        android:id="@+id/doctorMedicalIDEditTextView"
-        android:layout_width="230dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edit_texts"
-        android:elevation="20dp"
-        android:ems="10"
-        android:hint="Medical ID"
-        android:inputType="textPersonName"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:shadowDx="2"
-        android:shadowDy="4"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/doctorMedicalIDTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="250dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:shadowRadius="2"
+        android:textAlignment="center"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/doctorSurnameEditTextView" />
+        app:layout_constraintTop_toBottomOf="@id/doctorSurNameTextInputLayout">
 
-    <EditText
-        android:id="@+id/doctorPhoneNumberEditTextView"
-        android:layout_width="230dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edit_texts"
-        android:elevation="20dp"
-        android:ems="10"
-        android:hint="Phone Number"
-        android:inputType="phone"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:shadowDx="2"
-        android:shadowDy="4"
-        android:shadowRadius="2"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/doctorMedicalIDEditTextView" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/doctorMedicalIDTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Medical ID"
+            android:inputType="phone" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/doctorSurnameEditTextView"
-        android:layout_width="230dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edit_texts"
-        android:elevation="20dp"
-        android:ems="10"
-        android:hint="Surname"
-        android:inputType="textPersonName"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:shadowDx="2"
-        android:shadowDy="4"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/doctorPhoneNumberTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="250dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:shadowRadius="2"
+        android:textAlignment="center"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/doctorNameEditTextView" />
+        app:layout_constraintTop_toBottomOf="@id/doctorMedicalIDTextInputLayout">
 
-    <EditText
-        android:id="@+id/doctorNameEditTextView"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        android:layout_width="230dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edit_texts"
-        android:elevation="20dp"
-        android:ems="10"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:shadowDx="2"
-        android:shadowDy="4"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/doctorPhoneNumberTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone number"
+            android:inputType="phone" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/doctorSurNameTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="250dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:shadowRadius="2"
+        android:textAlignment="center"
         android:textColor="#000000"
-        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        app:layout_constraintTop_toBottomOf="@id/doctorNameTextInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/doctorSurNameTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Surname"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/doctorNameTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="250dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:shadowRadius="2"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView18">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/doctorNameTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

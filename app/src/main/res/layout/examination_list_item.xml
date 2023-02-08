@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    tools:ignore="HardcodedText"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
@@ -56,14 +57,14 @@
 
                 <RadioButton
                     android:id="@+id/radioButton1"
-                    android:layout_width="100dp"
+                    android:layout_width="95dp"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/blueDark"
                     android:text="Normal" />
 
                 <RadioButton
                     android:id="@+id/radioButton2"
-                    android:layout_width="100dp"
+                    android:layout_width="105dp"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/blueDark"
                     android:text="Monitoring" />

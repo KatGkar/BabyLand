@@ -11,6 +11,8 @@
             <solid android:color="#FFFFFF"/>
             <size android:height="3dp"
                 android:width="3dp"/>
+            <stroke android:width="1sp"
+                android:color="#8e8e8e" />
         </shape>
     </item>
 

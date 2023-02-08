@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -26,6 +27,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,24 +52,26 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
                     userBloodTypeTextView, userAmkaTextView, coParentFullNameTextView,
                     coParentEmailTextView, coParentPhoneNumberTextView, coParentAmkaTextView, coParentBirthDateTextView,
                     coParentBloodTypeTextView;
-    private EditText nameEditText, surnameEditText, amkaEditText, phoneNumberEditText, birthDateEditText, emailEditText,
-                newPasswordEditText, newPasswordVerificationEditText, coParentNameEditText, coParentSurnameEditText,
-                coParentAmkaEditText, coParentEmailEditText, coParentPhoneNumberEditText, coParentBirthDateEditText;
+    private TextInputEditText coParentAmkaEditText, coParentEmailEditText, coParentPhoneNumberEditText, coParentBirthDateEditText,
+            newPasswordEditText, newPasswordVerificationEditText, coParentNameEditText, coParentSurnameEditText, emailEditText,
+            nameEditText, surnameEditText, amkaEditText, phoneNumberEditText, birthDateEditText;
     private String[] bloodType = { "A RhD positive (A+)", "A RhD negative (A-)", "B RhD positive (B+)",
             "B RhD negative (B-)", "O RhD positive (O+)", "O RhD negative (O-)", "AB RhD positive (AB+)", "AB RhD negative (AB-)"};
     private int[] bloodImages = {R.drawable.a_plus, R.drawable.a_minus,
             R.drawable.b_minus, R.drawable.b_plus, R.drawable.o_plus, R.drawable.o_minus,
             R.drawable.ab_minus, R.drawable.ab_minus};
     private BottomNavigationView bottomNavigationView;
-    private String currentUserUID, userType,userUID = "", provider=null;
+    private String currentUserUID, userType,userUID = "", provider=null, cal = "none";
     private Switch userPartnerSwitch;
+    private TextInputLayout userBirthTextInputLayout;
     private FirebaseDatabase database;
     private DatabaseReference reference1, reference2, reference3;
     private Parent parent = null, coParent=null;
     private Doctor doctor = null;
-    private Button updateUserInfoButton, calendarButton, updateButton, deleteButton, changeEmailButton, showEmailButton,
+    private ImageButton calendarCoParentButton, calendarButton;
+    private Button updateUserInfoButton, updateButton, deleteButton, changeEmailButton, showEmailButton,
             showPasswordButton, changePasswordButton, coParentButton, coParentAddButton, coParentDeleteButton,
-            coParentSaveButton, calendarCoParentButton;
+            coParentSaveButton;
     private RelativeLayout viewUserInfoRelativeLayout, updateUserInfoRelativeLayout, changeEmailRelativeLayout,
                             changePasswordRelativeLayout, coParentRelativeLayout, coParentAddRelativeLayout,
                             coParentExistsRelativeLayout, noCoParentRelativeLayout;
@@ -75,7 +80,6 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
     private int position=0;
     private Boolean next, flagUnique, flagOnce=false, flagOnce1=false, flagNext;
 
-    String cal = "none";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,24 +103,24 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
         viewUserInfoRelativeLayout = findViewById(R.id.viewUserInfoRelativeLayout);
         updateUserInfoRelativeLayout = findViewById(R.id.updateUserInfoRelativeLayout);
         calendarView = findViewById(R.id.updateUserInfoCalendarView);
-        nameEditText = findViewById(R.id.nameUserUpdateInfoEditTextView);
-        surnameEditText = findViewById(R.id.surnameUserUpdateInfoEditTextView);
-        amkaEditText = findViewById(R.id.amkaUserUpdateInfoTextView);
-        phoneNumberEditText = findViewById(R.id.phoneNumberUserUpdateInfoEditTextView);
-        birthDateEditText = findViewById(R.id.birthDateUserUpdateInfoEditTextView);
-        calendarButton = findViewById(R.id.calendarButtonUserUpdate);
+        nameEditText = findViewById(R.id.nameUpdateUserTextInput);
+        surnameEditText = findViewById(R.id.surNameUpdateUserTextInput);
+        amkaEditText = findViewById(R.id.amkaUpdateUserTextInput);
+        phoneNumberEditText = findViewById(R.id.phoneNumberUpdateUserTextInput);
+        birthDateEditText = findViewById(R.id.userBirthDateUpdateTextInput);
+        calendarButton = findViewById(R.id.calendarButton);
         bloodTypeSpinner = findViewById(R.id.bloodTypeUpdateUserInfoSpinner);
         updateButton = findViewById(R.id.updateButton);
         deleteButton = findViewById(R.id.deleteUserButton);
         showEmailButton = findViewById(R.id.showEmailButton);
         changeEmailButton = findViewById(R.id.changeEmailButton);
         changeEmailRelativeLayout = findViewById(R.id.changeEmailRelativeLayout);
-        emailEditText = findViewById(R.id.userEmailEditText);
+        emailEditText = findViewById(R.id.emailInputText);
         changePasswordButton = findViewById(R.id.passwordChangeButton);
         showPasswordButton = findViewById(R.id.showPasswordButton);
         changePasswordRelativeLayout = findViewById(R.id.passwordChangeRelativeLayout);
-        newPasswordEditText = findViewById(R.id.newPasswordEditText);
-        newPasswordVerificationEditText = findViewById(R.id.newPasswordVerificaitonEditText);
+        newPasswordEditText = findViewById(R.id.newPasswordTextInput);
+        newPasswordVerificationEditText = findViewById(R.id.passwordValidationInputText);
         coParentButton = findViewById(R.id.coParentButton);
         coParentRelativeLayout = findViewById(R.id.coParentRelativeLayout);
         coParentAmkaTextView = findViewById(R.id.coParentAmkaTextView);
@@ -127,12 +131,12 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
         coParentBloodTypeTextView = findViewById(R.id.coParentBloodTypeTextView);
         coParentAddButton = findViewById(R.id.addCoParentButton);
         coParentDeleteButton = findViewById(R.id.deleteCoParentButton);
-        coParentNameEditText = findViewById(R.id.coParentNameEditText);
-        coParentSurnameEditText = findViewById(R.id.coParentSurnameEditText);
-        coParentEmailEditText = findViewById(R.id.coParentEmailEditText);
-        coParentPhoneNumberEditText = findViewById(R.id.coParentPhoneNumberEditText);
-        coParentAmkaEditText = findViewById(R.id.coParentAmkaEditText);
-        coParentBirthDateEditText = findViewById(R.id.coParentBirthDateEditText);
+        coParentNameEditText = findViewById(R.id.coParentNameTextInput);
+        coParentSurnameEditText = findViewById(R.id.coParentSurNameTextInput);
+        coParentEmailEditText = findViewById(R.id.coParentEmailTextInput);
+        coParentPhoneNumberEditText = findViewById(R.id.coParentPhoneNumberTextInput);
+        coParentAmkaEditText = findViewById(R.id.coParentAmkaTextInput);
+        coParentBirthDateEditText = findViewById(R.id.coParentBirthDateTextInput);
         coParentBloodTypeSpinner = findViewById(R.id.coParentBloodSpinner);
         coParentAddRelativeLayout = findViewById(R.id.coParentAddRelativeLayout);
         coParentSaveButton = findViewById(R.id.coParentSaveButton);
@@ -140,6 +144,7 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
         bottomNavigationView = findViewById(R.id.bottomNavigationViewUserAccount);
         coParentExistsRelativeLayout = findViewById(R.id.coParentExistsRelativeLayout);
         noCoParentRelativeLayout = findViewById(R.id.noCoParentRelativeLayout);
+        userBirthTextInputLayout = findViewById(R.id.userBirthDateUpdateTextInputLayout);
 
         //UI
         bottomNavigationView.setSelectedItemId(R.id.navigation_account);
@@ -194,24 +199,6 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
             }
         });
 
-        //getting current date
-        Calendar cal = Calendar.getInstance();
-        int yy = cal.get(Calendar.YEAR);
-        int mm = cal.get(Calendar.MONTH) + 1;
-        int dd = cal.get(Calendar.DAY_OF_MONTH);
-
-        // set current date into textview
-        String d = String.valueOf(dd);
-        if (dd <= 9) {
-            d = "0" + d;
-        }
-        String m = String.valueOf(mm);
-        if (mm <= 9) {
-            m = "0" + m;
-        }
-        coParentBirthDateEditText.setHint(new StringBuilder()
-                .append(d).append(" ").append("/").append(m).append("/")
-                .append(yy));
 
 
         //getting date of the calendar
@@ -612,14 +599,6 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
             coParentRelativeLayout.setVisibility(View.INVISIBLE);
             coParentAddRelativeLayout.setVisibility(View.VISIBLE);
             calendarView.setVisibility(View.INVISIBLE);
-            Calendar cal = Calendar.getInstance();
-            int yy = cal.get(Calendar.YEAR);
-            int mm = cal.get(Calendar.MONTH) + 1;
-            int dd = cal.get(Calendar.DAY_OF_MONTH);
-
-            // set current date into textview
-            coParentBirthDateEditText.setHint(new StringBuilder()
-                    .append(dd).append(" ").append("/").append(mm).append("/").append(yy));
 
             //onclick listener for calendar opening
             calendarCoParentButton.setOnClickListener(new View.OnClickListener() {
@@ -1131,6 +1110,7 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
                 }
             }
             birthDateEditText.setVisibility(View.VISIBLE);
+            userBirthTextInputLayout.setVisibility(View.VISIBLE);
             calendarButton.setVisibility(View.VISIBLE);
             bloodTypeSpinner.setVisibility(View.VISIBLE);
             bloodTypeSpinner.setSelection(position);
@@ -1140,6 +1120,7 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
             phoneNumberEditText.setText(doctor.getPhoneNumber());
             amkaEditText.setText(doctor.getMedicalID());
             birthDateEditText.setVisibility(View.INVISIBLE);
+            userBirthTextInputLayout.setVisibility(View.INVISIBLE);
             calendarButton.setVisibility(View.INVISIBLE);
             bloodTypeSpinner.setVisibility(View.INVISIBLE);
         }
@@ -1484,7 +1465,6 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
                                     reference1.child(currentUserUID).removeValue();
                                     updateDatabase("delete");
                                 }
-                                System.out.println("User deleted successfully!");
                                 Intent intent = new Intent(userAccount.this, loginRegister.class);
                                 startActivity(intent);
                             }
