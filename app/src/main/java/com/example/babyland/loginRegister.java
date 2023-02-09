@@ -44,6 +44,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DatabaseReference;
@@ -144,6 +145,25 @@ public class loginRegister extends AppCompatActivity { //implements GoogleApiCli
         myFirebaseAuth = FirebaseAuth.getInstance();
         FacebookSdk.sdkInitialize(getApplicationContext());
         LoginManager.getInstance().logOut();
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_ONLY);
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        handleFacebookToken(loginResult.getAccessToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        Toast.makeText(loginRegister.this, "Facebook is not responding. Please try again later!!", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
         //facebook sign in button
@@ -151,25 +171,6 @@ public class loginRegister extends AppCompatActivity { //implements GoogleApiCli
             @Override
             public void onClick(View view) {
                 //login callback manager for facebook login
-               callbackManager = CallbackManager.Factory.create();
-                LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_ONLY);
-                LoginManager.getInstance().registerCallback(callbackManager,
-                        new FacebookCallback<LoginResult>() {
-                            @Override
-                            public void onSuccess(LoginResult loginResult) {
-                                handleFacebookToken(loginResult.getAccessToken());
-                            }
-
-                            @Override
-                            public void onCancel() {
-
-                            }
-
-                            @Override
-                            public void onError(FacebookException exception) {
-                                Toast.makeText(loginRegister.this, "Facebook is not responding. Please try again later!!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
                 LoginManager.getInstance().logInWithReadPermissions(loginRegister.this, Arrays.asList("public_profile"));
 
             }
@@ -217,7 +218,8 @@ public class loginRegister extends AppCompatActivity { //implements GoogleApiCli
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             FirebaseAuth.getInstance().signOut();
-                            loginRegister.super.onBackPressed();
+                            finish();
+                            System.exit(0);
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -264,16 +266,16 @@ public class loginRegister extends AppCompatActivity { //implements GoogleApiCli
                     public void onSuccess(AuthResult authResult) {
                         loadingFrame.setVisibility(View.VISIBLE);
                         //checking if user has completed email validation
-                        /*FirebaseUser user = myFirebaseAuth.getCurrentUser();
-                        if(!user.isEmailVerified()){
+                        FirebaseUser user = myFirebaseAuth.getCurrentUser();
+                        if (!user.isEmailVerified()) {
                             user.sendEmailVerification();
                             loadingFrame.setVisibility(View.INVISIBLE);
                             loginRelativeLayout.setVisibility(View.VISIBLE);
                             Toast.makeText(loginRegister.this, "Please check your email!", Toast.LENGTH_SHORT).show();
-                        }else{
-                        */Intent intent = new Intent(loginRegister.this, doctorParentChoose.class);
-                        startActivity(intent);
-                        //}
+                        } else {
+                            Intent intent = new Intent(loginRegister.this, doctorParentChoose.class);
+                            startActivity(intent);
+                        }
                     }
                 })
 

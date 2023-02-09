@@ -1199,7 +1199,8 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
 
     //update info in database
     private void updateDatabase(String action){
-        for(int i=0;i<parent.getKids().size();i++){
+        try{
+        for(int i=0;i<parent.getKids().size();i++) {
             String babyAmka = parent.getKids().get(i).getAmka();
             reference3 = database.getReference("baby");
             reference3.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -1207,10 +1208,11 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot != null) {
                         for (DataSnapshot snapshots : snapshot.getChildren()) {
-                            if(snapshots.getKey().equals(babyAmka)){
-                                GenericTypeIndicator<Baby> t = new GenericTypeIndicator<Baby>() {};
+                            if (snapshots.getKey().equals(babyAmka)) {
+                                GenericTypeIndicator<Baby> t = new GenericTypeIndicator<Baby>() {
+                                };
                                 Baby b = snapshots.getValue(t);
-                                if(action.equals("update")) {
+                                if (action.equals("update")) {
                                     //update info on baby database
                                     if (b.getParentOneAmka().equals(parent.getAmka())) {
                                         b.setParentOneAmka(amkaEditText.getText().toString());
@@ -1219,13 +1221,13 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
                                     }
                                     reference3.child(babyAmka).removeValue();
                                     reference3.child(babyAmka).setValue(b);
-                                }else if(action.equals("delete")){
+                                } else if (action.equals("delete")) {
                                     //delete info on baby database
-                                    if(b.getParentTwoAmka().equals("00000000000")){
-                                       //baby doesn't have parent 2
-                                       reference3.child(babyAmka).removeValue();
-                                       updateDoctorsDatabase(babyAmka);
-                                    }else{
+                                    if (b.getParentTwoAmka().equals("00000000000")) {
+                                        //baby doesn't have parent 2
+                                        reference3.child(babyAmka).removeValue();
+                                        updateDoctorsDatabase(babyAmka);
+                                    } else {
                                         //if there is a parent 2
                                         b.setParentOneAmka(b.getParentTwoAmka());
                                         b.setParentTwoAmka("00000000000");
@@ -1244,6 +1246,9 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
 
                 }
             });
+        }
+        }catch (Exception e){
+            //nothing here
         }
 
 
