@@ -1,8 +1,8 @@
 package com.example.babyland;
 
 public class ExaminationItems {
-    String name, ageGap;
-    int details;
+    private String name, ageGap;
+    private int details;
 
     public ExaminationItems() {
     }

@@ -1,8 +1,8 @@
 package com.example.babyland;
 
 public class FamilyHistoryIllnesses {
-    String illness, details;
-    Boolean switches;
+    private String illness, details;
+    private Boolean switches;
 
     public FamilyHistoryIllnesses(String illness, Boolean switches, String details) {
         this.illness = illness;
@@ -10,8 +10,7 @@ public class FamilyHistoryIllnesses {
         this.details = details;
     }
 
-    public FamilyHistoryIllnesses() {
-    }
+    public FamilyHistoryIllnesses() {}
 
     public String getIllness() {
         return illness;

@@ -37,29 +37,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private sustenanceCheck sustenanceCheck;
     private addVaccination addVaccination;
 
-    public interface addVaccination{
-        void addVaccine(int position);
-    }
+    public interface addVaccination{ void addVaccine(int position);}
 
     public void addVaccination(addVaccination addVaccination){this.addVaccination = addVaccination;}
 
-    public interface sustenanceCheck{
-        void sustenanceChecked(int position, Boolean value);
+    public interface sustenanceCheck{void sustenanceChecked(int position, Boolean value);
     }
 
     public void sustenanceCheck(sustenanceCheck sustenanceCheck){this.sustenanceCheck = sustenanceCheck;}
 
-    public interface textChange {
-        void textChanged(int position, String text);
+    public interface textChange {void textChanged(int position, String text);
     }
 
     public void textChange(textChange textChange){
     this.textChange =textChange;
 }
 
-    public interface radioButtonChange{
-        void rChange(int id, int position);
-    }
+    public interface radioButtonChange{void rChange(int id, int position);}
 
     public void radioButtonChange(radioButtonChange radioButtonChange){
         this.radioButtonChange = radioButtonChange;
@@ -284,10 +278,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     @Override
-    public int getItemCount() {
-        return list.size();
-
-    }
+    public int getItemCount() {return list.size();}
 
     public RecyclerAdapter(recyclerVewOnClickListener listener, ArrayList list, String id, String userType) {
         this.list = list;
@@ -295,19 +286,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         this.listener = listener;
         this.userType = userType;
     }
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView illnessName, examinationListItemText, developmentalListItemText, ageTextView, dateTextView,
-                    nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExaminationTextView,
-                    nameTextViewDelete, amkaTextViewDelete, birthDateTextViewDelete, ageTextViewDelete, amkaAvailableChildrenText,
-                    nameAvailableChildrenText, illnessNameTextView, illnessDetailsTextView, vaccinationNameTextView,
-                    vaccinationDateTextView, vaccinationDoctorTextView;
+                nameDevelopmentalMonitoringTextView, detailsDevelopmentalMonitoringTextView, nameExaminationTextView,
+                nameTextViewDelete, amkaTextViewDelete, birthDateTextViewDelete, ageTextViewDelete, amkaAvailableChildrenText,
+                nameAvailableChildrenText, illnessNameTextView, illnessDetailsTextView, vaccinationNameTextView,
+                vaccinationDateTextView, vaccinationDoctorTextView;
         private TextInputEditText illnessDetails, developmentalEditText;
         private TextInputLayout illnessDetailsLayout, developmentalLayout;
         private Switch switches;
         private RadioButton radioButton1, radioButton2, radioButton3;
         private RadioGroup radioGroup;
         private CardView card, cardViewAdd, cardViewExamination, cardViewVaccinations, cardViewDevelopments, cardViewDeleteChild;
-        private boolean i=true;
+        private boolean i = true;
         private Button addVaccineButton;
         private ImageView sexImageViewDelete, sexAvailableChildren;
         private CheckBox checkedSustenanceMonitoring, checkShowDevelopments;
@@ -323,18 +315,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 switches.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        int  i = getAdapterPosition();
-                        if(switches.isChecked()){
+                        int i = getAdapterPosition();
+                        if (switches.isChecked()) {
 
                             illnessDetailsLayout.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             illnessDetailsLayout.setVisibility(View.GONE);
                         }
                         FamilyHistoryIllnesses f1 = new FamilyHistoryIllnesses(lists.get(i).getIllness(), switches.isChecked(), lists.get(i).getDetails());
                         lists.set(i, f1);
                     }
                 });
-            }else if(id.equals("examination")){
+            } else if (id.equals("examination")) {
                 List<String> lists = (List<String>) (List<?>) list;
                 examinationListItemText = itemView.findViewById(R.id.examinationListItemText);
                 radioButton1 = itemView.findViewById(R.id.radioButton1);
@@ -346,30 +338,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 cardViewExamination.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                         if(!i){
+                        if (!i) {
                             radioGroup.setVisibility(itemView.GONE);
-                            i=true;
-                        }else{
+                            i = true;
+                        } else {
                             radioGroup.setVisibility(itemView.VISIBLE);
-                            i=false;
+                            i = false;
                         }
                     }
                 });
                 radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
-                       if(checkedId == radioButton1.getId()){
-                           radioButtonChange.rChange(1, getAdapterPosition());
-                       }else if(checkedId== radioButton2.getId()){
-                           radioButtonChange.rChange(2, getAdapterPosition());
-                       }else if(radioButton3.getId() == checkedId){
-                           radioButtonChange.rChange(3, getAdapterPosition());
-                       }else {
-                           radioButtonChange.rChange(0, getAdapterPosition());
-                       }
+                        if (checkedId == radioButton1.getId()) {
+                            radioButtonChange.rChange(1, getAdapterPosition());
+                        } else if (checkedId == radioButton2.getId()) {
+                            radioButtonChange.rChange(2, getAdapterPosition());
+                        } else if (radioButton3.getId() == checkedId) {
+                            radioButtonChange.rChange(3, getAdapterPosition());
+                        } else {
+                            radioButtonChange.rChange(0, getAdapterPosition());
+                        }
                     }
                 });
-            }else if(id.equals("developmental")){
+            } else if (id.equals("developmental")) {
                 List<DevelopmentalItems> lists = (List<DevelopmentalItems>) (List<?>) list;
                 developmentalListItemText = itemView.findViewById(R.id.developmentalListItemText);
                 developmentalEditText = itemView.findViewById(R.id.developmentalTextInput);
@@ -378,14 +370,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 card.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(!i){
+                        if (!i) {
                             developmentalEditText.setVisibility(itemView.GONE);
                             developmentalLayout.setVisibility(itemView.GONE);
-                            i=true;
-                        }else{
+                            i = true;
+                        } else {
                             developmentalLayout.setVisibility(itemView.VISIBLE);
                             developmentalEditText.setVisibility(itemView.VISIBLE);
-                            i=false;
+                            i = false;
                         }
                     }
                 });
@@ -405,17 +397,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                         textChange.textChanged(getAdapterPosition(), developmentalEditText.getText().toString());
                     }
                 });
-            }else if(id.equals("developments")){
+            } else if (id.equals("developments")) {
                 ageTextView = itemView.findViewById(R.id.ageTextView);
                 dateTextView = itemView.findViewById(R.id.dateTextView);
                 cardViewDevelopments = itemView.findViewById(R.id.cardViewDevelopments);
                 cardViewDevelopments.setOnClickListener(this);
-            }else if(id.equals("developmentalMonitoring")){
+            } else if (id.equals("developmentalMonitoring")) {
                 nameDevelopmentalMonitoringTextView = itemView.findViewById(R.id.nameShowDevelopmentsDevelopmentalMonitoringTextView);
                 detailsDevelopmentalMonitoringTextView = itemView.findViewById(R.id.detailsShowDevelopmentsDevelopmentalMonitoringTextView);
-            }else if(id.equals("exam")){
+            } else if (id.equals("exam")) {
                 nameExaminationTextView = itemView.findViewById(R.id.nameAndDetailsShowDevelopmentsExaminationTextView);
-            }else if(id.equals("sustenance")){
+            } else if (id.equals("sustenance")) {
                 checkedSustenanceMonitoring = itemView.findViewById(R.id.checkedSustenanceCheckBox);
                 checkedSustenanceMonitoring.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -423,9 +415,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                         sustenanceCheck.sustenanceChecked(getAdapterPosition(), checkedSustenanceMonitoring.isChecked());
                     }
                 });
-            }else if(id.equals("sust")){
+            } else if (id.equals("sust")) {
                 checkShowDevelopments = itemView.findViewById(R.id.checkShowDevelopments);
-            }else if(id.equals("deleteChild")) {
+            } else if (id.equals("deleteChild")) {
                 nameTextViewDelete = itemView.findViewById(R.id.nameTextViewDeleteChild);
                 amkaTextViewDelete = itemView.findViewById(R.id.amkaTextViewDeleteChild);
                 birthDateTextViewDelete = itemView.findViewById(R.id.birthDateTextViewDeleteChild);
@@ -433,16 +425,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 sexImageViewDelete = itemView.findViewById(R.id.sexImageViewDeleteChild);
                 cardViewDeleteChild = itemView.findViewById(R.id.cardViewDeleteChild);
                 cardViewDeleteChild.setOnClickListener(this);
-            }else if(id.equals("availableChildren")){
+            } else if (id.equals("availableChildren")) {
                 nameAvailableChildrenText = itemView.findViewById(R.id.nameAvailableChildrenText);
                 amkaAvailableChildrenText = itemView.findViewById(R.id.amkaAvailableChildrenText);
                 sexAvailableChildren = itemView.findViewById(R.id.sexAvailableChildren);
                 cardViewAdd = itemView.findViewById(R.id.cardViewAvailableChildren);
                 cardViewAdd.setOnClickListener(this);
-            }else if(id.equals("familyHistoric")) {
+            } else if (id.equals("familyHistoric")) {
                 illnessNameTextView = itemView.findViewById(R.id.illnessNameTextView);
                 illnessDetailsTextView = itemView.findViewById(R.id.illnessDetailsTextView);
-            }else if(id.equals("viewVaccination")) {
+            } else if (id.equals("viewVaccination")) {
                 vaccinationNameTextView = itemView.findViewById(R.id.vaccinationNameTextView);
                 vaccinationDateTextView = itemView.findViewById(R.id.vaccinationDateTextView);
                 vaccinationDoctorTextView = itemView.findViewById(R.id.vaccinationDoctorTextView);
@@ -451,16 +443,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 cardViewVaccinations.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(!i){
+                        if (!i) {
                             vaccinationDateTextView.setVisibility(View.GONE);
                             vaccinationDoctorTextView.setVisibility(View.GONE);
                             addVaccineButton.setVisibility(View.GONE);
-                            i=true;
-                        }else{
+                            i = true;
+                        } else {
                             vaccinationDateTextView.setVisibility(View.VISIBLE);
                             vaccinationDoctorTextView.setVisibility(View.VISIBLE);
-                            i=false;
-                            if(userType.equals("doctor")) {
+                            i = false;
+                            if (userType.equals("doctor")) {
                                 if (vaccinationDoctorTextView.getText() == "None") {
                                     addVaccineButton.setVisibility(View.VISIBLE);
                                 } else {

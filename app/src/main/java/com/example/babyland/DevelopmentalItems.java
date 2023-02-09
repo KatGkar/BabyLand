@@ -1,7 +1,7 @@
 package com.example.babyland;
 
 public class DevelopmentalItems {
-    String name, ageGap, details;
+    private String name, ageGap, details;
 
     public DevelopmentalItems(String name, String ageGap, String details) {
         this.name = name;

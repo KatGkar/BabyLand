@@ -19,7 +19,7 @@ public class AdapterChildSpinner extends BaseAdapter {
         public AdapterChildSpinner(Context applicationContext, int[] images, ArrayList<Baby>listKids) {
         this.context = applicationContext;
         this.images = images;
-        this.listKids = listKids;
+        this.listKids = listKids; 
         inflater = (LayoutInflater.from(applicationContext));
     }
 

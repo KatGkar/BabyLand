@@ -8,7 +8,9 @@ public class Parent implements Serializable {
     private Boolean partner;
     private ArrayList<Baby> kids;
 
-    public Parent(String name, String surname, String amka, String phoneNumber, String email, String dateOfBirth, String bloodType, String partnersAmka, Boolean partner, ArrayList<Baby> kids){
+    public Parent(String name, String surname, String amka, String phoneNumber, String email,
+                  String dateOfBirth, String bloodType, String partnersAmka, Boolean partner,
+                  ArrayList<Baby> kids){
         this.name = name;
         this.surname = surname;
         this.amka = amka;
@@ -34,8 +36,7 @@ public class Parent implements Serializable {
         this.kids = u.getKids();
     }
 
-    public Parent() {
-    }
+    public Parent() {}
 
     public ArrayList<Baby> getKids() {
         return kids;

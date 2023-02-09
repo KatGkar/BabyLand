@@ -1441,8 +1441,10 @@ public class userAccount extends AppCompatActivity implements AdapterView.OnItem
             viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
         }else if(coParentRelativeLayout.getVisibility() == View.VISIBLE){
             coParentRelativeLayout.setVisibility(View.INVISIBLE);
+            getUser();
             viewUserInfoRelativeLayout.setVisibility(View.VISIBLE);
         }else if(coParentAddRelativeLayout.getVisibility() == View.VISIBLE){
+            getUser();
             coParentAddRelativeLayout.setVisibility(View.INVISIBLE);
             coParentRelativeLayout.setVisibility(View.VISIBLE);
         }

@@ -184,7 +184,7 @@ public class familyHistoryInput extends AppCompatActivity{
                     if (snapshot.getKey().equals(currentUserUID)) {
                         ArrayList<Baby> list;
                         try {
-                            list = (ArrayList<Baby>) snapshot.child("kids").getValue();
+                               list = (ArrayList<Baby>) snapshot.child("kids").getValue();
                             list.add(baby);
                         } catch (Exception e) {
                             list = new ArrayList<>();

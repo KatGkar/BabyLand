@@ -1,11 +1,10 @@
 package com.example.babyland;
 
 public class Vaccination {
-    String name, date, doctorName;
-    int uniqueID;
+    private String name, date, doctorName;
+    private int uniqueID;
 
-    public Vaccination() {
-    }
+    public Vaccination() {}
 
     public Vaccination(String name, String date, String doctorName, int uniqueID) {
         this.name = name;

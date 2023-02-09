@@ -1,8 +1,8 @@
 package com.example.babyland;
 
 public class SustenanceItems {
-    String name, ageGap;
-    Boolean checked;
+    private String name, ageGap;
+    private Boolean checked;
 
     public SustenanceItems(String name, String ageGap, Boolean checked) {
         this.name = name;

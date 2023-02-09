@@ -3,15 +3,18 @@ package com.example.babyland;
 import java.util.ArrayList;
 
 public class Development {
-    String weight , length, headCircumference, age, ageType, observations, doctor, amka, measurementDate;
-    ArrayList<SustenanceItems> sustenance;
-    ArrayList<ExaminationItems> examination;
-    ArrayList<DevelopmentalItems> developmentalMonitoring;
-    Boolean hearing;
+    private String weight , length, headCircumference, age, ageType, observations, doctor, amka, measurementDate;
+    private ArrayList<SustenanceItems> sustenance;
+    private ArrayList<ExaminationItems> examination;
+    private ArrayList<DevelopmentalItems> developmentalMonitoring;
+    private Boolean hearing;
 
     public Development(){}
 
-    public Development(String amka, String weight, String length, String headCircumference, String measurementDate, String age, String ageType, ArrayList<SustenanceItems> sustenance, ArrayList<ExaminationItems> examination, ArrayList<DevelopmentalItems> developmentalMonitoring, Boolean hearing, String observations, String doctor) {
+    public Development(String amka, String weight, String length, String headCircumference, String measurementDate,
+                       String age, String ageType, ArrayList<SustenanceItems> sustenance,
+                       ArrayList<ExaminationItems> examination, ArrayList<DevelopmentalItems> developmentalMonitoring,
+                       Boolean hearing, String observations, String doctor) {
         this.amka = amka;
         this.weight = weight;
         this.length = length;
@@ -55,17 +58,13 @@ public class Development {
         return headCircumference;
     }
 
-    public void setHeadCircumference(String headCircumference) {
-        this.headCircumference = headCircumference;
-    }
+    public void setHeadCircumference(String headCircumference) {this.headCircumference = headCircumference;}
 
     public String getMeasurementDate() {
         return measurementDate;
     }
 
-    public void setMeasurementDate(String measurementDate) {
-        this.measurementDate = measurementDate;
-    }
+    public void setMeasurementDate(String measurementDate) {this.measurementDate = measurementDate;}
 
     public String getAge() {
         return age;
@@ -87,21 +86,15 @@ public class Development {
         return sustenance;
     }
 
-    public void setSustenance(ArrayList<SustenanceItems> sustenance) {
-        this.sustenance = sustenance;
-    }
+    public void setSustenance(ArrayList<SustenanceItems> sustenance) {this.sustenance = sustenance;}
 
     public ArrayList<ExaminationItems> getExamination() {
         return examination;
     }
 
-    public void setExamination(ArrayList<ExaminationItems> examination) {
-        this.examination = examination;
-    }
+    public void setExamination(ArrayList<ExaminationItems> examination) {this.examination = examination;}
 
-    public ArrayList<DevelopmentalItems> getDevelopmentalMonitoring() {
-        return developmentalMonitoring;
-    }
+    public ArrayList<DevelopmentalItems> getDevelopmentalMonitoring() {return developmentalMonitoring;}
 
     public void setDevelopmentalMonitoring(ArrayList<DevelopmentalItems> developmentalMonitoring) {
         this.developmentalMonitoring = developmentalMonitoring;

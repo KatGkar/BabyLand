@@ -179,6 +179,7 @@ public class addChildToDoctor extends AppCompatActivity {
     @Override
     protected void onResume() {
         bottomNavigationView.setSelectedItemId(R.id.navigation_add);
+        verificationEditText.setText("");
         super.onResume();
     }
 
@@ -192,6 +193,7 @@ public class addChildToDoctor extends AppCompatActivity {
         availableChildrenRecyclerView.setItemAnimator(new DefaultItemAnimator());
         availableChildrenRecyclerView.setAdapter(adapter);
     }
+
 
     //click listener to show developments details
     private void setOnClickListener() {

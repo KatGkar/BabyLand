@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 
 public class Doctor {
-    String name, medicalID, phoneNumber, email, surname;
-    ArrayList<Baby> kids;
+    private String name, medicalID, phoneNumber, email, surname;
+    private ArrayList<Baby> kids;
 
-    public Doctor(String name, String medicalID, String phoneNumber, String email, ArrayList<Baby> kids, String surname) {
+    public Doctor(String name, String medicalID, String phoneNumber, String email,
+                  ArrayList<Baby> kids, String surname) {
         this.name = name;
         this.medicalID = medicalID;
         this.phoneNumber = phoneNumber;
@@ -16,8 +17,7 @@ public class Doctor {
         this.surname = surname;
     }
 
-    public Doctor() {
-    }
+    public Doctor() {}
 
     public String getSurname() {
         return surname;
