@@ -200,7 +200,6 @@ public class loginRegister extends AppCompatActivity { //implements GoogleApiCli
         loginRelativeLayout.setVisibility(View.VISIBLE);
         email.setText("");
         password.setText("");
-
     }
 
     //on back button pressed checking if user wants to exit application

@@ -325,8 +325,7 @@ public class addBaby extends AppCompatActivity implements AdapterView.OnItemSele
             calendar.setVisibility(View.INVISIBLE);
             infoRelativeLayout.setVisibility(View.VISIBLE);
         }else{
-            Intent intent = new Intent(addBaby.this, mainScreenParents.class);
-            startActivity(intent);
+            super.onBackPressed();
         }
     }
 

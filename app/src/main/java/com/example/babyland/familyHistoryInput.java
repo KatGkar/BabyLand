@@ -122,8 +122,8 @@ public class familyHistoryInput extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(familyHistoryInput.this, addBaby.class);
-        startActivity(intent);
+         Intent intent = new Intent(familyHistoryInput.this, addBaby.class);
+         startActivity(intent);
     }
 
     //setting adapter for recyclerView

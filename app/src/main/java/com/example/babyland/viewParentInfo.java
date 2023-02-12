@@ -192,8 +192,7 @@ public class viewParentInfo extends AppCompatActivity {
             parentInfoRelativeLayout.setVisibility(View.INVISIBLE);
             parentsRelativeLayout.setVisibility(View.VISIBLE);
         }else{
-            Intent intent = new Intent(viewParentInfo.this, mainScreenDoctor.class);
-            startActivity(intent);
+            super.onBackPressed();
         }
     }
 

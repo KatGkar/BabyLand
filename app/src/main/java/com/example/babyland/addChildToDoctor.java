@@ -179,7 +179,7 @@ public class addChildToDoctor extends AppCompatActivity {
     @Override
     protected void onResume() {
         bottomNavigationView.setSelectedItemId(R.id.navigation_add);
-        verificationEditText.setText("");
+        verificationEditText.setHint("Amka...");
         super.onResume();
     }
 
@@ -374,6 +374,7 @@ public class addChildToDoctor extends AppCompatActivity {
         });
     }
 
+
     //fixing on back press button
     @Override
     public void onBackPressed() {
@@ -385,8 +386,7 @@ public class addChildToDoctor extends AppCompatActivity {
             verificationRelativeLayout.setVisibility(View.INVISIBLE);
             viewChildInfoLayout.setVisibility(View.VISIBLE);
         }else{
-            Intent intent = new Intent(addChildToDoctor.this, mainScreenDoctor.class);
-            startActivity(intent);
+            super.onBackPressed();
         }
 
     }

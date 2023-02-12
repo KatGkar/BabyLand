@@ -445,8 +445,7 @@ public class monitoringDevelopment extends AppCompatActivity {
             calendarView.setVisibility(View.INVISIBLE);
             generalLayout.setVisibility(View.VISIBLE);
         }else if(generalLayout.getVisibility() == View.VISIBLE){
-            Intent intent = new Intent(monitoringDevelopment.this, mainScreenDoctor.class);
-            startActivity(intent);
+            super.onBackPressed();
         }
     }
 
