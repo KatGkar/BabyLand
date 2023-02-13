@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
     tools:ignore="HardcodedText"
+    android:windowSoftInputMode="adjustPan"
     tools:context=".monitoringDevelopment">
 
     <CalendarView
