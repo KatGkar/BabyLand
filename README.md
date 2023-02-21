@@ -1,6 +1,7 @@
 
 <p align="center">
-![babylandLogo](https://user-images.githubusercontent.com/45967457/220338121-adcc3850-706a-4f07-b1cd-43174f489a45.png)
+![babylandLogo](https://user-images.githubusercontent.com/45967457/220338506-7ddd55cb-c007-4a08-b2e3-c40026df7aa3.png)
+
 </p>
 
 
