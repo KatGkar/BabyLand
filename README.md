@@ -1,7 +1,6 @@
 
 <p align="center">
-![babylandLogo](https://user-images.githubusercontent.com/45967457/220338506-7ddd55cb-c007-4a08-b2e3-c40026df7aa3.png)
-
+  <img width="200" src="https://user-images.githubusercontent.com/45967457/220338506-7ddd55cb-c007-4a08-b2e3-c40026df7aa3.png" alt="BabyLand logo">
 </p>
 
 
